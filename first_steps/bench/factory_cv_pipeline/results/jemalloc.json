@@ -1,0 +1,19 @@
+{
+  "mode": "dynamic",
+  "frames": 600,
+  "achieved_fps": 29407,
+  "boot_rss_mb": 131.492,
+  "peak_rss_mb": 202.637,
+  "settled_rss_mb": 174.426,
+  "private_dirty_mb": 171.039,
+  "minor_faults": 922,
+  "efficiency_eta_percent": 71.5566,
+  "latency": {
+    "mean_ms": 0.341974,
+    "p50_ms": 0.336166,
+    "p90_ms": 0.444625,
+    "p99_ms": 0.624833,
+    "p999_ms": 0.7035,
+    "max_ms": 0.7035
+  }
+}

@@ -1,0 +1,11 @@
+threads=2
+seconds=3
+live_objects_per_thread=20000
+min_size=16
+max_size=2048
+allocations=80615744
+frees=80615744
+requested_bytes_total=83188724625
+live_requested_bytes_end=0
+elapsed_seconds=3.00148
+allocations_per_second=2.68587e+07

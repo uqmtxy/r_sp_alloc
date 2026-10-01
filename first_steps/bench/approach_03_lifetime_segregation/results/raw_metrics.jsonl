@@ -1,0 +1,2 @@
+{"mode": "unsegregated","trials": 5,"ephemeral_objects": 50000,"persistent_objects": 2000,"peak_rss_kb": 17692,"settled_rss_kb": 11824,"active_pages_pinned": 2000,"rss_reclaimed_pct": 33.2,"free_latency_ms": 1.60}
+{"mode": "segregated","trials": 5,"ephemeral_objects": 50000,"persistent_objects": 2000,"peak_rss_kb": 17364,"settled_rss_kb": 4028,"active_pages_pinned": 134,"rss_reclaimed_pct": 76.8,"free_latency_ms": 2.69}

@@ -1,0 +1,9 @@
+allocator=glibc
+duration=2
+threads=2
+live_objects=10000
+min_size=16
+max_size=4096
+churn_batch=512
+ld_preload=none
+

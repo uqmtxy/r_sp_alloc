@@ -1,0 +1,4 @@
+{"policy": "no_purge","trials": 5,"burst_objects": 50000,"object_size": 256,"peak_rss_kb": 16820,"settled_rss_kb": 16820,"rss_reclaimed_pct": 0.0,"dealloc_purge_ms": 0.23,"realloc_ms": 0.20,"page_faults": 0,"purge_syscalls": 0}
+{"policy": "sync_dontneed","trials": 5,"burst_objects": 50000,"object_size": 256,"peak_rss_kb": 16864,"settled_rss_kb": 6200,"rss_reclaimed_pct": 63.2,"dealloc_purge_ms": 2.00,"realloc_ms": 2.74,"page_faults": 2667,"purge_syscalls": 6000}
+{"policy": "sync_free","trials": 5,"burst_objects": 50000,"object_size": 256,"peak_rss_kb": 16816,"settled_rss_kb": 16816,"rss_reclaimed_pct": 0.0,"dealloc_purge_ms": 2.06,"realloc_ms": 2.92,"page_faults": 5332,"purge_syscalls": 6000}
+{"policy": "batch_dontneed","trials": 5,"burst_objects": 50000,"object_size": 256,"peak_rss_kb": 16812,"settled_rss_kb": 6148,"rss_reclaimed_pct": 63.4,"dealloc_purge_ms": 1.92,"realloc_ms": 2.79,"page_faults": 2680,"purge_syscalls": 5994}

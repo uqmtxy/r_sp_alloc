@@ -1,0 +1,5 @@
+{"allocator": "glibc","trials": 5,"live_objects": 150000,"churn_ops": 800000,"median_mops": 16.89,"stddev_mops": 2.69,"median_ns_op": 59.2,"peak_rss_kb": 36740}
+{"allocator": "jemalloc","trials": 5,"live_objects": 150000,"churn_ops": 800000,"median_mops": 31.81,"stddev_mops": 2.05,"median_ns_op": 31.4,"peak_rss_kb": 41480}
+{"allocator": "tcmalloc","trials": 5,"live_objects": 150000,"churn_ops": 800000,"median_mops": 32.89,"stddev_mops": 1.41,"median_ns_op": 30.4,"peak_rss_kb": 41624}
+{"allocator": "mimalloc","trials": 5,"live_objects": 150000,"churn_ops": 800000,"median_mops": 31.20,"stddev_mops": 0.68,"median_ns_op": 32.0,"peak_rss_kb": 38024}
+{"allocator": "dynalloc","trials": 5,"live_objects": 150000,"churn_ops": 800000,"median_mops": 19.11,"stddev_mops": 2.06,"median_ns_op": 52.3,"peak_rss_kb": 38400}

@@ -1,0 +1,25 @@
+services:
+  allocator-lab:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: allocator-lab:latest
+    container_name: allocator-lab
+    working_dir: /lab
+    volumes:
+      - ./bench:/lab/bench
+      - ./scripts:/lab/scripts
+      - ./results:/lab/results
+      - ./Makefile:/lab/Makefile
+      - ./README.md:/lab/README.md
+    cap_add:
+      - SYS_PTRACE
+      - PERFMON
+      - SYS_ADMIN
+    security_opt:
+      - seccomp=unconfined
+    ulimits:
+      memlock: -1
+      nofile: 1048576
+    tty: true
+    stdin_open: true

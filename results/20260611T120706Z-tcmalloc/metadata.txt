@@ -1,0 +1,9 @@
+allocator=tcmalloc
+duration=3
+threads=2
+live_objects=20000
+min_size=16
+max_size=2048
+churn_batch=256
+ld_preload=/lib/aarch64-linux-gnu/libtcmalloc_minimal.so.4
+

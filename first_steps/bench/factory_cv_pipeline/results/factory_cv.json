@@ -1,0 +1,19 @@
+{
+  "mode": "optimized",
+  "frames": 600,
+  "achieved_fps": 121568,
+  "boot_rss_mb": 173.051,
+  "peak_rss_mb": 173.234,
+  "settled_rss_mb": 173.234,
+  "private_dirty_mb": 170.336,
+  "minor_faults": 17,
+  "efficiency_eta_percent": 98.1541,
+  "latency": {
+    "mean_ms": 0.0174497,
+    "p50_ms": 0.015875,
+    "p90_ms": 0.02625,
+    "p99_ms": 0.049625,
+    "p999_ms": 0.092708,
+    "max_ms": 0.092708
+  }
+}

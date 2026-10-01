@@ -1,0 +1,5 @@
+{"policy": "pow2","trials": 5,"total_bins": 7,"median_mops": 23.95,"stddev_mops": 0.81,"median_ns_op": 41.8,"peak_rss_kb": 86256,"internal_frag_pct": 22.3}
+{"policy": "quantum","trials": 5,"total_bins": 19,"median_mops": 25.63,"stddev_mops": 1.30,"median_ns_op": 39.0,"peak_rss_kb": 71632,"internal_frag_pct": 2.9}
+{"policy": "pgo_synthesized","trials": 5,"total_bins": 8,"median_mops": 23.94,"stddev_mops": 1.07,"median_ns_op": 41.8,"peak_rss_kb": 75068,"internal_frag_pct": 8.2}
+{"policy": "system","trials": 5,"total_bins": 0,"median_mops": 11.93,"stddev_mops": 0.26,"median_ns_op": 83.8,"peak_rss_kb": 71504,"internal_frag_pct": 0.9}
+{"policy": "jemalloc","trials": 5,"total_bins": 0,"median_mops": 26.93,"stddev_mops": 0.93,"median_ns_op": 37.1,"peak_rss_kb": 78328,"internal_frag_pct": 0.9}

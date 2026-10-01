@@ -1,0 +1,5 @@
+{"allocator": "glibc","peak_rss_mb": 292.1,"settled_rss_mb": 292.2,"memory_efficiency_pct": 91.1,"throughput_mops": 0.11,"latency_ns_op": 9491.8}
+{"allocator": "jemalloc","peak_rss_mb": 297.2,"settled_rss_mb": 297.2,"memory_efficiency_pct": 89.5,"throughput_mops": 0.16,"latency_ns_op": 6398.9}
+{"allocator": "tcmalloc","peak_rss_mb": 291.9,"settled_rss_mb": 292.0,"memory_efficiency_pct": 91.1,"throughput_mops": 0.16,"latency_ns_op": 6333.7}
+{"allocator": "mimalloc","peak_rss_mb": 289.1,"settled_rss_mb": 289.1,"memory_efficiency_pct": 92.0,"throughput_mops": 0.16,"latency_ns_op": 6237.2}
+{"allocator": "dynalloc","peak_rss_mb": 287.9,"settled_rss_mb": 288.1,"memory_efficiency_pct": 92.4,"throughput_mops": 0.14,"latency_ns_op": 6929.3}

@@ -1,0 +1,6 @@
+{"allocator": "system","trials": 5,"live_objects": 200000,"churn_ops": 1000000,"median_mops": 14.672,"mean_mops": 14.631,"stddev_mops": 0.133,"median_ns_per_op": 68.2,"median_rss_kb": 52348,"internal_frag_pct": 2.87}
+{"allocator": "generic_pow2","trials": 5,"live_objects": 200000,"churn_ops": 1000000,"median_mops": 28.322,"mean_mops": 28.174,"stddev_mops": 0.445,"median_ns_per_op": 35.3,"median_rss_kb": 88700,"internal_frag_pct": 47.06}
+{"allocator": "exact_fit","trials": 5,"live_objects": 200000,"churn_ops": 1000000,"median_mops": 33.401,"mean_mops": 32.663,"stddev_mops": 1.713,"median_ns_per_op": 29.9,"median_rss_kb": 50688,"internal_frag_pct": 0.00}
+{"allocator": "jemalloc","trials": 5,"live_objects": 200000,"churn_ops": 1000000,"median_mops": 28.759,"mean_mops": 29.228,"stddev_mops": 2.306,"median_ns_per_op": 34.8,"median_rss_kb": 63992,"internal_frag_pct": 2.87}
+{"allocator": "tcmalloc","trials": 5,"live_objects": 200000,"churn_ops": 1000000,"median_mops": 30.383,"mean_mops": 30.026,"stddev_mops": 0.869,"median_ns_per_op": 32.9,"median_rss_kb": 61396,"internal_frag_pct": 2.88}
+{"allocator": "mimalloc","trials": 5,"live_objects": 200000,"churn_ops": 1000000,"median_mops": 24.098,"mean_mops": 22.593,"stddev_mops": 4.020,"median_ns_per_op": 41.5,"median_rss_kb": 68740,"internal_frag_pct": 2.87}
