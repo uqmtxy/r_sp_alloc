@@ -1,0 +1,20 @@
+{
+  "allocator": "tcmalloc",
+  "adv_level": 3,
+  "multiplier": 3,
+  "occupancy": 0.66,
+  "threads": 4,
+  "frames_per_thread": 50,
+  "total_frames": 200,
+  "peak_rss_mb": 367.17,
+  "settled_rss_mb": 367.17,
+  "private_dirty_mb": 353.84,
+  "minor_faults": 11,
+  "latency_mean_ms": 91.540,
+  "latency_p50_ms": 90.575,
+  "latency_p95_ms": 103.127,
+  "latency_p99_ms": 114.592,
+  "latency_max_ms": 114.970,
+  "aggregate_fps": 41.89,
+  "sum_thread_fps": 43.72
+}

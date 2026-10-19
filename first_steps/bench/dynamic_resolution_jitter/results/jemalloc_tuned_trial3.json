@@ -1,0 +1,17 @@
+{
+  "allocator": "jemalloc_tuned",
+  "mode": "dynamic",
+  "num_frames": 1000,
+  "peak_rss_mb": 180.11,
+  "settled_rss_mb": 130.25,
+  "private_dirty_mb": 126.91,
+  "warmup_rss_mb": 130.17,
+  "steady_delta_mb": 0.08,
+  "minor_faults": 3919423,
+  "latency_mean_ms": 2.39,
+  "latency_p50_ms": 2.62,
+  "latency_p90_ms": 3.23,
+  "latency_p99_ms": 3.81,
+  "latency_max_ms": 8.99,
+  "fps": 417.90
+}

@@ -207,8 +207,11 @@ void* realloc(void* ptr, size_t new_size) {
 
     AllocHeader* header = reinterpret_cast<AllocHeader*>(ptr) - 1;
     size_t old_size = 0;
-    if (header->magic == SLAB_MAGIC || header->magic == LARGE_MAGIC) {
+    if (header->magic == SLAB_MAGIC) {
         old_size = header->total_size;
+        if (new_size <= old_size) return ptr;
+    } else if (header->magic == LARGE_MAGIC) {
+        old_size = (header->total_size > HEADER_SIZE) ? (header->total_size - HEADER_SIZE) : 0;
         if (new_size <= old_size) return ptr;
     }
 

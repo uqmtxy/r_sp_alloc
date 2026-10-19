@@ -1,0 +1,26 @@
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=3, Occupancy=0.66, Allocations=60000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 39601 (3.38512 MB physical DRAM pinned in gaps).
+{
+  "allocator": "ort_custom_arena",
+  "mode": "ort_custom_arena",
+  "adv_level": 3,
+  "multiplier": 3,
+  "occupancy": 0.66,
+  "frames": 100,
+  "peak_rss_mb": 186.12,
+  "settled_rss_mb": 186.12,
+  "private_dirty_mb": 172.93,
+  "steady_delta_mb": 0.00,
+  "minor_faults": 0,
+  "latency_mean_ms": 82.478,
+  "latency_p50_ms": 82.288,
+  "latency_p95_ms": 83.718,
+  "latency_p99_ms": 84.600,
+  "latency_min_ms": 82.097,
+  "latency_max_ms": 84.600,
+  "fps": 12.12,
+  "weights_bytes": 9805056,
+  "transient_bytes": 4044473600,
+  "peak_frame_bytes": 108328384,
+  "noop_frees": 5484
+}

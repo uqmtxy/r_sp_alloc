@@ -1,0 +1,16 @@
+{
+  "allocator": "glibc_tuned",
+  "frames": 1000,
+  "achieved_fps": 11.3422,
+  "peak_rss_mb": 92.3203,
+  "settled_rss_mb": 92.3203,
+  "private_dirty_mb": 79.1953,
+  "minor_faults": 1,
+  "latency": {
+    "mean_ms": 88.1656,
+    "p50_ms": 86.8618,
+    "p90_ms": 91.1072,
+    "p99_ms": 106.821,
+    "max_ms": 170.634
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "mode": "page_aware",
+  "frames": 1000,
+  "achieved_fps": 12255.1,
+  "peak_rss_mb": 149.039,
+  "settled_rss_mb": 149.039,
+  "minor_faults": 16,
+  "holes": {
+    "body_kb": 25276,
+    "head_kb": 0,
+    "tail_kb": 0,
+    "sub_page_kb": 0,
+    "trapped_kb": 0,
+    "trapped_ratio_percent": 0
+  },
+  "latency": {
+    "mean_ms": 0.0815368,
+    "p50_ms": 0.079208,
+    "p90_ms": 0.0845,
+    "p99_ms": 0.108833,
+    "max_ms": 0.938167
+  }
+}

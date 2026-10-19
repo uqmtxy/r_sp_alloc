@@ -1,0 +1,16 @@
+{
+  "allocator": "/Users/kenza/StudyProjects/SJTU/alloc/first_steps/bench/pare_ta_arena/results/malloc_default_adv10",
+  "mode": "default_malloc",
+  "frames": 500,
+  "adv_multiplier": 10,
+  "peak_rss_mb": 27.2031,
+  "settled_rss_mb": 27.2031,
+  "private_dirty_mb": 27.2031,
+  "minor_faults": 74,
+  "latency_mean_ms": 0.00207045,
+  "latency_p50_ms": 0.001875,
+  "latency_p90_ms": 0.00225,
+  "latency_p99_ms": 0.006042,
+  "fps": 482986,
+  "trapped_dram_kb": 18400
+}

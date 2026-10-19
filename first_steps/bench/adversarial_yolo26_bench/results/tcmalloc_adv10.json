@@ -1,0 +1,22 @@
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=10, Occupancy=0.66, Allocations=200000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 132000 (11.7891 MB physical DRAM pinned in gaps).
+{
+  "allocator": "tcmalloc",
+  "mode": "dynamic",
+  "adv_level": 10,
+  "multiplier": 10,
+  "occupancy": 0.66,
+  "num_frames": 200,
+  "peak_rss_mb": 122.54,
+  "settled_rss_mb": 122.54,
+  "private_dirty_mb": 109.23,
+  "warmup_rss_mb": 120.96,
+  "steady_delta_mb": 1.58,
+  "minor_faults": 3,
+  "latency_mean_ms": 82.80,
+  "latency_p50_ms": 82.61,
+  "latency_p90_ms": 83.53,
+  "latency_p99_ms": 85.37,
+  "latency_max_ms": 85.73,
+  "fps": 12.08
+}

@@ -1,0 +1,17 @@
+{
+  "allocator": "dynalloc_preload",
+  "mode": "dynamic",
+  "num_frames": 1000,
+  "peak_rss_mb": 165.48,
+  "settled_rss_mb": 123.42,
+  "private_dirty_mb": 120.58,
+  "warmup_rss_mb": 123.23,
+  "steady_delta_mb": 0.20,
+  "minor_faults": 1922199,
+  "latency_mean_ms": 1.52,
+  "latency_p50_ms": 1.49,
+  "latency_p90_ms": 1.77,
+  "latency_p99_ms": 2.65,
+  "latency_max_ms": 2.68,
+  "fps": 657.83
+}

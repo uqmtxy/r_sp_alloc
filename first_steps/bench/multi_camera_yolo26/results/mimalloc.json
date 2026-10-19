@@ -1,0 +1,18 @@
+{
+  "allocator": "mimalloc",
+  "threads": 4,
+  "frames_per_thread": 100,
+  "total_frames": 400,
+  "aggregate_fps": 41.5312,
+  "peak_rss_mb": 387.688,
+  "settled_rss_mb": 342.727,
+  "private_dirty_mb": 329.441,
+  "minor_faults": 435,
+  "latency": {
+    "mean_ms": 86.8074,
+    "p50_ms": 86.5961,
+    "p90_ms": 87.367,
+    "p99_ms": 90.1558,
+    "max_ms": 93.8274
+  }
+}

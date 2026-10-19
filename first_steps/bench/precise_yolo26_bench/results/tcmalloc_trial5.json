@@ -1,0 +1,26 @@
+{
+  "allocator": "tcmalloc",
+  "trial": 5,
+  "pinned_core": 0,
+  "frames": 100,
+  "warmup_frames": 20,
+  "achieved_fps": 12.006,
+  "boot_rss_mb": 52.5938,
+  "warmup_rss_mb": 103.16,
+  "peak_rss_mb": 103.758,
+  "settled_rss_mb": 103.758,
+  "private_dirty_mb": 90.5117,
+  "steady_state_delta_mb": 0.597656,
+  "steady_state_minor_faults": 2,
+  "latency": {
+    "mean_ms": 83.291,
+    "stddev_ms": 1.06265,
+    "min_ms": 81.9672,
+    "p50_ms": 83.0753,
+    "p90_ms": 84.517,
+    "p95_ms": 84.6093,
+    "p99_ms": 89.1724,
+    "p999_ms": 89.1724,
+    "max_ms": 89.1724
+  }
+}

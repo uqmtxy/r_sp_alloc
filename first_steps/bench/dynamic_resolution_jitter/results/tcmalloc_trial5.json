@@ -1,0 +1,17 @@
+{
+  "allocator": "tcmalloc",
+  "mode": "dynamic",
+  "num_frames": 1000,
+  "peak_rss_mb": 197.08,
+  "settled_rss_mb": 196.88,
+  "private_dirty_mb": 193.86,
+  "warmup_rss_mb": 183.50,
+  "steady_delta_mb": 13.38,
+  "minor_faults": 5997,
+  "latency_mean_ms": 0.06,
+  "latency_p50_ms": 0.06,
+  "latency_p90_ms": 0.13,
+  "latency_p99_ms": 0.18,
+  "latency_max_ms": 0.50,
+  "fps": 17215.78
+}

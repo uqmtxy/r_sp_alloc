@@ -1,0 +1,17 @@
+{
+  "allocator": "glibc_tuned",
+  "mode": "dynamic",
+  "num_frames": 1000,
+  "peak_rss_mb": 165.19,
+  "settled_rss_mb": 123.07,
+  "private_dirty_mb": 120.22,
+  "warmup_rss_mb": 122.98,
+  "steady_delta_mb": 0.08,
+  "minor_faults": 1919742,
+  "latency_mean_ms": 1.31,
+  "latency_p50_ms": 1.26,
+  "latency_p90_ms": 1.76,
+  "latency_p99_ms": 2.64,
+  "latency_max_ms": 3.01,
+  "fps": 763.94
+}

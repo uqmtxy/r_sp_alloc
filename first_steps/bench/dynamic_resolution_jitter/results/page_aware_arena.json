@@ -1,0 +1,17 @@
+{
+  "allocator": "page_aware_arena",
+  "mode": "page_aware",
+  "num_frames": 1000,
+  "peak_rss_mb": 177.05,
+  "settled_rss_mb": 177.05,
+  "private_dirty_mb": 174.21,
+  "warmup_rss_mb": 176.98,
+  "steady_delta_mb": 0.07,
+  "minor_faults": 3,
+  "latency_mean_ms": 0.05,
+  "latency_p50_ms": 0.06,
+  "latency_p90_ms": 0.12,
+  "latency_p99_ms": 0.14,
+  "latency_max_ms": 0.16,
+  "fps": 18724.20
+}

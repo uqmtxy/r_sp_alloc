@@ -1,0 +1,21 @@
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+{
+  "allocator": "mimalloc",
+  "mode": "dynamic",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "num_frames": 200,
+  "peak_rss_mb": 104.10,
+  "settled_rss_mb": 104.10,
+  "private_dirty_mb": 90.88,
+  "warmup_rss_mb": 99.07,
+  "steady_delta_mb": 5.04,
+  "minor_faults": 12187,
+  "latency_mean_ms": 82.80,
+  "latency_p50_ms": 82.61,
+  "latency_p90_ms": 83.43,
+  "latency_p99_ms": 84.60,
+  "latency_max_ms": 87.35,
+  "fps": 12.08
+}

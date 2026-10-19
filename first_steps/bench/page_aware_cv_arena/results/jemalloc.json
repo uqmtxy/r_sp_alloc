@@ -1,0 +1,23 @@
+{
+  "mode": "dynamic",
+  "frames": 1000,
+  "achieved_fps": 1575.81,
+  "peak_rss_mb": 160.445,
+  "settled_rss_mb": 146.57,
+  "minor_faults": 494324,
+  "holes": {
+    "body_kb": 29552,
+    "head_kb": 5.67188,
+    "tail_kb": 0.828125,
+    "sub_page_kb": 0.125,
+    "trapped_kb": 6.625,
+    "trapped_ratio_percent": 0.0224131
+  },
+  "latency": {
+    "mean_ms": 0.63449,
+    "p50_ms": 0.633584,
+    "p90_ms": 0.660333,
+    "p99_ms": 0.774042,
+    "max_ms": 5.60629
+  }
+}

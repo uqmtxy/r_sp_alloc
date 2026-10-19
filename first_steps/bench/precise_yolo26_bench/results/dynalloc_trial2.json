@@ -1,0 +1,26 @@
+{
+  "allocator": "dynalloc",
+  "trial": 2,
+  "pinned_core": 0,
+  "frames": 100,
+  "warmup_frames": 20,
+  "achieved_fps": 11.9664,
+  "boot_rss_mb": 37.8828,
+  "warmup_rss_mb": 92.2891,
+  "peak_rss_mb": 92.2891,
+  "settled_rss_mb": 92.2891,
+  "private_dirty_mb": 79.168,
+  "steady_state_delta_mb": 0,
+  "steady_state_minor_faults": 402,
+  "latency": {
+    "mean_ms": 83.5664,
+    "stddev_ms": 1.07584,
+    "min_ms": 82.2803,
+    "p50_ms": 83.6392,
+    "p90_ms": 84.903,
+    "p95_ms": 85.321,
+    "p99_ms": 86.8528,
+    "p999_ms": 86.8528,
+    "max_ms": 86.8528
+  }
+}

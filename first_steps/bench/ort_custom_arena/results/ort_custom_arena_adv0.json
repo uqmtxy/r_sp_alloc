@@ -1,0 +1,25 @@
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+{
+  "allocator": "ort_custom_arena",
+  "mode": "ort_custom_arena",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 100,
+  "peak_rss_mb": 177.60,
+  "settled_rss_mb": 177.60,
+  "private_dirty_mb": 164.47,
+  "steady_delta_mb": 0.00,
+  "minor_faults": 0,
+  "latency_mean_ms": 82.595,
+  "latency_p50_ms": 82.364,
+  "latency_p95_ms": 83.917,
+  "latency_p99_ms": 87.683,
+  "latency_min_ms": 82.162,
+  "latency_max_ms": 87.683,
+  "fps": 12.11,
+  "weights_bytes": 9805056,
+  "transient_bytes": 4044473600,
+  "peak_frame_bytes": 108328384,
+  "noop_frees": 5484
+}

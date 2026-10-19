@@ -1,0 +1,26 @@
+{
+  "allocator": "mimalloc",
+  "trial": 4,
+  "pinned_core": 0,
+  "frames": 100,
+  "warmup_frames": 20,
+  "achieved_fps": 12.009,
+  "boot_rss_mb": 50.8008,
+  "warmup_rss_mb": 97.9961,
+  "peak_rss_mb": 100.984,
+  "settled_rss_mb": 100.746,
+  "private_dirty_mb": 87.5391,
+  "steady_state_delta_mb": 2.98828,
+  "steady_state_minor_faults": 353,
+  "latency": {
+    "mean_ms": 83.2631,
+    "stddev_ms": 1.17003,
+    "min_ms": 81.9773,
+    "p50_ms": 82.8319,
+    "p90_ms": 84.5799,
+    "p95_ms": 84.8925,
+    "p99_ms": 86.8075,
+    "p999_ms": 86.8075,
+    "max_ms": 86.8075
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "allocator": "glibc_default",
+  "trial": 2,
+  "pinned_core": 0,
+  "frames": 100,
+  "warmup_frames": 20,
+  "achieved_fps": 11.08,
+  "boot_rss_mb": 38.3789,
+  "warmup_rss_mb": 90.1133,
+  "peak_rss_mb": 90.1133,
+  "settled_rss_mb": 90.1133,
+  "private_dirty_mb": 76.9922,
+  "steady_state_delta_mb": 0,
+  "steady_state_minor_faults": 0,
+  "latency": {
+    "mean_ms": 90.2521,
+    "stddev_ms": 16.7098,
+    "min_ms": 82.412,
+    "p50_ms": 87.2431,
+    "p90_ms": 95.6137,
+    "p95_ms": 108.793,
+    "p99_ms": 225.78,
+    "p999_ms": 225.78,
+    "max_ms": 225.78
+  }
+}

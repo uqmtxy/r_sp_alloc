@@ -1,0 +1,17 @@
+{
+  "allocator": "mimalloc",
+  "mode": "dynamic",
+  "num_frames": 1000,
+  "peak_rss_mb": 187.21,
+  "settled_rss_mb": 187.21,
+  "private_dirty_mb": 184.21,
+  "warmup_rss_mb": 187.21,
+  "steady_delta_mb": 0.00,
+  "minor_faults": 0,
+  "latency_mean_ms": 0.06,
+  "latency_p50_ms": 0.07,
+  "latency_p90_ms": 0.12,
+  "latency_p99_ms": 0.16,
+  "latency_max_ms": 0.19,
+  "fps": 15810.77
+}

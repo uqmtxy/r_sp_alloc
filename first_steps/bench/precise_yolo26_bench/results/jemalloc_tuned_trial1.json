@@ -1,0 +1,26 @@
+{
+  "allocator": "jemalloc_tuned",
+  "trial": 1,
+  "pinned_core": 0,
+  "frames": 100,
+  "warmup_frames": 20,
+  "achieved_fps": 12.0932,
+  "boot_rss_mb": 47.9102,
+  "warmup_rss_mb": 101.531,
+  "peak_rss_mb": 101.566,
+  "settled_rss_mb": 100.777,
+  "private_dirty_mb": 87.2344,
+  "steady_state_delta_mb": 0.0351562,
+  "steady_state_minor_faults": 0,
+  "latency": {
+    "mean_ms": 82.6908,
+    "stddev_ms": 0.911091,
+    "min_ms": 82.0609,
+    "p50_ms": 82.3448,
+    "p90_ms": 83.8028,
+    "p95_ms": 84.3763,
+    "p99_ms": 87.8866,
+    "p999_ms": 87.8866,
+    "max_ms": 87.8866
+  }
+}

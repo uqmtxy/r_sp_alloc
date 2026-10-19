@@ -1,0 +1,18 @@
+{
+  "allocator": "jemalloc_default",
+  "threads": 4,
+  "frames_per_thread": 100,
+  "total_frames": 400,
+  "aggregate_fps": 40.1844,
+  "peak_rss_mb": 408.891,
+  "settled_rss_mb": 48.668,
+  "private_dirty_mb": 35.0352,
+  "minor_faults": 1280,
+  "latency": {
+    "mean_ms": 88.9558,
+    "p50_ms": 89.632,
+    "p90_ms": 90.4247,
+    "p99_ms": 107.922,
+    "max_ms": 118.608
+  }
+}

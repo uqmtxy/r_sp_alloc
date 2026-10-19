@@ -1,0 +1,22 @@
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=3, Occupancy=0.66, Allocations=60000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 39601 (3.38512 MB physical DRAM pinned in gaps).
+{
+  "allocator": "dynalloc_preload",
+  "mode": "default",
+  "adv_level": 3,
+  "multiplier": 3,
+  "occupancy": 0.66,
+  "frames": 100,
+  "peak_rss_mb": 94.83,
+  "settled_rss_mb": 94.83,
+  "private_dirty_mb": 81.64,
+  "steady_delta_mb": 0.00,
+  "minor_faults": 402,
+  "latency_mean_ms": 82.622,
+  "latency_p50_ms": 82.461,
+  "latency_p95_ms": 83.655,
+  "latency_p99_ms": 86.054,
+  "latency_min_ms": 81.960,
+  "latency_max_ms": 86.054,
+  "fps": 12.10
+}

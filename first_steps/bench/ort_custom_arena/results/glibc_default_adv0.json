@@ -1,0 +1,21 @@
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+{
+  "allocator": "glibc_default",
+  "mode": "default",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 100,
+  "peak_rss_mb": 91.95,
+  "settled_rss_mb": 91.95,
+  "private_dirty_mb": 78.84,
+  "steady_delta_mb": 0.00,
+  "minor_faults": 0,
+  "latency_mean_ms": 82.670,
+  "latency_p50_ms": 82.361,
+  "latency_p95_ms": 84.138,
+  "latency_p99_ms": 86.393,
+  "latency_min_ms": 81.485,
+  "latency_max_ms": 86.393,
+  "fps": 12.10
+}
