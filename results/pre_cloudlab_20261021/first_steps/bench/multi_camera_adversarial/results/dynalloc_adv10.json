@@ -1,0 +1,20 @@
+{
+  "allocator": "dynalloc",
+  "adv_level": 10,
+  "multiplier": 10,
+  "occupancy": 0.66,
+  "threads": 4,
+  "frames_per_thread": 50,
+  "total_frames": 200,
+  "peak_rss_mb": 379.77,
+  "settled_rss_mb": 107.25,
+  "private_dirty_mb": 94.05,
+  "minor_faults": 805,
+  "latency_mean_ms": 89.435,
+  "latency_p50_ms": 89.723,
+  "latency_p95_ms": 91.223,
+  "latency_p99_ms": 95.832,
+  "latency_max_ms": 96.366,
+  "aggregate_fps": 44.50,
+  "sum_thread_fps": 44.73
+}

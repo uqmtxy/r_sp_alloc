@@ -7,6 +7,7 @@ RESULTS_DIR="${SCRIPT_DIR}/results"
 mkdir -p "${RESULTS_DIR}"
 
 BIN="${SCRIPT_DIR}/multi_camera_adversarial_bench"
+MODEL="${WORKSPACE_ROOT}/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx"
 DYNALLOC_LIB="${WORKSPACE_ROOT}/first_steps/src/libdynalloc.so"
 
 echo "=========================================================="
@@ -57,6 +58,7 @@ run_multi_adv() {
         echo -n "  -> Adv${adv} ... "
         if [ -n "${preload}" ]; then
             env ${env_var} LD_PRELOAD="${preload}" "${BIN}" \
+                --model "${MODEL}" \
                 --threads "${THREADS}" \
                 --frames "${FRAMES}" \
                 --warmup "${WARMUP}" \
@@ -65,6 +67,7 @@ run_multi_adv() {
                 --json > "${out_json}"
         else
             env ${env_var} "${BIN}" \
+                --model "${MODEL}" \
                 --threads "${THREADS}" \
                 --frames "${FRAMES}" \
                 --warmup "${WARMUP}" \

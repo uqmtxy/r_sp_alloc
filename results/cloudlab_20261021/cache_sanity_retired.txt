@@ -1,0 +1,14 @@
+# started on Wed Oct 21 05:14:39 2026
+
+
+ Performance counter stats for 'taskset -c 2 /tmp/r_sp_alloc_cache_sanity':
+
+            287448      mem_load_uops_retired.l3_hit                                          
+          16787645      mem_load_uops_retired.l3_miss                                         
+
+       1.522290137 seconds time elapsed
+
+       1.459379000 seconds user
+       0.062973000 seconds sys
+
+

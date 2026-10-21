@@ -1,132 +1,100 @@
 #!/usr/bin/env python3
-"""
-Bare-Metal Hardware Counter & Memory Analyzer
-Parses perf stat and memory JSON telemetry for YOLO26n benchmarks on CloudLab.
-"""
-import os
-import re
+"""Summarize measured CloudLab telemetry without treating missing events as zero."""
 import json
-import glob
+import re
+from pathlib import Path
+
 
 def parse_perf_txt(file_path):
     metrics = {}
-    if not os.path.exists(file_path):
-        return metrics
-
-    with open(file_path, "r") as f:
-        for line in f:
-            line = line.strip()
-            # Match lines like: "123,456,789      cycles                    #    3.40 GHz"
-            # Or:               "      12,345      dTLB-load-misses          #    0.12% of all dTLB items"
-            m = re.match(r"^([\d,]+)\s+([a-zA-Z0-9_\-\.]+)", line)
-            if m:
-                val_str = m.group(1).replace(",", "")
-                event_name = m.group(2)
-                try:
-                    metrics[event_name] = int(val_str)
-                except ValueError:
-                    pass
+    path = Path(file_path)
+    if path.exists():
+        for line in path.read_text().splitlines():
+            match = re.match(r"^\s*([\d,]+)\s+([a-zA-Z0-9_.-]+)", line)
+            if match:
+                metrics[match[2]] = int(match[1].replace(',', ''))
     return metrics
 
+
+def ratio(metrics, numerator, denominator, scale=1):
+    if numerator not in metrics or not metrics.get(denominator):
+        return 'N/A'
+    return f'{scale * metrics[numerator] / metrics[denominator]:.3f}'
+
+
+def value(data, key, digits=2):
+    return f'{data[key]:.{digits}f}' if key in data else 'N/A'
+
+
 def main():
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    bench_dir = os.path.realpath(os.path.join(script_dir, "../../bench/yolo26n_pipeline"))
-    results_dir = os.path.join(bench_dir, "results_baremetal")
-    os.makedirs(results_dir, exist_ok=True)
-
-    configs = [
-        "glibc_default",
-        "glibc_tuned",
-        "jemalloc_default",
-        "jemalloc_tuned",
-        "tcmalloc",
-        "mimalloc",
-        "dynalloc"
-    ]
-
-    names = {
-        "glibc_default": "Generic Ubuntu Default (`glibc`)",
-        "glibc_tuned": "Tuned `glibc` (`M_TRIM_THRESHOLD=4096`)",
-        "jemalloc_default": "Meta `jemalloc` 5.3 (Default 10s Decay)",
-        "jemalloc_tuned": "Tuned `jemalloc` 5.3 (`dirty_decay_ms:0`)",
-        "tcmalloc": "Google `TCMalloc`",
-        "mimalloc": "Microsoft `mimalloc` 2.1",
-        "dynalloc": "**Page-Grid Aligned DynAlloc (`libdynalloc.so`)**"
-    }
-
-    report_lines = []
-    report_lines.append("# Bare-Metal Hardware & Systems Memory Evaluation: Ultralytics YOLO26n\n")
-    report_lines.append("## 1. Executive Hardware Summary (CloudLab Physical Node)\n")
-    report_lines.append("Benchmark executed directly on bare-metal physical silicon with pinned CPU core, disabled hypervisor EPT/NPT translation, performance governor, and disabled Transparent Hugepages (THP).\n\n")
-
-    report_lines.append("### Master Hardware & Memory Comparison Table\n")
-    report_lines.append("| Allocator Configuration | Peak RSS (MB) | Settled RSS (MB) | IPC | L1-D Miss % | LLC Miss % | dTLB Load Miss % | Page Faults | p99 Latency (ms) | Throughput (FPS) |")
-    report_lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
-
-    data_summary = {}
-
-    for cfg in configs:
-        json_path = os.path.join(results_dir, f"{cfg}.json")
-        perf_path = os.path.join(results_dir, f"perf_{cfg}.txt")
-
-        if not os.path.exists(json_path):
+    bench = Path(__file__).resolve().parents[2] / 'bench'
+    results = bench / 'yolo26n_pipeline/results_baremetal'
+    results.mkdir(parents=True, exist_ok=True)
+    lines = ['# CloudLab bare-metal YOLO26n measurements', '',
+             'Full-process perf counts include startup and warmup; JSON minor faults exclude warmup. '
+             'PMU counts are multiplexed estimates: inspect raw perf files for coverage and unsupported events. '
+             'N/A means absent, uncounted, or an invalid denominator. Memory units are MiB.', '',
+             '| Allocator | Peak RSS | Settled RSS | Private dirty | IPC | L1 miss % | LLC miss % | dTLB load miss % | dTLB store misses | Process page faults | Process minor faults | Post-warmup minor faults | p99 ms | FPS |',
+             '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|']
+    for cfg in ['glibc_default', 'glibc_tuned', 'jemalloc_default', 'jemalloc_tuned', 'tcmalloc', 'mimalloc', 'dynalloc']:
+        path = results / f'{cfg}.json'
+        try:
+            data = json.loads(path.read_text())
+        except (OSError, ValueError):
+            lines.append(f'| {cfg} | incomplete |')
             continue
+        perf = parse_perf_txt(results / f'perf_{cfg}.txt')
+        cells = [cfg, value(data, 'peak_rss_mb'), value(data, 'settled_rss_mb'), value(data, 'private_dirty_mb'),
+                 ratio(perf, 'instructions', 'cycles'), ratio(perf, 'L1-dcache-load-misses', 'L1-dcache-loads', 100),
+                 ratio(perf, 'LLC-load-misses', 'LLC-loads', 100), ratio(perf, 'dTLB-load-misses', 'dTLB-loads', 100),
+                 str(perf.get('dTLB-store-misses', 'N/A')), str(perf.get('page-faults', 'N/A')),
+                 str(perf.get('minor-faults', 'N/A')), str(data.get('minor_faults', 'N/A')),
+                 value(data.get('latency', {}), 'p99_ms'), value(data, 'achieved_fps')]
+        lines.append('| ' + ' | '.join(cells) + ' |')
+    lines += ['', '## Retired-load L3 validation pass', '',
+              'The 128 MiB cache sanity test reported zero generic LLC-load-misses but 16.8 million '
+              'mem_load_uops_retired.l3_miss events. Generic LLC zeros above are unreliable. '
+              'This separate pass uses grouped retired L3 hit/miss events, 1000 measured frames plus 50 warmup, '
+              'and the same allocator settings. Counts include startup and warmup. '
+              'Its miss fraction is misses / (hits + misses), not the generic LLC event ratio.', '',
+              '| Allocator | Retired L3 hits | Retired L3 misses | Retired L3 miss % |',
+              '|---|---:|---:|---:|']
+    for cfg in ['glibc_default', 'glibc_tuned', 'jemalloc_default', 'jemalloc_tuned', 'tcmalloc', 'mimalloc', 'dynalloc']:
+        perf = parse_perf_txt(results / f'perf_l3_{cfg}.txt')
+        hits = perf.get('mem_load_uops_retired.l3_hit')
+        misses = perf.get('mem_load_uops_retired.l3_miss')
+        if hits is None or misses is None or not hits + misses:
+            lines.append(f'| {cfg} | incomplete |')
+        else:
+            lines.append(f'| {cfg} | {hits} | {misses} | {100 * misses / (hits + misses):.3f} |')
+    lines += ['', '## PARE-TA allocation microbenchmark', '',
+              'This benchmark touches the first and last element of each simulated tensor; it does not run ONNX inference. '
+              'Total minor faults include warmup; the post-warmup column reports the separate steady-state interval. '
+              'Previously hard-coded trapped DRAM values have been replaced with null (not measured).', '',
+              '| Configuration | p99 ms | Peak RSS MiB | Private dirty MiB | Minor faults including warmup | Post-warmup minor faults |',
+              '|---|---:|---:|---:|---:|---:|']
+    for path in sorted((bench / 'pare_ta_arena/results').glob('*.json')):
+        data = json.loads(path.read_text())
+        lines.append(f"| {path.stem} | {value(data, 'latency_p99_ms', 6)} | {value(data, 'peak_rss_mb')} | {value(data, 'private_dirty_mb')} | {data.get('minor_faults', 'N/A')} | {data.get('steady_state_minor_faults', 'N/A')} |")
+    lines += ['', '## Four-camera inference', '',
+              'Settled RSS is sampled 200 ms after worker teardown. Adversarial live anchors remain allocated at this point. '
+              'This cannot establish permanent retention or attribute retained bytes exclusively to thread caches.', '',
+              '| Configuration | p99 ms | FPS | Peak RSS MiB | Settled RSS MiB | Private dirty MiB | Measured interval minor faults |',
+              '|---|---:|---:|---:|---:|---:|---:|']
+    for path in sorted((bench / 'multi_camera_adversarial/results').glob('*.json')):
+        data = json.loads(path.read_text())
+        cells = [path.stem, value(data, 'latency_p99_ms'), value(data, 'aggregate_fps'),
+                 value(data, 'peak_rss_mb'), value(data, 'settled_rss_mb'), value(data, 'private_dirty_mb'), str(data.get('minor_faults', 'N/A'))]
+        lines.append('| ' + ' | '.join(cells) + ' |')
+    lines += ['', '## Interpretation limits', '',
+              'CPU affinity does not provide kernel CPU isolation. CPU 2 shares a physical core with CPU 10. '
+              'Single runs do not establish statistical significance. Zero LLC counts require independent validation. '
+              'Cache and TLB counters alone cannot prove elimination of page straddling or trapped DRAM. '
+              'The primary inference suite uses the ONNX Runtime arena, so preload allocators may not see every tensor allocation.', '']
+    report = results / 'BAREMETAL_REPORT.md'
+    report.write_text('\n'.join(lines))
+    print(f'[+] Measurement report written to {report}')
 
-        with open(json_path, "r") as f:
-            jdata = json.load(f)
 
-        pdata = parse_perf_txt(perf_path)
-
-        cycles = pdata.get("cycles", 0)
-        instructions = pdata.get("instructions", 0)
-        ipc = (instructions / cycles) if cycles > 0 else 0.0
-
-        l1_loads = pdata.get("L1-dcache-loads", 0)
-        l1_misses = pdata.get("L1-dcache-load-misses", 0)
-        l1_miss_pct = (l1_misses / l1_loads * 100.0) if l1_loads > 0 else 0.0
-
-        llc_loads = pdata.get("LLC-loads", 0)
-        llc_misses = pdata.get("LLC-load-misses", 0)
-        llc_miss_pct = (llc_misses / llc_loads * 100.0) if llc_loads > 0 else 0.0
-
-        dtlb_loads = pdata.get("dTLB-loads", 0)
-        dtlb_misses = pdata.get("dTLB-load-misses", 0)
-        dtlb_miss_pct = (dtlb_misses / dtlb_loads * 100.0) if dtlb_loads > 0 else 0.0
-
-        faults = pdata.get("page-faults", jdata.get("minor_faults", 0))
-
-        peak_rss = jdata.get("peak_rss_mb", 0.0)
-        settled_rss = jdata.get("settled_rss_mb", 0.0)
-        p99 = jdata.get("latency", {}).get("p99_ms", 0.0)
-        fps = jdata.get("achieved_fps", 0.0)
-
-        data_summary[cfg] = {
-            "peak_rss": peak_rss,
-            "settled_rss": settled_rss,
-            "ipc": ipc,
-            "l1_miss_pct": l1_miss_pct,
-            "llc_miss_pct": llc_miss_pct,
-            "dtlb_miss_pct": dtlb_miss_pct,
-            "faults": faults,
-            "p99": p99,
-            "fps": fps
-        }
-
-        report_lines.append(
-            f"| {names.get(cfg, cfg)} | {peak_rss:.1f} MB | {settled_rss:.1f} MB | {ipc:.2f} | "
-            f"{l1_miss_pct:.2f}% | {llc_miss_pct:.2f}% | {dtlb_miss_pct:.3f}% | {faults:,} | "
-            f"{p99:.2f} ms | **{fps:.1f} FPS** |"
-        )
-
-    report_lines.append("\n## 2. Grounding Against Systems Literature\n")
-    report_lines.append("1. **Fistanto et al. (PLOS '23 / SOSP '23)**: Hardware PMU dTLB misses and minor page faults demonstrate the physical reality of the granularity mismatch. Allocators that align tensors strictly to 4 KiB boundaries avoid page-straddling and reduce TLB walk overheads on high-frequency activation churn.\n")
-    report_lines.append("2. **ISMM '24 Reconsidering Custom Memory Allocation**: Shows that on deterministic forward-pass DAGs (like YOLO26's NMS-free architecture), domain-specific allocation eliminates dirty page retention in jemalloc/tcmalloc thread caches without degrading CPU cache hit rates.\n")
-
-    report_path = os.path.join(results_dir, "BAREMETAL_REPORT.md")
-    with open(report_path, "w") as f:
-        f.write("\n".join(report_lines) + "\n")
-
-    print(f"[+] Bare-metal analysis report written to: {report_path}")
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

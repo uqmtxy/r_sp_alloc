@@ -1,0 +1,26 @@
+# started on Wed Oct 21 05:06:30 2026
+
+
+ Performance counter stats for 'env LD_PRELOAD=/users/deni/research/r_sp_alloc/first_steps/src/libdynalloc.so taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name dynalloc --json':
+
+      431769508234      cycles                                                                  (33.33%)
+      864319301456      instructions                     #    2.00  insn per cycle              (41.67%)
+       16279703747      cache-references                                                        (41.67%)
+       16279992216      cache-misses                     #  100.00% of all cache refs           (41.67%)
+      283336608407      L1-dcache-loads                                                         (41.67%)
+       20747085108      L1-dcache-load-misses            #    7.32% of all L1-dcache accesses   (41.67%)
+        1756099941      LLC-loads                                                               (33.33%)
+                 0      LLC-load-misses                                                         (33.33%)
+      283180218554      dTLB-loads                                                              (33.33%)
+          23247327      dTLB-load-misses                 #    0.01% of all dTLB cache accesses  (33.33%)
+       35542450873      dTLB-stores                                                             (33.33%)
+          71637786      dTLB-store-misses                                                       (33.33%)
+             47512      page-faults                                                           
+             47512      minor-faults                                                          
+
+     187.254353765 seconds time elapsed
+
+     187.033433000 seconds user
+       0.197978000 seconds sys
+
+

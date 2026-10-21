@@ -1,16 +1,17 @@
 {
-  "allocator": "/Users/kenza/StudyProjects/SJTU/alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv10",
+  "allocator": "/users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv10",
   "mode": "std_pmr",
   "frames": 500,
   "adv_multiplier": 10,
-  "peak_rss_mb": 89.7031,
-  "settled_rss_mb": 89.7031,
-  "private_dirty_mb": 89.7031,
-  "minor_faults": 1,
-  "latency_mean_ms": 0.000128408,
-  "latency_p50_ms": 0.000125,
-  "latency_p90_ms": 0.000167,
-  "latency_p99_ms": 0.000208,
-  "fps": 7.78768e+06,
-  "trapped_dram_kb": 18400
+  "peak_rss_mb": 89.3008,
+  "settled_rss_mb": 89.3008,
+  "private_dirty_mb": 85.5625,
+  "minor_faults": 2,
+  "steady_state_minor_faults": 0,
+  "latency_mean_ms": 0.000589722,
+  "latency_p50_ms": 0.000569,
+  "latency_p90_ms": 0.000601,
+  "latency_p99_ms": 0.00081,
+  "fps": 1.69571e+06,
+  "trapped_dram_kb": null
 }

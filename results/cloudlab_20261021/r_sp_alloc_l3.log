@@ -1,0 +1,8 @@
+Profiling retired L3 loads: glibc_default (1000 frames + 50 warmup)
+Profiling retired L3 loads: glibc_tuned (1000 frames + 50 warmup)
+Profiling retired L3 loads: jemalloc_default (1000 frames + 50 warmup)
+Profiling retired L3 loads: jemalloc_tuned (1000 frames + 50 warmup)
+Profiling retired L3 loads: tcmalloc (1000 frames + 50 warmup)
+Profiling retired L3 loads: mimalloc (1000 frames + 50 warmup)
+Profiling retired L3 loads: dynalloc (1000 frames + 50 warmup)
+[+] Measurement report written to /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/results_baremetal/BAREMETAL_REPORT.md

@@ -1,0 +1,14 @@
+# started on Wed Oct 21 05:35:47 2026
+
+
+ Performance counter stats for 'taskset -c 2 env LD_PRELOAD=/users/deni/research/r_sp_alloc/first_steps/src/libdynalloc.so /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name dynalloc --json':
+
+        1134864270      mem_load_uops_retired.l3_hit                                          
+         173396817      mem_load_uops_retired.l3_miss                                         
+
+     185.378787830 seconds time elapsed
+
+     185.180021000 seconds user
+       0.172977000 seconds sys
+
+

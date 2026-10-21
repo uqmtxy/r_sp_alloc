@@ -1,0 +1,20 @@
+{
+  "allocator": "mimalloc",
+  "adv_level": 10,
+  "multiplier": 10,
+  "occupancy": 0.66,
+  "threads": 4,
+  "frames_per_thread": 50,
+  "total_frames": 200,
+  "peak_rss_mb": 506.09,
+  "settled_rss_mb": 435.93,
+  "private_dirty_mb": 421.25,
+  "minor_faults": 2,
+  "latency_mean_ms": 179.745,
+  "latency_p50_ms": 178.888,
+  "latency_p95_ms": 186.557,
+  "latency_p99_ms": 192.840,
+  "latency_max_ms": 251.241,
+  "aggregate_fps": 22.03,
+  "sum_thread_fps": 22.25
+}

@@ -1,0 +1,16 @@
+{
+  "allocator": "jemalloc_default",
+  "frames": 1000,
+  "achieved_fps": 6.69515,
+  "peak_rss_mb": 128.5,
+  "settled_rss_mb": 114.223,
+  "private_dirty_mb": 99.2031,
+  "minor_faults": 11,
+  "latency": {
+    "mean_ms": 149.36,
+    "p50_ms": 148.49,
+    "p90_ms": 149.367,
+    "p99_ms": 165.439,
+    "max_ms": 232.355
+  }
+}

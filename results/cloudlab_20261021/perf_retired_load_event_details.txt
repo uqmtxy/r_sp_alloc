@@ -1,0 +1,32 @@
+
+cache:
+  mem_load_uops_retired.hit_lfb
+       [Retired load uops which data sources were load uops missed L1 but hit
+        FB due to preceding miss to the same cache line with data not ready
+        Supports address when precise (Precise event)]
+        default_core/event=0xd1,period=0x186a3,umask=0x40/
+  mem_load_uops_retired.l1_hit
+       [Retired load uops with L1 cache hits as data sources Supports address
+        when precise (Precise event)]
+        default_core/event=0xd1,period=0x1e8483,umask=0x1/
+  mem_load_uops_retired.l1_miss
+       [Retired load uops misses in L1 cache as data sources Supports address
+        when precise (Precise event)]
+        default_core/event=0xd1,period=0x186a3,umask=0x8/
+  mem_load_uops_retired.l2_hit
+       [Retired load uops with L2 cache hits as data sources Supports address
+        when precise. Spec update: BDM35 (Precise event)]
+        default_core/event=0xd1,period=0x186a3,umask=0x2/
+  mem_load_uops_retired.l2_miss
+       [Miss in mid-level (L2) cache. Excludes Unknown data-source Supports
+        address when precise (Precise event)]
+        default_core/event=0xd1,period=0xc365,umask=0x10/
+  mem_load_uops_retired.l3_hit
+       [Retired load uops which data sources were data hits in L3 without
+        snoops required Supports address when precise. Spec update: BDM100
+        (Precise event)]
+        default_core/event=0xd1,period=0xc365,umask=0x4/
+  mem_load_uops_retired.l3_miss
+       [Miss in last-level (L3) cache. Excludes Unknown data-source Supports
+        address when precise. Spec update: BDM100, BDE70 (Precise event)]
+        default_core/event=0xd1,period=0x186a7,umask=0x20/

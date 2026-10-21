@@ -1,0 +1,16 @@
+{
+  "allocator": "mimalloc",
+  "frames": 1000,
+  "achieved_fps": 6.75625,
+  "peak_rss_mb": 122.402,
+  "settled_rss_mb": 120.949,
+  "private_dirty_mb": 106.586,
+  "minor_faults": 6004,
+  "latency": {
+    "mean_ms": 147.993,
+    "p50_ms": 147.593,
+    "p90_ms": 148.47,
+    "p99_ms": 156.363,
+    "max_ms": 202.64
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "allocator": "dynalloc",
+  "frames": 1000,
+  "achieved_fps": 5.6215,
+  "peak_rss_mb": 115.25,
+  "settled_rss_mb": 115.25,
+  "private_dirty_mb": 100.859,
+  "minor_faults": 5004,
+  "latency": {
+    "mean_ms": 177.887,
+    "p50_ms": 176.216,
+    "p90_ms": 177.446,
+    "p99_ms": 221.371,
+    "max_ms": 238.144
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "allocator": "tcmalloc",
+  "frames": 1000,
+  "achieved_fps": 6.74589,
+  "peak_rss_mb": 134.891,
+  "settled_rss_mb": 134.891,
+  "private_dirty_mb": 120.41,
+  "minor_faults": 0,
+  "latency": {
+    "mean_ms": 148.237,
+    "p50_ms": 147.774,
+    "p90_ms": 148.719,
+    "p99_ms": 156.562,
+    "max_ms": 218.93
+  }
+}

@@ -1,0 +1,6 @@
+
+cache:
+  LLC-loads OR cpu/LLC-loads/
+  LLC-load-misses OR cpu/LLC-load-misses/
+  LLC-stores OR cpu/LLC-stores/
+  LLC-store-misses OR cpu/LLC-store-misses/

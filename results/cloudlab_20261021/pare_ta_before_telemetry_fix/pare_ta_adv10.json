@@ -1,0 +1,16 @@
+{
+  "allocator": "/users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/pare_ta_adv10",
+  "mode": "pare_ta",
+  "frames": 500,
+  "adv_multiplier": 10,
+  "peak_rss_mb": 27.543,
+  "settled_rss_mb": 25.5078,
+  "private_dirty_mb": 21.8633,
+  "minor_faults": 76,
+  "latency_mean_ms": 0.000696086,
+  "latency_p50_ms": 0.000697,
+  "latency_p90_ms": 0.000698,
+  "latency_p99_ms": 0.000701,
+  "fps": 1.4366e+06,
+  "trapped_dram_kb": 0
+}

@@ -1,0 +1,20 @@
+{
+  "allocator": "glibc",
+  "adv_level": 10,
+  "multiplier": 10,
+  "occupancy": 0.66,
+  "threads": 4,
+  "frames_per_thread": 50,
+  "total_frames": 200,
+  "peak_rss_mb": 401.06,
+  "settled_rss_mb": 162.53,
+  "private_dirty_mb": 149.32,
+  "minor_faults": 3,
+  "latency_mean_ms": 87.499,
+  "latency_p50_ms": 87.544,
+  "latency_p95_ms": 88.616,
+  "latency_p99_ms": 91.194,
+  "latency_max_ms": 92.894,
+  "aggregate_fps": 45.57,
+  "sum_thread_fps": 45.71
+}

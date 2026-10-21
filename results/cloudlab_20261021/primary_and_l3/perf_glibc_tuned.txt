@@ -1,0 +1,26 @@
+# started on Wed Oct 21 04:53:08 2026
+
+
+ Performance counter stats for 'env MALLOC_TRIM_THRESHOLD_=4096 MALLOC_MMAP_THRESHOLD_=65536 taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name glibc_tuned --json':
+
+      364909182702      cycles                                                                  (33.33%)
+      863398557865      instructions                     #    2.37  insn per cycle              (41.67%)
+       16301908878      cache-references                                                        (41.67%)
+       16307684165      cache-misses                     #  100.04% of all cache refs           (41.67%)
+      283032613312      L1-dcache-loads                                                         (41.67%)
+       19954421826      L1-dcache-load-misses            #    7.05% of all L1-dcache accesses   (41.67%)
+        1860180462      LLC-loads                                                               (33.33%)
+                 0      LLC-load-misses                                                         (33.33%)
+      283283097261      dTLB-loads                                                              (33.33%)
+          24065944      dTLB-load-misses                 #    0.01% of all dTLB cache accesses  (33.33%)
+       35481956140      dTLB-stores                                                             (33.33%)
+          73908309      dTLB-store-misses                                                       (33.33%)
+             39486      page-faults                                                           
+             39486      minor-faults                                                          
+
+     157.345422606 seconds time elapsed
+
+     157.231354000 seconds user
+       0.096989000 seconds sys
+
+

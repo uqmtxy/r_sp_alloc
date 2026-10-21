@@ -1,0 +1,14 @@
+# started on Wed Oct 21 05:14:41 2026
+
+
+ Performance counter stats for 'taskset -c 2 /tmp/r_sp_alloc_cache_sanity':
+
+          31286944      longest_lat_cache.reference                                           
+          31286944      longest_lat_cache.miss                                                
+
+       1.536716737 seconds time elapsed
+
+       1.458761000 seconds user
+       0.077987000 seconds sys
+
+

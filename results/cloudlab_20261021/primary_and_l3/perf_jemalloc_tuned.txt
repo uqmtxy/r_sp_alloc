@@ -1,0 +1,26 @@
+# started on Wed Oct 21 04:58:23 2026
+
+
+ Performance counter stats for 'env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so MALLOC_CONF=dirty_decay_ms:0,muzzy_decay_ms:0 taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name jemalloc_tuned --json':
+
+      364413236881      cycles                                                                  (33.33%)
+      863610131821      instructions                     #    2.37  insn per cycle              (41.66%)
+       16254566992      cache-references                                                        (41.67%)
+       16235316072      cache-misses                     #   99.88% of all cache refs           (41.67%)
+      283288953369      L1-dcache-loads                                                         (41.67%)
+       20130829333      L1-dcache-load-misses            #    7.11% of all L1-dcache accesses   (41.67%)
+        1809823592      LLC-loads                                                               (33.33%)
+                 0      LLC-load-misses                                                         (33.33%)
+      283248394475      dTLB-loads                                                              (33.33%)
+          24503651      dTLB-load-misses                 #    0.01% of all dTLB cache accesses  (33.33%)
+       35457114444      dTLB-stores                                                             (33.33%)
+          71497332      dTLB-store-misses                                                       (33.33%)
+             47731      page-faults                                                           
+             47731      minor-faults                                                          
+
+     160.414608405 seconds time elapsed
+
+     160.174777000 seconds user
+       0.218970000 seconds sys
+
+

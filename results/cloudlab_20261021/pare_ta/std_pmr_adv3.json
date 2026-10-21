@@ -1,0 +1,17 @@
+{
+  "allocator": "/users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv3",
+  "mode": "std_pmr",
+  "frames": 500,
+  "adv_multiplier": 3,
+  "peak_rss_mb": 74.1602,
+  "settled_rss_mb": 74.1602,
+  "private_dirty_mb": 70.4609,
+  "minor_faults": 2,
+  "steady_state_minor_faults": 0,
+  "latency_mean_ms": 0.000485854,
+  "latency_p50_ms": 0.000473,
+  "latency_p90_ms": 0.000521,
+  "latency_p99_ms": 0.000543,
+  "fps": 2.05823e+06,
+  "trapped_dram_kb": null
+}

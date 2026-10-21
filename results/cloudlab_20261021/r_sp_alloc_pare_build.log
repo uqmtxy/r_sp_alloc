@@ -1,0 +1,4 @@
+make: Entering directory '/users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena'
+rm -f pare_ta_bench *.json
+g++ -O3 -std=c++17 -Wall -Wextra -pthread -DNDEBUG -Iinclude -I../../tools/adversarial -I../factory_cv_pipeline -I../yolo26n_pipeline/onnxruntime/include -o pare_ta_bench pare_ta_bench.cpp
+make: Leaving directory '/users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena'

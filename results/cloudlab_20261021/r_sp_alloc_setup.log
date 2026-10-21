@@ -1,0 +1,59 @@
+==================================================================
+ CloudLab Bare-Metal Environment Configuration
+==================================================================
+[1/6] Detected Hardware Architecture: x86_64
+[2/6] Installing system packages, compilers, and hardware PMU tools...
+Hit:1 http://repos.emulab.net/emulab/ubuntu noble InRelease
+Hit:2 http://us.archive.ubuntu.com/ubuntu noble InRelease
+Hit:3 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:4 http://us.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:5 http://us.archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+build-essential is already the newest version (12.10ubuntu1).
+build-essential set to manually installed.
+numactl is already the newest version (2.0.18-1ubuntu0.24.04.1).
+numactl set to manually installed.
+python3 is already the newest version (3.12.3-0ubuntu2.1).
+python3 set to manually installed.
+linux-tools-6.8.0-138-generic is already the newest version (6.8.0-138.138).
+linux-tools-6.8.0-138-generic set to manually installed.
+You might want to run 'apt --fix-broken install' to correct these.
+The following packages have unmet dependencies:
+ antigravity-tools : Depends: libayatana-appindicator3-1 but it is not going to be installed
+                     Depends: libwebkit2gtk-4.1-0 but it is not going to be installed
+ cmake : Depends: libjsoncpp25 (>= 1.9.5) but it is not going to be installed
+         Depends: librhash0 (>= 1.2.6) but it is not going to be installed
+         Depends: cmake-data (= 3.28.3-1build7) but it is not going to be installed
+ curl : Depends: libcurl4t64 (= 8.5.0-2ubuntu10.16) but 8.5.0-2ubuntu10.12 is to be installed
+ libgoogle-perftools-dev : Depends: libgoogle-perftools4t64 (= 2.15-3build1) but it is not going to be installed
+                           Depends: libtcmalloc-minimal4t64 (= 2.15-3build1) but it is not going to be installed
+                           Depends: libunwind-dev
+ libjemalloc-dev : Depends: libjemalloc2 (= 5.3.0-2build1) but it is not going to be installed
+ libmimalloc-dev : Depends: libmimalloc2.0 (= 2.1.2+ds-2) but it is not going to be installed
+ linux-tools-generic : Depends: linux-tools-6.8.0-147-generic but it is not going to be installed
+ python3-pip : Depends: python3-wheel but it is not going to be installed
+E: Unmet dependencies. Try 'apt --fix-broken install' with no packages (or specify a solution).
+[3/6] Unlocking Linux Hardware Performance Counters (PMU)...
+kernel.perf_event_paranoid = -1
+kernel.kptr_restrict = 0
+[4/6] Disabling Transparent Hugepages (THP) for pure 4 KiB page testing...
+never
+never
+[5/6] Locking CPU frequency scaling governor to 'performance'...
+Compiling libdynalloc.so...
+make: Entering directory '/users/deni/research/r_sp_alloc/first_steps/src'
+rm -f libdynalloc.so
+g++ -O3 -DNDEBUG -std=c++17 -Wall -Wextra -fPIC -pthread -shared -pthread -o libdynalloc.so dynalloc.cpp
+dynalloc.cpp: In function ‘int posix_memalign(void**, size_t, size_t)’:
+dynalloc.cpp:227:42: warning: unused parameter ‘alignment’ [-Wunused-parameter]
+  227 | int posix_memalign(void** memptr, size_t alignment, size_t size) {
+      |                                   ~~~~~~~^~~~~~~~~
+make: Leaving directory '/users/deni/research/r_sp_alloc/first_steps/src'
+Compiling native yolo26_bench harness...
+/usr/bin/ld: skipping incompatible /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/onnxruntime/lib/libonnxruntime.so when searching for -lonnxruntime
+/usr/bin/ld: cannot find -lonnxruntime: No such file or directory
+/usr/bin/ld: skipping incompatible /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/onnxruntime/lib/libonnxruntime.so when searching for -lonnxruntime
+collect2: error: ld returned 1 exit status

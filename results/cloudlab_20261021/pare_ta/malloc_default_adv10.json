@@ -1,0 +1,17 @@
+{
+  "allocator": "/users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/malloc_default_adv10",
+  "mode": "default_malloc",
+  "frames": 500,
+  "adv_multiplier": 10,
+  "peak_rss_mb": 27.4688,
+  "settled_rss_mb": 24.9844,
+  "private_dirty_mb": 21.3125,
+  "minor_faults": 8852,
+  "steady_state_minor_faults": 8500,
+  "latency_mean_ms": 0.0895257,
+  "latency_p50_ms": 0.08768,
+  "latency_p90_ms": 0.091598,
+  "latency_p99_ms": 0.127579,
+  "fps": 11170,
+  "trapped_dram_kb": null
+}

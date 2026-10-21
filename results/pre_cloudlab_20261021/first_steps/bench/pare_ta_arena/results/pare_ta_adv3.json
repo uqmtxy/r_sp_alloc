@@ -1,0 +1,16 @@
+{
+  "allocator": "/Users/kenza/StudyProjects/SJTU/alloc/first_steps/bench/pare_ta_arena/results/pare_ta_adv3",
+  "mode": "pare_ta",
+  "frames": 500,
+  "adv_multiplier": 3,
+  "peak_rss_mb": 9.32812,
+  "settled_rss_mb": 9.32812,
+  "private_dirty_mb": 9.32812,
+  "minor_faults": 70,
+  "latency_mean_ms": 0.000231902,
+  "latency_p50_ms": 0.00025,
+  "latency_p90_ms": 0.00025,
+  "latency_p99_ms": 0.000292,
+  "fps": 4.31217e+06,
+  "trapped_dram_kb": 0
+}

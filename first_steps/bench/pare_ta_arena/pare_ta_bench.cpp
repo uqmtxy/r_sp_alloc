@@ -233,6 +233,7 @@ int main(int argc, char* argv[]) {
 
     // Capture initial baseline memory
     MemorySnapshot snap_initial = TelemetryCollector::sample();
+    MemorySnapshot snap_steady_start = snap_initial;
 
     // 3. Execution Loop (Warmup + Measured Steady-State)
     size_t total_runs = warmup_frames + num_frames;
@@ -244,6 +245,9 @@ int main(int argc, char* argv[]) {
 
     for (size_t frame = 0; frame < total_runs; ++frame) {
         bool is_warmup = (frame < warmup_frames);
+        if (frame == warmup_frames) {
+            snap_steady_start = TelemetryCollector::sample();
+        }
 
         auto t0 = std::chrono::high_resolution_clock::now();
 
@@ -300,6 +304,7 @@ int main(int argc, char* argv[]) {
     double fps = (lstats.mean_ms > 0.0) ? (1000.0 / lstats.mean_ms) : 0.0;
 
     long minor_faults_incurred = snap_final.minor_faults - snap_initial.minor_faults;
+    long steady_minor_faults = snap_final.minor_faults - snap_steady_start.minor_faults;
 
     // Report Summary
     std::cout << "\n==================================================================\n";
@@ -310,6 +315,7 @@ int main(int argc, char* argv[]) {
     std::cout << " Current Settled RSS (VmRSS) : " << TelemetryCollector::to_mb(snap_final.rss_kb) << " MB\n";
     std::cout << " Private Dirty RAM           : " << TelemetryCollector::to_mb(snap_final.private_dirty_kb) << " MB\n";
     std::cout << " Minor Page Faults Incurred  : " << minor_faults_incurred << "\n";
+    std::cout << " Post-Warmup Minor Faults    : " << steady_minor_faults << "\n";
     std::cout << " Latency p50 (Median)        : " << lstats.p50_ms << " ms\n";
     std::cout << " Latency p90                 : " << lstats.p90_ms << " ms\n";
     std::cout << " Latency p99 (Tail Jitter)   : " << lstats.p99_ms << " ms\n";
@@ -321,7 +327,7 @@ int main(int argc, char* argv[]) {
         std::cout << " PARE-TA Peak Frame Working Set: " << TelemetryCollector::to_mb(telem.transient_peak_frame_bytes / 1024) << " MB\n";
         std::cout << " PARE-TA Total Allocations     : " << telem.total_allocations << "\n";
         std::cout << " PARE-TA No-Op Frees Executed  : " << telem.noop_deallocations << "\n";
-        std::cout << " Trapped DRAM (PLOS '26)       : 0.00 KB (100% Page Alignment)\n";
+        std::cout << " Trapped DRAM                 : not measured\n";
     }
 
     if (output_json) {
@@ -336,12 +342,13 @@ int main(int argc, char* argv[]) {
         jout << "  \"settled_rss_mb\": " << TelemetryCollector::to_mb(snap_final.rss_kb) << ",\n";
         jout << "  \"private_dirty_mb\": " << TelemetryCollector::to_mb(snap_final.private_dirty_kb) << ",\n";
         jout << "  \"minor_faults\": " << minor_faults_incurred << ",\n";
+        jout << "  \"steady_state_minor_faults\": " << steady_minor_faults << ",\n";
         jout << "  \"latency_mean_ms\": " << lstats.mean_ms << ",\n";
         jout << "  \"latency_p50_ms\": " << lstats.p50_ms << ",\n";
         jout << "  \"latency_p90_ms\": " << lstats.p90_ms << ",\n";
         jout << "  \"latency_p99_ms\": " << lstats.p99_ms << ",\n";
         jout << "  \"fps\": " << fps << ",\n";
-        jout << "  \"trapped_dram_kb\": " << (mode == "pare_ta" ? 0.0 : 18400.0) << "\n";
+        jout << "  \"trapped_dram_kb\": null\n";
         jout << "}\n";
         std::cout << "[JSON] Results exported to " << json_file << std::endl;
     }

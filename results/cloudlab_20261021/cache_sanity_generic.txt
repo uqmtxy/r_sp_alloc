@@ -1,0 +1,14 @@
+# started on Wed Oct 21 05:14:37 2026
+
+
+ Performance counter stats for 'taskset -c 2 /tmp/r_sp_alloc_cache_sanity':
+
+          17635923      LLC-loads                                                             
+                 0      LLC-load-misses                                                       
+
+       1.710075978 seconds time elapsed
+
+       1.550337000 seconds user
+       0.158932000 seconds sys
+
+

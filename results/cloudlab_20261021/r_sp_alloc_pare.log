@@ -1,0 +1,429 @@
+==================================================================
+ Starting PARE-TA Empirical Benchmark Evaluation Suite
+ Target Frames: 500 (Warmup: 20)
+ Output Directory: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results
+==================================================================
+
+=== Phase 1: Clean Heap Evaluations (Adv0) ===
+--> Running: pare_ta_adv0 (Mode=pare_ta, Adv=0)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=pare_ta, Frames=500, Warmup=20, Adv=0
+==================================================================
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+[PARE-TA] Initialized Page-Aligned Monotonic Resource (32MB Persistent + 2x64MB Frame Arena)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/pare_ta_adv0 (pare_ta)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 4.24 MB
+ Current Settled RSS (VmRSS) : 4.24 MB
+ Private Dirty RAM           : 0.56 MB
+ Minor Page Faults Incurred  : 78
+ Post-Warmup Minor Faults    : 0
+ Latency p50 (Median)        : 0.00 ms
+ Latency p90                 : 0.00 ms
+ Latency p99 (Tail Jitter)   : 0.00 ms
+ Mean Frame Latency          : 0.00 ms
+ Aggregate Throughput        : 797585.55 FPS
+ PARE-TA Peak Frame Working Set: 32.14 MB
+ PARE-TA Total Allocations     : 9880
+ PARE-TA No-Op Frees Executed  : 0
+ Trapped DRAM                 : not measured
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/pare_ta_adv0.json
+--> Running: std_pmr_adv0 (Mode=std_pmr, Adv=0)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=std_pmr, Frames=500, Warmup=20, Adv=0
+==================================================================
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+[std_pmr] Initialized std::pmr::monotonic_buffer_resource (64MB raw heap buffer)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv0 (std_pmr)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 67.95 MB
+ Current Settled RSS (VmRSS) : 67.95 MB
+ Private Dirty RAM           : 64.27 MB
+ Minor Page Faults Incurred  : 4
+ Post-Warmup Minor Faults    : 0
+ Latency p50 (Median)        : 0.00 ms
+ Latency p90                 : 0.00 ms
+ Latency p99 (Tail Jitter)   : 0.00 ms
+ Mean Frame Latency          : 0.00 ms
+ Aggregate Throughput        : 875942.08 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv0.json
+--> Running: malloc_default_adv0 (Mode=default_malloc, Adv=0)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=0
+==================================================================
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/malloc_default_adv0 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 3.95 MB
+ Current Settled RSS (VmRSS) : 3.95 MB
+ Private Dirty RAM           : 0.27 MB
+ Minor Page Faults Incurred  : 9901
+ Post-Warmup Minor Faults    : 9500
+ Latency p50 (Median)        : 0.23 ms
+ Latency p90                 : 0.26 ms
+ Latency p99 (Tail Jitter)   : 0.28 ms
+ Mean Frame Latency          : 0.24 ms
+ Aggregate Throughput        : 4221.26 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/malloc_default_adv0.json
+--> Running: jemalloc_default_adv0 (Mode=default_malloc, Adv=0)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=0
+==================================================================
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/jemalloc_default_adv0 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 4.92 MB
+ Current Settled RSS (VmRSS) : 4.92 MB
+ Private Dirty RAM           : 0.67 MB
+ Minor Page Faults Incurred  : 7864
+ Post-Warmup Minor Faults    : 7514
+ Latency p50 (Median)        : 0.17 ms
+ Latency p90                 : 0.17 ms
+ Latency p99 (Tail Jitter)   : 0.18 ms
+ Mean Frame Latency          : 0.17 ms
+ Aggregate Throughput        : 6044.37 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/jemalloc_default_adv0.json
+--> Running: jemalloc_tuned_adv0 (Mode=default_malloc, Adv=0)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=0
+==================================================================
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/jemalloc_tuned_adv0 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 4.80 MB
+ Current Settled RSS (VmRSS) : 4.80 MB
+ Private Dirty RAM           : 0.53 MB
+ Minor Page Faults Incurred  : 18751
+ Post-Warmup Minor Faults    : 18006
+ Latency p50 (Median)        : 0.44 ms
+ Latency p90                 : 0.45 ms
+ Latency p99 (Tail Jitter)   : 0.47 ms
+ Mean Frame Latency          : 0.42 ms
+ Aggregate Throughput        : 2370.82 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/jemalloc_tuned_adv0.json
+--> Running: tcmalloc_adv0 (Mode=default_malloc, Adv=0)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=0
+==================================================================
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/tcmalloc_adv0 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 8.17 MB
+ Current Settled RSS (VmRSS) : 8.17 MB
+ Private Dirty RAM           : 4.29 MB
+ Minor Page Faults Incurred  : 159
+ Post-Warmup Minor Faults    : 104
+ Latency p50 (Median)        : 0.00 ms
+ Latency p90                 : 0.00 ms
+ Latency p99 (Tail Jitter)   : 0.03 ms
+ Mean Frame Latency          : 0.00 ms
+ Aggregate Throughput        : 239634.15 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/tcmalloc_adv0.json
+--> Running: mimalloc_adv0 (Mode=default_malloc, Adv=0)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=0
+==================================================================
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/mimalloc_adv0 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 4.48 MB
+ Current Settled RSS (VmRSS) : 4.48 MB
+ Private Dirty RAM           : 0.74 MB
+ Minor Page Faults Incurred  : 100
+ Post-Warmup Minor Faults    : 0
+ Latency p50 (Median)        : 0.01 ms
+ Latency p90                 : 0.01 ms
+ Latency p99 (Tail Jitter)   : 0.02 ms
+ Mean Frame Latency          : 0.01 ms
+ Aggregate Throughput        : 110432.69 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/mimalloc_adv0.json
+
+=== Phase 2: Adversarial Fragmentation Evaluations (Adv3 - ISMM '26 Standard) ===
+--> Running: pare_ta_adv3 (Mode=pare_ta, Adv=3)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=pare_ta, Frames=500, Warmup=20, Adv=3
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=3, Occupancy=0.66, Allocations=60000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 39601 (3.38512 MB physical DRAM pinned in gaps).
+[PARE-TA] Initialized Page-Aligned Monotonic Resource (32MB Persistent + 2x64MB Frame Arena)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/pare_ta_adv3 (pare_ta)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 10.40 MB
+ Current Settled RSS (VmRSS) : 10.40 MB
+ Private Dirty RAM           : 6.76 MB
+ Minor Page Faults Incurred  : 76
+ Post-Warmup Minor Faults    : 0
+ Latency p50 (Median)        : 0.00 ms
+ Latency p90                 : 0.00 ms
+ Latency p99 (Tail Jitter)   : 0.00 ms
+ Mean Frame Latency          : 0.00 ms
+ Aggregate Throughput        : 1840441.12 FPS
+ PARE-TA Peak Frame Working Set: 32.14 MB
+ PARE-TA Total Allocations     : 9880
+ PARE-TA No-Op Frees Executed  : 0
+ Trapped DRAM                 : not measured
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/pare_ta_adv3.json
+--> Running: std_pmr_adv3 (Mode=std_pmr, Adv=3)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=std_pmr, Frames=500, Warmup=20, Adv=3
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=3, Occupancy=0.66, Allocations=60000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 39601 (3.38512 MB physical DRAM pinned in gaps).
+[std_pmr] Initialized std::pmr::monotonic_buffer_resource (64MB raw heap buffer)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv3 (std_pmr)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 74.16 MB
+ Current Settled RSS (VmRSS) : 74.16 MB
+ Private Dirty RAM           : 70.46 MB
+ Minor Page Faults Incurred  : 2
+ Post-Warmup Minor Faults    : 0
+ Latency p50 (Median)        : 0.00 ms
+ Latency p90                 : 0.00 ms
+ Latency p99 (Tail Jitter)   : 0.00 ms
+ Mean Frame Latency          : 0.00 ms
+ Aggregate Throughput        : 2058231.49 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv3.json
+--> Running: malloc_default_adv3 (Mode=default_malloc, Adv=3)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=3
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=3, Occupancy=0.66, Allocations=60000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 39601 (3.38512 MB physical DRAM pinned in gaps).
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/malloc_default_adv3 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 10.28 MB
+ Current Settled RSS (VmRSS) : 10.14 MB
+ Private Dirty RAM           : 6.46 MB
+ Minor Page Faults Incurred  : 8855
+ Post-Warmup Minor Faults    : 8500
+ Latency p50 (Median)        : 0.11 ms
+ Latency p90                 : 0.11 ms
+ Latency p99 (Tail Jitter)   : 0.16 ms
+ Mean Frame Latency          : 0.11 ms
+ Aggregate Throughput        : 9068.24 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/malloc_default_adv3.json
+--> Running: jemalloc_default_adv3 (Mode=default_malloc, Adv=3)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=3
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=3, Occupancy=0.66, Allocations=60000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 39601 (3.38512 MB physical DRAM pinned in gaps).
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/jemalloc_default_adv3 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 11.48 MB
+ Current Settled RSS (VmRSS) : 11.48 MB
+ Private Dirty RAM           : 7.17 MB
+ Minor Page Faults Incurred  : 7320
+ Post-Warmup Minor Faults    : 7007
+ Latency p50 (Median)        : 0.08 ms
+ Latency p90                 : 0.09 ms
+ Latency p99 (Tail Jitter)   : 0.10 ms
+ Mean Frame Latency          : 0.08 ms
+ Aggregate Throughput        : 12048.72 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/jemalloc_default_adv3.json
+--> Running: tcmalloc_adv3 (Mode=default_malloc, Adv=3)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=3
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=3, Occupancy=0.66, Allocations=60000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 39601 (3.38512 MB physical DRAM pinned in gaps).
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/tcmalloc_adv3 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 14.38 MB
+ Current Settled RSS (VmRSS) : 14.00 MB
+ Private Dirty RAM           : 10.15 MB
+ Minor Page Faults Incurred  : 147
+ Post-Warmup Minor Faults    : 112
+ Latency p50 (Median)        : 0.00 ms
+ Latency p90                 : 0.00 ms
+ Latency p99 (Tail Jitter)   : 0.04 ms
+ Mean Frame Latency          : 0.01 ms
+ Aggregate Throughput        : 182101.86 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/tcmalloc_adv3.json
+--> Running: mimalloc_adv3 (Mode=default_malloc, Adv=3)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=3
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=3, Occupancy=0.66, Allocations=60000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 39601 (3.38512 MB physical DRAM pinned in gaps).
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/mimalloc_adv3 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 10.92 MB
+ Current Settled RSS (VmRSS) : 10.92 MB
+ Private Dirty RAM           : 7.18 MB
+ Minor Page Faults Incurred  : 85
+ Post-Warmup Minor Faults    : 0
+ Latency p50 (Median)        : 0.01 ms
+ Latency p90                 : 0.01 ms
+ Latency p99 (Tail Jitter)   : 0.02 ms
+ Mean Frame Latency          : 0.01 ms
+ Aggregate Throughput        : 88024.65 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/mimalloc_adv3.json
+
+=== Phase 3: Adversarial Stress Evaluations (Adv10 - Extreme Fragmentation) ===
+--> Running: pare_ta_adv10 (Mode=pare_ta, Adv=10)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=pare_ta, Frames=500, Warmup=20, Adv=10
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=10, Occupancy=0.66, Allocations=200000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 132000 (11.7891 MB physical DRAM pinned in gaps).
+[PARE-TA] Initialized Page-Aligned Monotonic Resource (32MB Persistent + 2x64MB Frame Arena)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/pare_ta_adv10 (pare_ta)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 27.47 MB
+ Current Settled RSS (VmRSS) : 25.54 MB
+ Private Dirty RAM           : 21.86 MB
+ Minor Page Faults Incurred  : 76
+ Post-Warmup Minor Faults    : 0
+ Latency p50 (Median)        : 0.00 ms
+ Latency p90                 : 0.00 ms
+ Latency p99 (Tail Jitter)   : 0.00 ms
+ Mean Frame Latency          : 0.00 ms
+ Aggregate Throughput        : 1356226.44 FPS
+ PARE-TA Peak Frame Working Set: 32.14 MB
+ PARE-TA Total Allocations     : 9880
+ PARE-TA No-Op Frees Executed  : 0
+ Trapped DRAM                 : not measured
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/pare_ta_adv10.json
+--> Running: std_pmr_adv10 (Mode=std_pmr, Adv=10)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=std_pmr, Frames=500, Warmup=20, Adv=10
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=10, Occupancy=0.66, Allocations=200000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 132000 (11.7891 MB physical DRAM pinned in gaps).
+[std_pmr] Initialized std::pmr::monotonic_buffer_resource (64MB raw heap buffer)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv10 (std_pmr)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 89.30 MB
+ Current Settled RSS (VmRSS) : 89.30 MB
+ Private Dirty RAM           : 85.56 MB
+ Minor Page Faults Incurred  : 2
+ Post-Warmup Minor Faults    : 0
+ Latency p50 (Median)        : 0.00 ms
+ Latency p90                 : 0.00 ms
+ Latency p99 (Tail Jitter)   : 0.00 ms
+ Mean Frame Latency          : 0.00 ms
+ Aggregate Throughput        : 1695714.25 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/std_pmr_adv10.json
+--> Running: malloc_default_adv10 (Mode=default_malloc, Adv=10)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=10
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=10, Occupancy=0.66, Allocations=200000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 132000 (11.7891 MB physical DRAM pinned in gaps).
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/malloc_default_adv10 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 27.47 MB
+ Current Settled RSS (VmRSS) : 24.98 MB
+ Private Dirty RAM           : 21.31 MB
+ Minor Page Faults Incurred  : 8852
+ Post-Warmup Minor Faults    : 8500
+ Latency p50 (Median)        : 0.09 ms
+ Latency p90                 : 0.09 ms
+ Latency p99 (Tail Jitter)   : 0.13 ms
+ Mean Frame Latency          : 0.09 ms
+ Aggregate Throughput        : 11169.98 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/malloc_default_adv10.json
+--> Running: jemalloc_default_adv10 (Mode=default_malloc, Adv=10)...
+==================================================================
+ PARE-TA: Page-Aligned Region-Enclosed Tensor Arena Benchmark
+ Architecture: C++17 std::pmr Monotonic Memory Resource
+ Configuration: Mode=default_malloc, Frames=500, Warmup=20, Adv=10
+==================================================================
+[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=10, Occupancy=0.66, Allocations=200000...
+[Adversarial Heap] Preconditioning complete. Live fragmented objects: 132000 (11.7891 MB physical DRAM pinned in gaps).
+[malloc] Using default dynamic heap allocator (malloc/free)
+
+==================================================================
+ EMPIRICAL RESULTS SUMMARY: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/jemalloc_default_adv10 (default_malloc)
+==================================================================
+ Peak Physical RSS (VmHWM)   : 28.90 MB
+ Current Settled RSS (VmRSS) : 28.90 MB
+ Private Dirty RAM           : 24.59 MB
+ Minor Page Faults Incurred  : 8876
+ Post-Warmup Minor Faults    : 8510
+ Latency p50 (Median)        : 0.07 ms
+ Latency p90                 : 0.07 ms
+ Latency p99 (Tail Jitter)   : 0.08 ms
+ Mean Frame Latency          : 0.07 ms
+ Aggregate Throughput        : 14402.42 FPS
+[JSON] Results exported to /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results/jemalloc_default_adv10.json
+
+==================================================================
+ PARE-TA Benchmark Execution Completed Successfully!
+ Telemetry results saved under: /users/deni/research/r_sp_alloc/first_steps/bench/pare_ta_arena/results
+==================================================================

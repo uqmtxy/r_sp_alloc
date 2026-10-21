@@ -1,0 +1,26 @@
+# started on Wed Oct 21 05:01:04 2026
+
+
+ Performance counter stats for 'env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name tcmalloc --json':
+
+      364107062348      cycles                                                                  (33.33%)
+      863817524751      instructions                     #    2.37  insn per cycle              (41.67%)
+       16274199533      cache-references                                                        (41.67%)
+       16280844550      cache-misses                     #  100.04% of all cache refs           (41.67%)
+      282957597429      L1-dcache-loads                                                         (41.67%)
+       20017117109      L1-dcache-load-misses            #    7.07% of all L1-dcache accesses   (41.67%)
+        1826836915      LLC-loads                                                               (33.33%)
+                 0      LLC-load-misses                                                         (33.33%)
+      283089797730      dTLB-loads                                                              (33.33%)
+          23778437      dTLB-load-misses                 #    0.01% of all dTLB cache accesses  (33.33%)
+       35393673585      dTLB-stores                                                             (33.33%)
+          71355644      dTLB-store-misses                                                       (33.33%)
+             32287      page-faults                                                           
+             32287      minor-faults                                                          
+
+     165.457764628 seconds time elapsed
+
+     165.346770000 seconds user
+       0.088989000 seconds sys
+
+
