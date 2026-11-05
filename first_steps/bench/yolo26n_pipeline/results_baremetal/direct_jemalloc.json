@@ -1,0 +1,21 @@
+{
+  "allocator": "direct_jemalloc",
+  "mode": "direct_tensor",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 1000,
+  "achieved_fps": 5.73814,
+  "peak_rss_mb": 102.586,
+  "settled_rss_mb": 39.5664,
+  "private_dirty_mb": 24.5273,
+  "minor_faults": 9113494,
+  "latency": {
+    "mean_ms": 174.272,
+    "p50_ms": 169.359,
+    "p90_ms": 172.1,
+    "p99_ms": 249.568,
+    "p999_ms": 272.868,
+    "max_ms": 272.868
+  }
+}

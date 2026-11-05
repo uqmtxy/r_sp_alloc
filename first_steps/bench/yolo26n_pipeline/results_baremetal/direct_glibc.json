@@ -1,0 +1,21 @@
+{
+  "allocator": "direct_glibc",
+  "mode": "direct_tensor",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 1000,
+  "achieved_fps": 5.64407,
+  "peak_rss_mb": 107.125,
+  "settled_rss_mb": 71.6484,
+  "private_dirty_mb": 57.25,
+  "minor_faults": 9113000,
+  "latency": {
+    "mean_ms": 177.177,
+    "p50_ms": 169.778,
+    "p90_ms": 234.712,
+    "p99_ms": 235.671,
+    "p999_ms": 254.817,
+    "max_ms": 254.817
+  }
+}

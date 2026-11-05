@@ -1,0 +1,21 @@
+{
+  "allocator": "direct_tcmalloc",
+  "mode": "direct_tensor",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 1000,
+  "achieved_fps": 6.55624,
+  "peak_rss_mb": 111.125,
+  "settled_rss_mb": 82.1055,
+  "private_dirty_mb": 67.6094,
+  "minor_faults": 27341,
+  "latency": {
+    "mean_ms": 152.526,
+    "p50_ms": 148.277,
+    "p90_ms": 150.656,
+    "p99_ms": 205.062,
+    "p999_ms": 231.583,
+    "max_ms": 231.583
+  }
+}

@@ -44,12 +44,12 @@ public:
     static void precondition(double multiplier, double occupancy = 0.66,
                              size_t n_peak = DEFAULT_N_PEAK, uint64_t seed = 42) {
         if (multiplier <= 0.0) {
-            std::cout << "[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.\n";
+            std::cerr << "[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.\n";
             return;
         }
 
         size_t total_n = static_cast<size_t>(multiplier * n_peak);
-        std::cout << "[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=" << multiplier
+        std::cerr << "[Adversarial Heap] Applying ISMM '24 Preconditioning: Multiplier=" << multiplier
                   << ", Occupancy=" << occupancy << ", Allocations=" << total_n << "...\n";
 
         // Build probability distribution
@@ -99,7 +99,7 @@ public:
             }
         }
 
-        std::cout << "[Adversarial Heap] Preconditioning complete. Live fragmented objects: "
+        std::cerr << "[Adversarial Heap] Preconditioning complete. Live fragmented objects: "
                   << live_anchor_.size() << " (" << (total_bytes_allocated * occupancy / (1024.0 * 1024.0))
                   << " MB physical DRAM pinned in gaps).\n";
     }

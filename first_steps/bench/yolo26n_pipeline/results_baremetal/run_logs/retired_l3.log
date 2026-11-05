@@ -1,0 +1,27 @@
+Profiling retired L3 loads: glibc_default (mode: bfc_arena, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: glibc_tuned (mode: bfc_arena, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: jemalloc_default (mode: bfc_arena, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: jemalloc_tuned (mode: bfc_arena, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: tcmalloc (mode: bfc_arena, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: mimalloc (mode: bfc_arena, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: dynalloc (mode: bfc_arena, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: pare_ta (mode: pare_ta, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: direct_glibc (mode: direct_tensor, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: direct_jemalloc (mode: direct_tensor, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: direct_tcmalloc (mode: direct_tensor, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: direct_mimalloc (mode: direct_tensor, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+Profiling retired L3 loads: direct_dynalloc (mode: direct_tensor, 1000 frames + 50 warmup)
+[Adversarial Heap] Adv0 (Clean Heap) selected. No preconditioning.
+[+] Bare-metal measurement report written to /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/results_baremetal/BAREMETAL_REPORT.md

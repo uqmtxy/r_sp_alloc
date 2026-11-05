@@ -1,82 +1,116 @@
-# CloudLab bare-metal YOLO26n measurements
+# CloudLab Bare-Metal YOLO26n Evaluation Report
 
-Full-process perf counts include startup and warmup; JSON minor faults exclude warmup. PMU counts are multiplexed estimates: inspect raw perf files for coverage and unsupported events. N/A means absent, uncounted, or an invalid denominator. Memory units are MiB.
+Target Hardware: CloudLab Utah m510 (Intel Xeon D-1548, 8 cores / 16 threads, 64 GB DRAM).
+Workload: Ultralytics YOLO26n ONNX Runtime C++ Pipeline (640x640, FP32).
+All single-stream runs executed on pinned logical CPU 2 (1000 measured frames + 50 warmup frames).
 
-| Allocator | Peak RSS | Settled RSS | Private dirty | IPC | L1 miss % | LLC miss % | dTLB load miss % | dTLB store misses | Process page faults | Process minor faults | Post-warmup minor faults | p99 ms | FPS |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| glibc_default | 122.61 | 122.61 | 108.32 | 2.376 | 7.098 | 0.000 | 0.009 | 72719236 | 30918 | 30918 | 0 | 205.35 | 6.46 |
-| glibc_tuned | 115.08 | 115.08 | 100.81 | 2.366 | 7.050 | 0.000 | 0.008 | 73908309 | 39486 | 39486 | 0 | 159.32 | 6.68 |
-| jemalloc_default | 128.50 | 114.22 | 99.20 | 2.372 | 7.083 | 0.000 | 0.008 | 71213470 | 29740 | 29740 | 11 | 165.44 | 6.70 |
-| jemalloc_tuned | 114.78 | 114.40 | 99.48 | 2.370 | 7.106 | 0.000 | 0.009 | 71497332 | 47731 | 47731 | 6003 | 164.02 | 6.70 |
-| tcmalloc | 134.91 | 134.91 | 120.32 | 2.372 | 7.074 | 0.000 | 0.008 | 71355644 | 32287 | 32287 | 0 | 206.02 | 6.39 |
-| mimalloc | 121.73 | 120.31 | 105.85 | 2.376 | 7.100 | 0.000 | 0.008 | 68095000 | 36804 | 36804 | 6004 | 205.08 | 6.53 |
-| dynalloc | 115.25 | 115.25 | 100.86 | 2.002 | 7.322 | 0.000 | 0.008 | 71637786 | 47512 | 47512 | 5004 | 221.37 | 5.62 |
+## 1. Primary ONNX Runtime Inference Evaluation
 
-## Retired-load L3 validation pass
+Full-process perf counts include startup and warmup; JSON minor faults measure post-warmup steady state.
+Memory units are MiB. N/A means metric was uncounted or denominator was zero.
 
-The 128 MiB cache sanity test reported zero generic LLC-load-misses but 16.8 million mem_load_uops_retired.l3_miss events. Generic LLC zeros above are unreliable. This separate pass uses grouped retired L3 hit/miss events, 1000 measured frames plus 50 warmup, and the same allocator settings. Counts include startup and warmup. Its miss fraction is misses / (hits + misses), not the generic LLC event ratio.
+| Allocator / Mode |          Mode | Peak RSS | Settled RSS | Priv Dirty |   IPC | L1 Miss % | dTLB Load Miss % | Minor Faults (Steady) | p99 ms |  FPS |
+|------------------|---------------|----------|-------------|------------|-------|-----------|------------------|-----------------------|--------|------|
+| glibc_default    |     bfc_arena |   122.77 |      122.77 |     108.47 | 2.376 |     7.112 |            0.008 |                     0 | 159.83 | 6.71 |
+| glibc_tuned      |     bfc_arena |   115.07 |      115.07 |     100.77 | 2.379 |     7.086 |            0.009 |                     0 | 232.17 | 6.20 |
+| jemalloc_default |     bfc_arena |   128.62 |      114.42 |      99.38 | 2.372 |     7.088 |            0.008 |                    26 | 177.63 | 6.69 |
+| jemalloc_tuned   |     bfc_arena |   114.64 |      114.20 |      99.16 | 2.379 |     7.107 |            0.008 |                  5004 | 231.94 | 6.36 |
+| tcmalloc         |     bfc_arena |   132.59 |      132.59 |     117.99 | 2.369 |     7.080 |            0.008 |                     0 | 218.36 | 6.50 |
+| mimalloc         |     bfc_arena |   122.13 |      120.69 |     106.31 | 2.379 |     7.088 |            0.008 |                  6004 | 217.25 | 6.53 |
+| dynalloc         |     bfc_arena |   140.97 |      140.97 |     126.56 | 2.374 |     7.079 |            0.008 |                     0 | 152.39 | 6.72 |
+| pare_ta          |       pare_ta |   203.35 |      203.35 |     189.06 | 2.372 |     7.038 |            0.008 |                     0 | 232.47 | 6.46 |
+| direct_glibc     | direct_tensor |   107.12 |       71.65 |      57.25 | 2.210 |     7.031 |            0.016 |               9113000 | 235.67 | 5.64 |
+| direct_jemalloc  | direct_tensor |   102.59 |       39.57 |      24.53 | 2.212 |     7.028 |            0.015 |               9113494 | 249.57 | 5.74 |
+| direct_tcmalloc  | direct_tensor |   111.12 |       82.11 |      67.61 | 2.378 |     7.031 |            0.008 |                 27341 | 205.06 | 6.56 |
+| direct_mimalloc  | direct_tensor |    90.14 |       54.02 |      39.54 | 2.291 |     7.008 |            0.012 |               4569004 | 262.03 | 5.94 |
+| direct_dynalloc  | direct_tensor |   135.59 |      135.59 |     121.30 | 2.372 |     7.043 |            0.008 |                     0 | 205.44 | 6.56 |
+| direct_pare_ta   |       pare_ta |   203.47 |      203.47 |     189.17 | 2.372 |     7.042 |            0.008 |                     0 | 218.22 | 6.41 |
 
-| Allocator | Retired L3 hits | Retired L3 misses | Retired L3 miss % |
-|---|---:|---:|---:|
-| glibc_default | 1260440584 | 188379435 | 13.002 |
-| glibc_tuned | 1253685337 | 181487458 | 12.646 |
-| jemalloc_default | 1196109099 | 186767751 | 13.506 |
-| jemalloc_tuned | 1221718768 | 182527592 | 12.998 |
-| tcmalloc | 1216592182 | 186386051 | 13.285 |
-| mimalloc | 1228015391 | 179232488 | 12.736 |
-| dynalloc | 1134864270 | 173396817 | 13.254 |
+## 2. Model-Specific Retired-Load L3 Cache Validation
 
-## PARE-TA allocation microbenchmark
+Uses grouped un-multiplexed events `{mem_load_uops_retired.l3_hit, mem_load_uops_retired.l3_miss}`.
+Miss % is computed as `misses / (hits + misses) * 100`.
 
-This benchmark touches the first and last element of each simulated tensor; it does not run ONNX inference. Total minor faults include warmup; the post-warmup column reports the separate steady-state interval. Previously hard-coded trapped DRAM values have been replaced with null (not measured).
+| Allocator / Mode | Retired L3 Hits | Retired L3 Misses | Retired L3 Miss % |
+|------------------|-----------------|-------------------|-------------------|
+| glibc_default    |   1,232,273,486 |       189,593,784 |            13.334 |
+| glibc_tuned      |   1,255,800,898 |       182,126,374 |            12.666 |
+| jemalloc_default |   1,181,885,039 |       184,684,564 |            13.514 |
+| jemalloc_tuned   |   1,179,603,950 |       184,688,451 |            13.537 |
+| tcmalloc         |   1,208,530,926 |       187,471,817 |            13.429 |
+| mimalloc         |   1,228,095,793 |       178,462,323 |            12.688 |
+| dynalloc         |   1,211,010,158 |       187,227,140 |            13.390 |
+| pare_ta          |   1,234,623,640 |       182,119,578 |            12.855 |
+| direct_glibc     |   1,233,332,298 |       177,170,344 |            12.561 |
+| direct_jemalloc  |   1,188,079,037 |       180,269,353 |            13.174 |
+| direct_tcmalloc  |   1,227,445,133 |       170,915,678 |            12.223 |
+| direct_mimalloc  |   1,212,659,169 |       176,142,300 |            12.683 |
+| direct_dynalloc  |   1,210,961,911 |       182,171,017 |            13.076 |
 
-| Configuration | p99 ms | Peak RSS MiB | Private dirty MiB | Minor faults including warmup | Post-warmup minor faults |
-|---|---:|---:|---:|---:|---:|
-| jemalloc_default_adv0 | 0.182289 | 4.92 | 0.67 | 7864 | 7514 |
-| jemalloc_default_adv10 | 0.076692 | 28.90 | 24.59 | 8876 | 8510 |
-| jemalloc_default_adv3 | 0.098018 | 11.48 | 7.17 | 7320 | 7007 |
-| jemalloc_tuned_adv0 | 0.472586 | 4.80 | 0.53 | 18751 | 18006 |
-| malloc_default_adv0 | 0.278248 | 3.95 | 0.27 | 9901 | 9500 |
-| malloc_default_adv10 | 0.127579 | 27.47 | 21.31 | 8852 | 8500 |
-| malloc_default_adv3 | 0.156455 | 10.28 | 6.46 | 8855 | 8500 |
-| mimalloc_adv0 | 0.017764 | 4.48 | 0.74 | 100 | 0 |
-| mimalloc_adv3 | 0.019362 | 10.92 | 7.18 | 85 | 0 |
-| pare_ta_adv0 | 0.001278 | 4.24 | 0.56 | 78 | 0 |
-| pare_ta_adv10 | 0.000756 | 27.47 | 21.86 | 76 | 0 |
-| pare_ta_adv3 | 0.000586 | 10.40 | 6.76 | 76 | 0 |
-| std_pmr_adv0 | 0.001263 | 67.95 | 64.27 | 4 | 0 |
-| std_pmr_adv10 | 0.000810 | 89.30 | 85.56 | 2 | 0 |
-| std_pmr_adv3 | 0.000543 | 74.16 | 70.46 | 2 | 0 |
-| tcmalloc_adv0 | 0.031991 | 8.17 | 4.29 | 159 | 104 |
-| tcmalloc_adv3 | 0.041244 | 14.38 | 10.15 | 147 | 112 |
+## 3. PARE-TA Custom Arena Architecture Telemetry
 
-## Four-camera inference
+Page-Aligned Region-Enclosed Tensor Arena runtime counters under ONNX Runtime inference.
 
-Settled RSS is sampled 200 ms after worker teardown. Adversarial live anchors remain allocated at this point. This cannot establish permanent retention or attribute retained bytes exclusively to thread caches.
+- **Model**: YOLO26n ONNX (640x640 FP32)
+- **Persistent Weights Arena**: 9.51 MiB
+- **Peak Transient Frame Activation**: 118.07 MiB
+- **Total Allocations Handled**: 2,428
+- **Eliminated Individual Frees (O(1) No-ops)**: 2,203
+- **Reported Trapped DRAM**: 0.0 KiB (hardcoded by the harness; not a physical-hole measurement)
+- **Post-Warmup Steady-State Minor Page Faults**: 0
 
-| Configuration | p99 ms | FPS | Peak RSS MiB | Settled RSS MiB | Private dirty MiB | Measured interval minor faults |
-|---|---:|---:|---:|---:|---:|---:|
-| dynalloc_adv0 | 215.36 | 19.33 | 396.34 | 37.88 | 23.29 | 1020 |
-| dynalloc_adv1 | 218.01 | 19.38 | 403.96 | 44.33 | 29.83 | 1020 |
-| dynalloc_adv10 | 231.66 | 18.90 | 467.91 | 108.98 | 94.48 | 1004 |
-| dynalloc_adv3 | 280.39 | 19.31 | 418.55 | 59.51 | 44.92 | 1020 |
-| glibc_adv0 | 202.83 | 21.99 | 429.80 | 112.15 | 97.57 | 2 |
-| glibc_adv1 | 256.63 | 22.17 | 462.11 | 146.29 | 131.80 | 2 |
-| glibc_adv10 | 232.41 | 21.67 | 493.68 | 177.04 | 162.46 | 2 |
-| glibc_adv3 | 194.38 | 21.54 | 449.16 | 133.11 | 118.62 | 2 |
-| jemalloc_adv0 | 193.28 | 22.04 | 453.75 | 22.41 | 7.25 | 2 |
-| jemalloc_adv1 | 194.63 | 22.12 | 460.75 | 30.05 | 14.98 | 2 |
-| jemalloc_adv10 | 210.13 | 21.93 | 521.12 | 93.63 | 78.58 | 2 |
-| jemalloc_adv3 | 208.91 | 22.04 | 476.00 | 46.25 | 31.18 | 2 |
-| mimalloc_adv0 | 208.85 | 22.15 | 416.69 | 386.51 | 371.89 | 623 |
-| mimalloc_adv1 | 230.72 | 22.06 | 434.21 | 389.12 | 374.55 | 235 |
-| mimalloc_adv10 | 192.84 | 22.03 | 506.09 | 435.93 | 421.25 | 2 |
-| mimalloc_adv3 | 197.56 | 21.88 | 479.25 | 367.82 | 353.25 | 2 |
-| tcmalloc_adv0 | 218.48 | 22.16 | 461.95 | 461.95 | 447.22 | 2 |
-| tcmalloc_adv1 | 235.13 | 21.83 | 462.47 | 462.47 | 447.84 | 2 |
-| tcmalloc_adv10 | 244.34 | 22.00 | 519.33 | 519.33 | 504.72 | 2 |
-| tcmalloc_adv3 | 200.13 | 22.00 | 485.97 | 485.97 | 471.31 | 2 |
+## 4. Multi-Camera Concurrent Stream Evaluation
 
-## Interpretation limits
+4 Concurrent Camera Streams executing YOLO26n on pinned logical CPUs 0–3 under adversarial heap fragmentation.
 
-CPU affinity does not provide kernel CPU isolation. CPU 2 shares a physical core with CPU 10. Single runs do not establish statistical significance. Zero LLC counts require independent validation. Cache and TLB counters alone cannot prove elimination of page straddling or trapped DRAM. The primary inference suite uses the ONNX Runtime arena, so preload allocators may not see every tensor allocation.
+| Configuration  | Adv Level | Aggregate FPS | p99 ms | Peak RSS MiB | Settled RSS MiB | Priv Dirty MiB | Minor Faults |
+|----------------|-----------|---------------|--------|--------------|-----------------|----------------|--------------|
+| dynalloc_adv0  |         0 |         21.69 | 194.97 |       484.75 |          413.83 |         399.33 |            2 |
+| dynalloc_adv1  |         1 |         21.73 | 196.61 |       496.12 |          425.07 |         410.59 |            2 |
+| dynalloc_adv10 |        10 |         21.88 | 189.51 |       532.75 |          461.70 |         447.10 |            2 |
+| dynalloc_adv3  |         3 |         21.48 | 190.94 |       512.38 |          441.48 |         426.97 |            2 |
+| glibc_adv0     |         0 |         21.79 | 192.67 |       444.00 |          128.28 |         113.81 |            2 |
+| glibc_adv1     |         1 |         21.81 | 192.05 |       457.88 |          141.98 |         127.48 |            2 |
+| glibc_adv10    |        10 |         21.70 | 228.12 |       497.31 |          181.35 |         166.77 |            2 |
+| glibc_adv3     |         3 |         21.60 | 190.86 |       454.56 |          139.56 |         125.07 |            2 |
+| jemalloc_adv0  |         0 |         21.62 | 195.33 |       456.75 |           22.50 |           7.34 |            5 |
+| jemalloc_adv1  |         1 |         21.70 | 193.77 |       457.38 |           29.55 |          14.46 |            2 |
+| jemalloc_adv10 |        10 |         21.84 | 215.47 |       518.62 |           91.71 |          76.55 |            2 |
+| jemalloc_adv3  |         3 |         22.21 | 191.79 |       475.43 |           45.36 |          30.30 |            2 |
+| mimalloc_adv0  |         0 |         21.95 | 192.53 |       421.74 |           98.64 |          84.05 |          806 |
+| mimalloc_adv1  |         1 |         21.97 | 189.51 |       440.48 |           93.45 |          78.77 |          446 |
+| mimalloc_adv10 |        10 |         21.66 | 207.72 |       516.59 |          173.69 |         159.01 |            2 |
+| mimalloc_adv3  |         3 |         21.62 | 198.03 |       480.25 |          112.53 |          97.85 |            4 |
+| pare_ta_adv0   |         0 |         21.94 | 211.35 |       775.95 |           40.82 |          26.17 |            3 |
+| pare_ta_adv1   |         1 |         22.09 | 193.24 |       787.91 |           39.31 |          24.66 |            3 |
+| pare_ta_adv10  |        10 |         21.90 | 190.55 |       832.86 |          125.34 |         110.69 |            3 |
+| pare_ta_adv3   |         3 |         22.23 | 252.90 |       787.51 |           61.45 |          46.90 |            3 |
+| tcmalloc_adv0  |         0 |         21.68 | 190.44 |       462.05 |          462.05 |         447.39 |            2 |
+| tcmalloc_adv1  |         1 |         21.69 | 201.57 |       464.38 |          464.38 |         449.65 |            2 |
+| tcmalloc_adv10 |        10 |         21.74 | 191.59 |       511.22 |          511.22 |         496.49 |            2 |
+| tcmalloc_adv3  |         3 |         21.81 | 193.40 |       479.52 |          479.52 |         464.79 |            2 |
+
+## 5. Hypothesis Verification
+
+| Criterion                                                          |     Status |                                                                                                                                Evidence |
+|--------------------------------------------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| DynAlloc steady minor faults <= 5                                  |       PASS |                                                                                                                                       0 |
+| DynAlloc throughput >= 6.70 FPS                                    |       PASS |                                                                                                                             6.71965 FPS |
+| PARE-TA steady minor faults = 0                                    |       PASS |                                                                                                                                       0 |
+| PARE-TA trapped DRAM < 4 KiB; zero body holes                      | UNVERIFIED |                                                                             Inference field is hardcoded; no physical-hole measurement. |
+| PARE-TA beats direct glibc/jemalloc in FPS, p99, L3 miss %         |       FAIL |                                                         Retired L3 miss %: PARE-TA 12.855, direct glibc 12.561, direct jemalloc 13.174. |
+| Adv10 bounded live PARE-TA DRAM; TCMalloc/mimalloc retain >400 MiB |    PARTIAL | Post-teardown settled MiB (PARE-TA/TCMalloc/mimalloc): 125.34/511.22/173.69; live bound not measured, mimalloc >400 MiB not reproduced. |
+
+The performance criterion uses direct_pare_ta primary FPS/p99 and the pare_ta grouped L3 pass (both use native pare_ta mode). These are separate process runs.
+
+Standalone arena results are supplemental endpoint-touch microbenchmarks; they do not replace full-inference physical-hole validation.
+
+## 6. Measurement Limits
+
+- CPU affinity pins single-stream inference to logical CPU 2 and camera workers to CPUs 0–3; affinity alone does not provide kernel or IRQ isolation.
+- Primary perf events are collected together and may be multiplexed. Consult raw perf logs for running percentages; ratios across differently scheduled events need caution.
+- Retired L3 events are grouped in a separate pass and include initialization and warmup. They do not isolate steady-state tensor accesses.
+- The inference harness emits a literal zero for trapped_dram_kb. This does not establish zero physical body holes or a measured <4 KiB bound.
+- Arena mappings provide contiguous virtual addresses; physical DRAM contiguity is not established.
+- Zero minor faults do not by themselves establish zero syscalls. No syscall trace is collected by these scripts.
+- Multi-camera settled RSS is sampled after workers join and destroy their sessions and arenas; it measures process retention after teardown, not live arena residency.

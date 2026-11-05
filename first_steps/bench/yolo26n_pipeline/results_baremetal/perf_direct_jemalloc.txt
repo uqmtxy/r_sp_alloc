@@ -1,0 +1,22 @@
+# started on Thu Nov  5 05:40:04 2026
+
+
+ Performance counter stats for 'env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name direct_jemalloc --mode direct_tensor --adv 0 --json':
+
+      416187665156      cycles                                                                  (50.00%)
+      920513380329      instructions                     #    2.21  insn per cycle              (62.50%)
+       16666643282      cache-references                                                        (62.50%)
+       16688626874      cache-misses                     #  100.13% of all cache refs           (62.50%)
+      297449337768      L1-dcache-loads                                                         (62.50%)
+       20903678354      L1-dcache-load-misses            #    7.03% of all L1-dcache accesses   (62.50%)
+      297739117653      dTLB-loads                                                              (50.00%)
+          45741617      dTLB-load-misses                 #    0.02% of all dTLB cache accesses  (50.00%)
+           9580349      page-faults                                                           
+           9580349      minor-faults                                                          
+
+     184.019919306 seconds time elapsed
+
+     164.725459000 seconds user
+      19.263831000 seconds sys
+
+

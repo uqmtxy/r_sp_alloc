@@ -5,13 +5,13 @@
   "adv_multiplier": 3,
   "peak_rss_mb": 10.4023,
   "settled_rss_mb": 10.4023,
-  "private_dirty_mb": 6.75781,
+  "private_dirty_mb": 6.71484,
   "minor_faults": 76,
   "steady_state_minor_faults": 0,
-  "latency_mean_ms": 0.000543348,
-  "latency_p50_ms": 0.000539,
-  "latency_p90_ms": 0.000555,
-  "latency_p99_ms": 0.000586,
-  "fps": 1.84044e+06,
-  "trapped_dram_kb": null
+  "latency_mean_ms": 0.00042046,
+  "latency_p50_ms": 0.000419,
+  "latency_p90_ms": 0.000419,
+  "latency_p99_ms": 0.000456,
+  "fps": 2.37835e+06,
+  "trapped_dram_kb": 3.03125
 }

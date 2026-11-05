@@ -1,0 +1,21 @@
+{
+  "allocator": "direct_mimalloc",
+  "mode": "direct_tensor",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 1000,
+  "achieved_fps": 5.93788,
+  "peak_rss_mb": 90.1406,
+  "settled_rss_mb": 54.0195,
+  "private_dirty_mb": 39.543,
+  "minor_faults": 4569004,
+  "latency": {
+    "mean_ms": 168.402,
+    "p50_ms": 166.357,
+    "p90_ms": 220.552,
+    "p99_ms": 262.034,
+    "p999_ms": 262.793,
+    "max_ms": 262.793
+  }
+}

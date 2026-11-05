@@ -23,6 +23,10 @@ using namespace factory_cv;
 using namespace adversarial;
 using namespace pare_ta;
 
+// ORT shares its environment within a process. Each session captures its own
+// allocator during construction; unregister it before constructing the next.
+static std::mutex pare_ta_registration_mutex;
+
 struct ThreadTelemetry {
     std::vector<double> latencies_ms;
     double thread_fps = 0.0;
@@ -38,6 +42,7 @@ void camera_worker(int thread_id,
                    const std::string& mode,
                    std::atomic<bool>& start_barrier,
                    std::atomic<int>& ready_count,
+                   std::atomic<bool>& worker_failed,
                    ThreadTelemetry& telemetry) {
     try {
         // Pin to CPU core
@@ -63,13 +68,17 @@ void camera_worker(int thread_id,
         auto status = api.CreateEnv(ORT_LOGGING_LEVEL_WARNING, env_name.c_str(), &c_env);
         if (status) {
             std::cerr << "Worker " << thread_id << " CreateEnv failed: " << api.GetErrorMessage(status) << std::endl;
+            api.ReleaseStatus(status);
+            worker_failed.store(true);
             return;
         }
 
         std::shared_ptr<PareTaMonotonicResource> pare_ta_resource;
         std::unique_ptr<PareTaOrtAllocator> pare_ta_allocator;
+        std::unique_lock<std::mutex> registration_lock(pare_ta_registration_mutex, std::defer_lock);
 
         if (mode == "pare_ta") {
+            registration_lock.lock();
             pare_ta_resource = std::make_shared<PareTaMonotonicResource>(64, 256);
             pare_ta_allocator = std::make_unique<PareTaOrtAllocator>(pare_ta_resource);
             status = api.RegisterAllocator(c_env, pare_ta_allocator.get());
@@ -78,6 +87,7 @@ void camera_worker(int thread_id,
                           << api.GetErrorMessage(status) << std::endl;
                 api.ReleaseStatus(status);
                 api.ReleaseEnv(c_env);
+                worker_failed.store(true);
                 return;
             }
         }
@@ -99,6 +109,8 @@ void camera_worker(int thread_id,
         Ort::Session session(env, model_path.c_str(), session_options);
 
         if (mode == "pare_ta") {
+            Ort::ThrowOnError(api.UnregisterAllocator(c_env, pare_ta_allocator->Info(pare_ta_allocator.get())));
+            registration_lock.unlock();
             pare_ta_allocator->set_mode_transient();
         }
 
@@ -182,6 +194,7 @@ void camera_worker(int thread_id,
 
     } catch (const std::exception& ex) {
         std::cerr << "Worker " << thread_id << " error: " << ex.what() << std::endl;
+        worker_failed.store(true);
     }
 }
 
@@ -237,6 +250,7 @@ int main(int argc, char* argv[]) {
     std::vector<ThreadTelemetry> telemetries(num_threads);
     std::atomic<bool> start_barrier(false);
     std::atomic<int> ready_count(0);
+    std::atomic<bool> worker_failed(false);
 
     workers.reserve(num_threads);
     for (size_t t = 0; t < num_threads; ++t) {
@@ -251,11 +265,17 @@ int main(int argc, char* argv[]) {
                              std::cref(mode),
                              std::ref(start_barrier),
                              std::ref(ready_count),
+                             std::ref(worker_failed),
                              std::ref(telemetries[t]));
     }
 
     // Wait until all workers finish warmup and preconditioning
     while (ready_count.load() < static_cast<int>(num_threads)) {
+        if (worker_failed.load()) {
+            start_barrier.store(true, std::memory_order_release);
+            for (auto& w : workers) if (w.joinable()) w.join();
+            return 1;
+        }
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
@@ -270,6 +290,7 @@ int main(int argc, char* argv[]) {
             w.join();
         }
     }
+    if (worker_failed.load()) return 1;
 
     auto global_end = std::chrono::high_resolution_clock::now();
     double total_sec = std::chrono::duration<double>(global_end - global_start).count();

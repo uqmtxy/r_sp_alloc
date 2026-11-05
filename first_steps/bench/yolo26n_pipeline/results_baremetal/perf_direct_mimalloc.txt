@@ -1,0 +1,22 @@
+# started on Thu Nov  5 05:45:48 2026
+
+
+ Performance counter stats for 'env LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libmimalloc.so taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name direct_mimalloc --mode direct_tensor --adv 0 --json':
+
+      389242958480      cycles                                                                  (50.00%)
+      891930362222      instructions                     #    2.29  insn per cycle              (62.50%)
+       16413440579      cache-references                                                        (62.50%)
+       16428184874      cache-misses                     #  100.09% of all cache refs           (62.50%)
+      290390858403      L1-dcache-loads                                                         (62.50%)
+       20349587111      L1-dcache-load-misses            #    7.01% of all L1-dcache accesses   (62.50%)
+      290328692867      dTLB-loads                                                              (50.00%)
+          33465594      dTLB-load-misses                 #    0.01% of all dTLB cache accesses  (50.00%)
+           4824097      page-faults                                                           
+           4824097      minor-faults                                                          
+
+     177.125491054 seconds time elapsed
+
+     167.054051000 seconds user
+      10.044860000 seconds sys
+
+

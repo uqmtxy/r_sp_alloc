@@ -47,6 +47,42 @@ def format_table(header, rows):
     return lines
 
 
+def hypothesis_rows(results, multi_dir):
+    def load(directory, name):
+        return json.loads((directory / f'{name}.json').read_text())
+
+    try:
+        dyn = load(results, 'dynalloc')
+        pare = load(results, 'pare_ta')
+        direct_pare = load(results, 'direct_pare_ta')
+        direct = [load(results, name) for name in ('direct_glibc', 'direct_jemalloc')]
+        l3 = []
+        for name in ('pare_ta', 'direct_glibc', 'direct_jemalloc'):
+            metrics = parse_perf_txt(results / f'perf_l3_{name}.txt')
+            hits = metrics['mem_load_uops_retired.l3_hit']
+            misses = metrics['mem_load_uops_retired.l3_miss']
+            l3.append(100 * misses / (hits + misses))
+        better = all(direct_pare['achieved_fps'] > d['achieved_fps'] and
+                     direct_pare['latency']['p99_ms'] < d['latency']['p99_ms']
+                     for d in direct) and all(l3[0] < pct for pct in l3[1:])
+        multi = [load(multi_dir, f'{name}_adv10') for name in ('pare_ta', 'tcmalloc', 'mimalloc')]
+    except (OSError, ValueError, KeyError, ZeroDivisionError):
+        return [['Evaluation', 'INCOMPLETE', 'Missing or invalid required measurements.']]
+
+    return [
+        ['DynAlloc steady minor faults <= 5', 'PASS' if dyn['minor_faults'] <= 5 else 'FAIL', str(dyn['minor_faults'])],
+        ['DynAlloc throughput >= 6.70 FPS', 'PASS' if dyn['achieved_fps'] >= 6.70 else 'FAIL', f"{dyn['achieved_fps']:.5f} FPS"],
+        ['PARE-TA steady minor faults = 0', 'PASS' if pare['minor_faults'] == 0 else 'FAIL', str(pare['minor_faults'])],
+        ['PARE-TA trapped DRAM < 4 KiB; zero body holes', 'UNVERIFIED', 'Inference field is hardcoded; no physical-hole measurement.'],
+        ['PARE-TA beats direct glibc/jemalloc in FPS, p99, L3 miss %', 'PASS' if better else 'FAIL',
+         f"Retired L3 miss %: PARE-TA {l3[0]:.3f}, direct glibc {l3[1]:.3f}, direct jemalloc {l3[2]:.3f}."],
+        ['Adv10 bounded live PARE-TA DRAM; TCMalloc/mimalloc retain >400 MiB', 'PARTIAL',
+         'Post-teardown settled MiB (PARE-TA/TCMalloc/mimalloc): ' +
+         '/'.join(f"{d['settled_rss_mb']:.2f}" for d in multi) +
+         '; live bound not measured, mimalloc >400 MiB not reproduced.'],
+    ]
+
+
 def main():
     bench = Path(__file__).resolve().parents[2] / 'bench'
     results = bench / 'yolo26n_pipeline/results_baremetal'
@@ -157,7 +193,7 @@ def main():
                 f"- **Peak Transient Frame Activation**: {pdata.get('transient_peak_frame_bytes', 0) / (1024*1024):.2f} MiB",
                 f"- **Total Allocations Handled**: {pdata.get('total_allocations', 0):,}",
                 f"- **Eliminated Individual Frees (O(1) No-ops)**: {pdata.get('noop_deallocations', 0):,}",
-                f"- **Trapped DRAM Head/Tail Fragments**: {pdata.get('trapped_dram_kb', 0.0)} KiB (Eliminated by 4 KiB page-alignment)",
+                f"- **Reported Trapped DRAM**: {pdata.get('trapped_dram_kb', 0.0)} KiB (hardcoded by the harness; not a physical-hole measurement)",
                 f"- **Post-Warmup Steady-State Minor Page Faults**: {pdata.get('minor_faults', 0)}"
             ]
         except Exception:
@@ -170,7 +206,7 @@ def main():
         '',
         '## 4. Multi-Camera Concurrent Stream Evaluation',
         '',
-        '4 Concurrent Camera Streams executing YOLO26n on isolated cores under adversarial heap fragmentation.',
+        '4 Concurrent Camera Streams executing YOLO26n on pinned logical CPUs 0–3 under adversarial heap fragmentation.',
         ''
     ]
 
@@ -199,20 +235,23 @@ def main():
     else:
         lines.append('No multi-camera results found.')
 
+    lines += ['', '## 5. Hypothesis Verification', '']
+    lines.extend(format_table(['Criterion', 'Status', 'Evidence'], hypothesis_rows(results, multi_dir)))
     lines += [
         '',
-        '## 5. Architectural & Systems Synthesis',
+        'The performance criterion uses direct_pare_ta primary FPS/p99 and the pare_ta grouped L3 pass (both use native pare_ta mode). These are separate process runs.',
         '',
-        '1. **PLOS \'26 User-Kernel Crossroads (Trapped DRAM)**:',
-        '   General-purpose allocators and free-lists suffer sub-page and unaligned head/tail holes when size classes straddle 4 KiB boundaries.',
-        '   PARE-TA enforces strict 4 KiB page alignment at arena boundaries and pads chunks to page multiples, ensuring 100% of memory is reclaimable as pure body slabs.',
+        'Standalone arena results are supplemental endpoint-touch microbenchmarks; they do not replace full-inference physical-hole validation.',
         '',
-        '2. **ISMM \'26 Custom Memory Allocation Locality**:',
-        '   Under adversarial heap fragmentation (Adv3, Adv10), general-purpose allocators scatter consecutive layer tensors across non-contiguous virtual pages, triggering L1/L3 misses.',
-        '   PARE-TA maintains strict sequential bump-pointer layout packed to 64-byte hardware cache lines, providing complete immunity to heap fragmentation.',
+        '## 6. Measurement Limits',
         '',
-        '3. **Zero-Syscall Steady-State Lifecycle**:',
-        '   Through thread-isolated double buffering, PARE-TA and DynAlloc\'s page-aligned recycling pool eliminate `mmap`/`munmap` calls and kernel page-table manipulation during steady state, driving post-warmup minor page faults to ZERO.',
+        '- CPU affinity pins single-stream inference to logical CPU 2 and camera workers to CPUs 0–3; affinity alone does not provide kernel or IRQ isolation.',
+        '- Primary perf events are collected together and may be multiplexed. Consult raw perf logs for running percentages; ratios across differently scheduled events need caution.',
+        '- Retired L3 events are grouped in a separate pass and include initialization and warmup. They do not isolate steady-state tensor accesses.',
+        '- The inference harness emits a literal zero for trapped_dram_kb. This does not establish zero physical body holes or a measured <4 KiB bound.',
+        '- Arena mappings provide contiguous virtual addresses; physical DRAM contiguity is not established.',
+        '- Zero minor faults do not by themselves establish zero syscalls. No syscall trace is collected by these scripts.',
+        '- Multi-camera settled RSS is sampled after workers join and destroy their sessions and arenas; it measures process retention after teardown, not live arena residency.',
         ''
     ]
 

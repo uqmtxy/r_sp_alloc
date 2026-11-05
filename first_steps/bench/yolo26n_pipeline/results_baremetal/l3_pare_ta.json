@@ -1,0 +1,26 @@
+{
+  "allocator": "pare_ta",
+  "mode": "pare_ta",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 1000,
+  "achieved_fps": 6.73672,
+  "peak_rss_mb": 203.406,
+  "settled_rss_mb": 203.406,
+  "private_dirty_mb": 189.078,
+  "minor_faults": 0,
+  "persistent_allocated_bytes": 9987072,
+  "transient_peak_frame_bytes": 123804704,
+  "total_allocations": 2428,
+  "noop_deallocations": 2203,
+  "trapped_dram_kb": 0.0,
+  "latency": {
+    "mean_ms": 148.44,
+    "p50_ms": 147.725,
+    "p90_ms": 148.617,
+    "p99_ms": 166.899,
+    "p999_ms": 230.546,
+    "max_ms": 230.546
+  }
+}

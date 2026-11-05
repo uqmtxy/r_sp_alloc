@@ -1,0 +1,21 @@
+{
+  "allocator": "direct_dynalloc",
+  "mode": "direct_tensor",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 1000,
+  "achieved_fps": 6.55748,
+  "peak_rss_mb": 135.59,
+  "settled_rss_mb": 135.59,
+  "private_dirty_mb": 121.297,
+  "minor_faults": 0,
+  "latency": {
+    "mean_ms": 152.497,
+    "p50_ms": 148.721,
+    "p90_ms": 150.527,
+    "p99_ms": 205.441,
+    "p999_ms": 231.449,
+    "max_ms": 231.449
+  }
+}

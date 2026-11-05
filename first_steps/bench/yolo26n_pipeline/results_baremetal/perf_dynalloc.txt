@@ -1,26 +1,22 @@
-# started on Wed Oct 21 05:06:30 2026
+# started on Thu Nov  5 05:31:34 2026
 
 
- Performance counter stats for 'env LD_PRELOAD=/users/deni/research/r_sp_alloc/first_steps/src/libdynalloc.so taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name dynalloc --json':
+ Performance counter stats for 'env LD_PRELOAD=/users/deni/research/r_sp_alloc/first_steps/src/libdynalloc.so taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name dynalloc --mode bfc_arena --adv 0 --json':
 
-      431769508234      cycles                                                                  (33.33%)
-      864319301456      instructions                     #    2.00  insn per cycle              (41.67%)
-       16279703747      cache-references                                                        (41.67%)
-       16279992216      cache-misses                     #  100.00% of all cache refs           (41.67%)
-      283336608407      L1-dcache-loads                                                         (41.67%)
-       20747085108      L1-dcache-load-misses            #    7.32% of all L1-dcache accesses   (41.67%)
-        1756099941      LLC-loads                                                               (33.33%)
-                 0      LLC-load-misses                                                         (33.33%)
-      283180218554      dTLB-loads                                                              (33.33%)
-          23247327      dTLB-load-misses                 #    0.01% of all dTLB cache accesses  (33.33%)
-       35542450873      dTLB-stores                                                             (33.33%)
-          71637786      dTLB-store-misses                                                       (33.33%)
-             47512      page-faults                                                           
-             47512      minor-faults                                                          
+      363798138899      cycles                                                                  (50.00%)
+      863478221226      instructions                     #    2.37  insn per cycle              (62.50%)
+       16245400129      cache-references                                                        (62.50%)
+       16240203838      cache-misses                     #   99.97% of all cache refs           (62.50%)
+      283321657498      L1-dcache-loads                                                         (62.50%)
+       20056818585      L1-dcache-load-misses            #    7.08% of all L1-dcache accesses   (62.50%)
+      283070845448      dTLB-loads                                                              (50.00%)
+          23834258      dTLB-load-misses                 #    0.01% of all dTLB cache accesses  (50.00%)
+             32842      page-faults                                                           
+             32842      minor-faults                                                          
 
-     187.254353765 seconds time elapsed
+     158.916834754 seconds time elapsed
 
-     187.033433000 seconds user
-       0.197978000 seconds sys
+     158.783188000 seconds user
+       0.110989000 seconds sys
 
 

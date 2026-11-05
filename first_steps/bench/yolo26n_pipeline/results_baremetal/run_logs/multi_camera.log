@@ -1,0 +1,49 @@
+==========================================================
+ COMPILING MULTI-CAMERA ADVERSARIAL BENCHMARK
+==========================================================
+Build successful: /users/deni/research/r_sp_alloc/first_steps/bench/multi_camera_adversarial/multi_camera_adversarial_bench
+Discovered Allocators:
+  jemalloc : /usr/lib/x86_64-linux-gnu/libjemalloc.so
+  tcmalloc : /usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so
+  mimalloc : /usr/lib/x86_64-linux-gnu/libmimalloc.so
+  dynalloc : /users/deni/research/r_sp_alloc/first_steps/src/libdynalloc.so
+
+==========================================================
+ RUNNING 4-CAMERA CONCURRENT ADVERSARIAL BENCHMARK
+ (4 Concurrent Streams, YOLO26n C++ ONNX Runtime)
+==========================================================
+--- Testing Allocator: glibc (mode: bfc_arena) ---
+  -> Adv0 ... FPS: 21.7888 | p99: 192.673 ms | Peak RSS: 443.996 MB | Settled RSS: 128.285 MB
+  -> Adv1 ... FPS: 21.8058 | p99: 192.054 ms | Peak RSS: 457.875 MB | Settled RSS: 141.977 MB
+  -> Adv3 ... FPS: 21.5954 | p99: 190.863 ms | Peak RSS: 454.555 MB | Settled RSS: 139.562 MB
+  -> Adv10 ... FPS: 21.6986 | p99: 228.118 ms | Peak RSS: 497.309 MB | Settled RSS: 181.355 MB
+--- Testing Allocator: jemalloc (mode: bfc_arena) ---
+  -> Adv0 ... FPS: 21.6154 | p99: 195.327 ms | Peak RSS: 456.75 MB | Settled RSS: 22.5039 MB
+  -> Adv1 ... FPS: 21.6951 | p99: 193.768 ms | Peak RSS: 457.375 MB | Settled RSS: 29.5547 MB
+  -> Adv3 ... FPS: 22.2102 | p99: 191.793 ms | Peak RSS: 475.426 MB | Settled RSS: 45.3633 MB
+  -> Adv10 ... FPS: 21.8417 | p99: 215.472 ms | Peak RSS: 518.625 MB | Settled RSS: 91.7148 MB
+--- Testing Allocator: tcmalloc (mode: bfc_arena) ---
+  -> Adv0 ... FPS: 21.6785 | p99: 190.435 ms | Peak RSS: 462.047 MB | Settled RSS: 462.047 MB
+  -> Adv1 ... FPS: 21.6898 | p99: 201.569 ms | Peak RSS: 464.379 MB | Settled RSS: 464.379 MB
+  -> Adv3 ... FPS: 21.8102 | p99: 193.402 ms | Peak RSS: 479.516 MB | Settled RSS: 479.516 MB
+  -> Adv10 ... FPS: 21.7409 | p99: 191.59 ms | Peak RSS: 511.223 MB | Settled RSS: 511.223 MB
+--- Testing Allocator: mimalloc (mode: bfc_arena) ---
+  -> Adv0 ... FPS: 21.9461 | p99: 192.534 ms | Peak RSS: 421.742 MB | Settled RSS: 98.6406 MB
+  -> Adv1 ... FPS: 21.9659 | p99: 189.506 ms | Peak RSS: 440.477 MB | Settled RSS: 93.4492 MB
+  -> Adv3 ... FPS: 21.6222 | p99: 198.035 ms | Peak RSS: 480.25 MB | Settled RSS: 112.531 MB
+  -> Adv10 ... FPS: 21.6616 | p99: 207.719 ms | Peak RSS: 516.594 MB | Settled RSS: 173.695 MB
+--- Testing Allocator: dynalloc (mode: bfc_arena) ---
+  -> Adv0 ... FPS: 21.6908 | p99: 194.97 ms | Peak RSS: 484.75 MB | Settled RSS: 413.832 MB
+  -> Adv1 ... FPS: 21.7301 | p99: 196.613 ms | Peak RSS: 496.125 MB | Settled RSS: 425.074 MB
+  -> Adv3 ... FPS: 21.4757 | p99: 190.936 ms | Peak RSS: 512.375 MB | Settled RSS: 441.477 MB
+  -> Adv10 ... FPS: 21.8774 | p99: 189.506 ms | Peak RSS: 532.75 MB | Settled RSS: 461.699 MB
+--- Testing Allocator: pare_ta (mode: pare_ta) ---
+  -> Adv0 ... FPS: 21.9438 | p99: 211.351 ms | Peak RSS: 775.949 MB | Settled RSS: 40.8203 MB
+  -> Adv1 ... FPS: 22.0869 | p99: 193.243 ms | Peak RSS: 787.906 MB | Settled RSS: 39.3125 MB
+  -> Adv3 ... FPS: 22.2288 | p99: 252.9 ms | Peak RSS: 787.512 MB | Settled RSS: 61.4492 MB
+  -> Adv10 ... FPS: 21.9048 | p99: 190.553 ms | Peak RSS: 832.859 MB | Settled RSS: 125.344 MB
+
+==========================================================
+ 4-CAMERA ADVERSARIAL CONCURRENCY EXPERIMENTS COMPLETE
+ Results saved to /users/deni/research/r_sp_alloc/first_steps/bench/multi_camera_adversarial/results
+==========================================================

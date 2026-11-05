@@ -1,16 +1,21 @@
 {
   "allocator": "glibc_default",
+  "mode": "bfc_arena",
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
   "frames": 1000,
-  "achieved_fps": 6.46142,
-  "peak_rss_mb": 122.609,
-  "settled_rss_mb": 122.609,
-  "private_dirty_mb": 108.324,
+  "achieved_fps": 6.7139,
+  "peak_rss_mb": 122.766,
+  "settled_rss_mb": 122.766,
+  "private_dirty_mb": 108.465,
   "minor_faults": 0,
   "latency": {
-    "mean_ms": 154.763,
-    "p50_ms": 148.781,
-    "p90_ms": 183.214,
-    "p99_ms": 205.348,
-    "max_ms": 231.663
+    "mean_ms": 148.943,
+    "p50_ms": 148.23,
+    "p90_ms": 149.503,
+    "p99_ms": 159.834,
+    "p999_ms": 229.377,
+    "max_ms": 229.377
   }
 }

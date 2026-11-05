@@ -1,0 +1,177 @@
+{
+  "timestamp_utc": "2026-11-05T12:17:48+00:00",
+  "commit": "9399e4e4fb57caa7e7acebe37e0f7b079342431d",
+  "hostname": "node0.allocation.load-mem-alloc-pg0.utah.cloudlab.us",
+  "uname": {
+    "system": "Linux",
+    "node": "node0.allocation.load-mem-alloc-pg0.utah.cloudlab.us",
+    "release": "6.8.0-147-generic",
+    "version": "#147-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep 24 11:33:16 UTC 2026",
+    "machine": "x86_64",
+    "processor": "x86_64"
+  },
+  "lscpu": {
+    "returncode": 0,
+    "stdout": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  16\nOn-line CPU(s) list:                     0-15\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Xeon(R) CPU D-1548 @ 2.00GHz\nCPU family:                              6\nModel:                                   86\nThread(s) per core:                      2\nCore(s) per socket:                      8\nSocket(s):                               1\nStepping:                                3\nCPU(s) scaling MHz:                      56%\nCPU max MHz:                             2600.0000\nCPU min MHz:                             800.0000\nBogoMIPS:                                3990.79\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cdp_l3 pti intel_ppin ssbd ibrs ibpb stibp tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm rdt_a rdseed adx smap intel_pt xsaveopt cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts vnmi md_clear flush_l1d ibpb_exit_to_user\nVirtualization:                          VT-x\nL1d cache:                               256 KiB (8 instances)\nL1i cache:                               256 KiB (8 instances)\nL2 cache:                                2 MiB (8 instances)\nL3 cache:                                12 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-15\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             KVM: Mitigation: VMX disabled\nVulnerability L1tf:                      Mitigation; PTE Inversion; VMX conditional cache flushes, SMT vulnerable\nVulnerability Mds:                       Mitigation; Clear CPU buffers; SMT vulnerable\nVulnerability Meltdown:                  Mitigation; PTI\nVulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulnerable\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP conditional; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Mitigation; Clear CPU buffers; SMT vulnerable\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+    "stderr": ""
+  },
+  "meminfo": "MemTotal:       65711320 kB\nMemFree:        62000052 kB\nMemAvailable:   64050584 kB\nBuffers:          142704 kB\nCached:          2384396 kB\nSwapCached:            0 kB\nActive:           663792 kB\nInactive:        2280936 kB\nActive(anon):     437716 kB\nInactive(anon):        0 kB\nActive(file):     226076 kB\nInactive(file):  2280936 kB\nUnevictable:       46512 kB\nMlocked:           43440 kB\nSwapTotal:       8388604 kB\nSwapFree:        8388604 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:               456 kB\nWriteback:             0 kB\nAnonPages:        464352 kB\nMapped:           405312 kB\nShmem:              4324 kB\nKReclaimable:     140156 kB\nSlab:             303784 kB\nSReclaimable:     140156 kB\nSUnreclaim:       163628 kB\nKernelStack:        6432 kB\nPageTables:        10972 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    41244264 kB\nCommitted_AS:    1794660 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       30856 kB\nVmallocChunk:          0 kB\nPercpu:            24832 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:      180732 kB\nDirectMap2M:     3880960 kB\nDirectMap1G:    65011712 kB\n",
+  "kernel_cmdline": "BOOT_IMAGE=/boot/vmlinuz-6.8.0-147-generic root=UUID=ccb0832d-c80e-430f-b248-d117889f1992 emulabcnet=14:58:d0:58:bf:92 ro console=ttyS0,115200\n",
+  "governors": {
+    "/sys/devices/system/cpu/cpu11/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu9/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu7/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu14/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu12/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu10/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu8/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu6/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu15/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu13/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor": "performance"
+  },
+  "thp": "always madvise [never]\n",
+  "perf_settings": {
+    "returncode": 0,
+    "stdout": "kernel.perf_event_paranoid = -1\nkernel.kptr_restrict = 0\n",
+    "stderr": ""
+  },
+  "perf_version": {
+    "returncode": 0,
+    "stdout": "perf version 6.8.12\n",
+    "stderr": ""
+  },
+  "compiler": {
+    "returncode": 0,
+    "stdout": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "stderr": ""
+  },
+  "sha256": {
+    "first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx": "2e947b787d9e787b93a16772a5f55b1d4d8c4d86f53146149c5d6a642442d6f7",
+    "first_steps/bench/yolo26n_pipeline/yolo26_bench": "226714d9bdde0b11737739f06ba408d57861cc820dc8f416ee7ef58310f39e97",
+    "first_steps/src/libdynalloc.so": "e0115180b9414a73f687555105c40c4ff872cbcd5a5ece71e493e916499ada16",
+    "first_steps/bench/multi_camera_adversarial/multi_camera_adversarial_bench": "f7d0a33a6b6d0582b9bd4c9cbaff61ae610ded8ee9840e71edf1fbeba311cb45",
+    "first_steps/bench/pare_ta_arena/pare_ta_bench": "a325c08efad1192616872fbbd5fe7a41be0a3c635375789c781e5231386fbe79"
+  },
+  "smoke_tests": {
+    "bfc_arena": {
+      "allocator": "default",
+      "mode": "bfc_arena",
+      "adv_level": 0,
+      "multiplier": 0,
+      "occupancy": 0.66,
+      "frames": 5,
+      "achieved_fps": 6.48089,
+      "peak_rss_mb": 122.406,
+      "settled_rss_mb": 122.406,
+      "private_dirty_mb": 108.078,
+      "minor_faults": 0,
+      "latency": {
+        "mean_ms": 154.298,
+        "p50_ms": 150.808,
+        "p90_ms": 172.593,
+        "p99_ms": 172.593,
+        "p999_ms": 172.593,
+        "max_ms": 172.593
+      }
+    },
+    "direct_tensor": {
+      "allocator": "default",
+      "mode": "direct_tensor",
+      "adv_level": 0,
+      "multiplier": 0,
+      "occupancy": 0.66,
+      "frames": 5,
+      "achieved_fps": 5.97546,
+      "peak_rss_mb": 107.32,
+      "settled_rss_mb": 72.0391,
+      "private_dirty_mb": 57.6406,
+      "minor_faults": 45565,
+      "latency": {
+        "mean_ms": 167.35,
+        "p50_ms": 167.496,
+        "p90_ms": 167.808,
+        "p99_ms": 167.808,
+        "p999_ms": 167.808,
+        "max_ms": 167.808
+      }
+    },
+    "pare_ta": {
+      "allocator": "default",
+      "mode": "pare_ta",
+      "adv_level": 0,
+      "multiplier": 0,
+      "occupancy": 0.66,
+      "frames": 5,
+      "achieved_fps": 6.76879,
+      "peak_rss_mb": 203.539,
+      "settled_rss_mb": 203.539,
+      "private_dirty_mb": 189.141,
+      "minor_faults": 0,
+      "persistent_allocated_bytes": 10003352,
+      "transient_peak_frame_bytes": 123804704,
+      "total_allocations": 342,
+      "noop_deallocations": 117,
+      "trapped_dram_kb": 0.0,
+      "latency": {
+        "mean_ms": 147.737,
+        "p50_ms": 147.6,
+        "p90_ms": 148.479,
+        "p99_ms": 148.479,
+        "p999_ms": 148.479,
+        "max_ms": 148.479
+      }
+    }
+  },
+  "completed_at_utc": "2026-11-05T13:35:58+00:00",
+  "repairs": [
+    "Adversarial diagnostic output redirected to stderr for valid JSON.",
+    "Four-camera PARE-TA session construction serializes environment allocator registration, then unregisters each allocator after the session captures it; inference remains concurrent.",
+    "Worker errors signal the barrier coordinator and cause exit 1.",
+    "Report now states measurement limits and evaluates the requested hypotheses."
+  ],
+  "multi_camera_binary_sha256_at_run": "87957fe798004d3ae71f9186b03043aa0967c6b49ff11c39995f26759871cc05",
+  "source_sha256": {
+    "first_steps/tools/adversarial/adversarial_heap.hpp": "7cdef83e24fd6a03424a0457b1a9afb550db506891afefc984a5eb953eecd34e",
+    "first_steps/bench/multi_camera_adversarial/multi_camera_adversarial_bench.cpp": "488f005278817215d3e494edb464cd8ad337583c0f85b3dab4b51a7e221da42b",
+    "first_steps/scripts/cloudlab/analyze_perf_results.py": "702a311b004d481482aecd9170397e91c8d79710821f4220ffcf4c3f4fdfb77b"
+  },
+  "multi_camera_smoke_test": {
+    "allocator": "default",
+    "mode": "pare_ta",
+    "adv_level": 0,
+    "multiplier": 0,
+    "occupancy": 0.66,
+    "threads": 4,
+    "frames_per_thread": 5,
+    "aggregate_fps": 21.0292,
+    "peak_rss_mb": 776.043,
+    "settled_rss_mb": 48.3203,
+    "private_dirty_mb": 33.6719,
+    "minor_faults": 3,
+    "latency_mean_ms": 181.684,
+    "latency_p50_ms": 181.22,
+    "latency_p95_ms": 191.973,
+    "latency_p99_ms": 191.973,
+    "latency_max_ms": 191.973
+  },
+  "failure_check": "Four-camera PARE-TA with missing model exits 1 within 10-second timeout.",
+  "suite_exit_codes": {
+    "setup": 0,
+    "primary": 0,
+    "retired_l3": 0,
+    "multi_camera": 0,
+    "arena": 0
+  },
+  "validated_counts": {
+    "primary": 14,
+    "retired_l3": 13,
+    "multi_camera": 24,
+    "arena": 17
+  }
+}

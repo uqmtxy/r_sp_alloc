@@ -1,0 +1,3 @@
+Worker 3 RegisterAllocator failed: An allocator for this device has already been registered for sharing.Worker 1 RegisterAllocator failed: An allocator for this device has already been registered for sharing.
+
+Worker 2 RegisterAllocator failed: An allocator for this device has already been registered for sharing.

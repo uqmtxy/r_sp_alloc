@@ -1,0 +1,19 @@
+{
+  "allocator": "pare_ta",
+  "mode": "pare_ta",
+  "adv_level": 1,
+  "multiplier": 1,
+  "occupancy": 0.66,
+  "threads": 4,
+  "frames_per_thread": 50,
+  "aggregate_fps": 22.0869,
+  "peak_rss_mb": 787.906,
+  "settled_rss_mb": 39.3125,
+  "private_dirty_mb": 24.6641,
+  "minor_faults": 3,
+  "latency_mean_ms": 179.462,
+  "latency_p50_ms": 178.448,
+  "latency_p95_ms": 184.304,
+  "latency_p99_ms": 193.243,
+  "latency_max_ms": 255.687
+}

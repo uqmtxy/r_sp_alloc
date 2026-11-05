@@ -4,14 +4,14 @@
   "frames": 500,
   "adv_multiplier": 3,
   "peak_rss_mb": 10.2773,
-  "settled_rss_mb": 10.1367,
-  "private_dirty_mb": 6.45703,
+  "settled_rss_mb": 10.1289,
+  "private_dirty_mb": 6.41406,
   "minor_faults": 8855,
   "steady_state_minor_faults": 8500,
-  "latency_mean_ms": 0.110275,
-  "latency_p50_ms": 0.108372,
-  "latency_p90_ms": 0.114494,
-  "latency_p99_ms": 0.156455,
-  "fps": 9068.24,
-  "trapped_dram_kb": null
+  "latency_mean_ms": 0.109836,
+  "latency_p50_ms": 0.107583,
+  "latency_p90_ms": 0.113402,
+  "latency_p99_ms": 0.156372,
+  "fps": 9104.45,
+  "trapped_dram_kb": 0
 }

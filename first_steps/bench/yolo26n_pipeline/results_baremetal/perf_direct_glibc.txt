@@ -1,0 +1,22 @@
+# started on Thu Nov  5 05:36:57 2026
+
+
+ Performance counter stats for 'taskset -c 2 /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/yolo26_bench --model /users/deni/research/r_sp_alloc/first_steps/bench/yolo26n_pipeline/models/yolo26n.onnx --frames 1000 --warmup 50 --name direct_glibc --mode direct_tensor --adv 0 --json':
+
+      416794081785      cycles                                                                  (50.00%)
+      921301608846      instructions                     #    2.21  insn per cycle              (62.50%)
+       16737453475      cache-references                                                        (62.50%)
+       16729652683      cache-misses                     #   99.95% of all cache refs           (62.50%)
+      297682641037      L1-dcache-loads                                                         (62.50%)
+       20931201377      L1-dcache-load-misses            #    7.03% of all L1-dcache accesses   (62.50%)
+      297634807781      dTLB-loads                                                              (50.00%)
+          46607390      dTLB-load-misses                 #    0.02% of all dTLB cache accesses  (50.00%)
+           9587787      page-faults                                                           
+           9587787      minor-faults                                                          
+
+     186.723248509 seconds time elapsed
+
+     167.283371000 seconds user
+      19.412070000 seconds sys
+
+
