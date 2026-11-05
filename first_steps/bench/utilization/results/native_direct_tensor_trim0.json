@@ -1,0 +1,22 @@
+{
+  "allocator": "default",
+  "mode": "direct_tensor",
+  "trim_after_frame": false,
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 5,
+  "achieved_fps": 5.62469,
+  "peak_rss_mb": 80.9258,
+  "settled_rss_mb": 42.2734,
+  "private_dirty_mb": 27.875,
+  "minor_faults": 45565,
+  "latency": {
+    "mean_ms": 177.788,
+    "p50_ms": 169.201,
+    "p90_ms": 197.068,
+    "p99_ms": 197.068,
+    "p999_ms": 197.068,
+    "max_ms": 197.068
+  }
+}

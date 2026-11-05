@@ -1,0 +1,6 @@
+/utilization_bench
+/resource_test
+/reference.bin
+/core*
+
+__pycache__/

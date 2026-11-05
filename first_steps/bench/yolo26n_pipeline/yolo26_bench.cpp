@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <pthread.h>
 #include <sched.h>
+#include <malloc.h>
 
 #include "onnxruntime_cxx_api.h"
 #include "onnxruntime_session_options_config_keys.h"
@@ -27,6 +28,7 @@ int main(int argc, char* argv[]) {
     size_t num_frames = 1000;
     size_t warmup_frames = 50;
     bool output_json = false;
+    bool trim_after_frame = false;
     std::string allocator_name = "default";
     std::string mode = "bfc_arena"; // "bfc_arena", "direct_tensor", "pare_ta"
     int pinned_cpu_core = -1;
@@ -46,11 +48,12 @@ int main(int argc, char* argv[]) {
         {"multiplier", required_argument, 0, 'u'},
         {"occupancy", required_argument, 0, 'p'},
         {"json", no_argument, 0, 'j'},
+        {"trim", no_argument, 0, 't'},
         {0, 0, 0, 0}
     };
 
     int opt;
-    while ((opt = getopt_long(argc, argv, "m:f:w:n:o:c:a:u:p:j", long_options, nullptr)) != -1) {
+    while ((opt = getopt_long(argc, argv, "m:f:w:n:o:c:a:u:p:jt", long_options, nullptr)) != -1) {
         switch (opt) {
             case 'm': model_path = optarg; break;
             case 'f': num_frames = std::stoul(optarg); break;
@@ -62,6 +65,7 @@ int main(int argc, char* argv[]) {
             case 'u': multiplier = std::stod(optarg); break;
             case 'p': occupancy = std::stod(optarg); break;
             case 'j': output_json = true; break;
+            case 't': trim_after_frame = true; break;
             default: break;
         }
     }
@@ -157,29 +161,34 @@ int main(int argc, char* argv[]) {
     );
 
     // 4. WARMUP PHASE
+    if (trim_after_frame) malloc_trim(0);
     for (size_t i = 0; i < warmup_frames; ++i) {
-        if (mode == "pare_ta") {
-            pare_ta_allocator->begin_frame();
-        }
+        {
+            if (mode == "pare_ta") {
+                pare_ta_allocator->begin_frame();
+            }
 
-        auto output_tensors = session.Run(
-            Ort::RunOptions{nullptr},
-            input_names,
-            &input_tensor,
-            1,
-            output_names,
-            1
-        );
+            auto output_tensors = session.Run(
+                Ort::RunOptions{nullptr},
+                input_names,
+                &input_tensor,
+                1,
+                output_names,
+                1
+            );
 
-        float* out_data = output_tensors[0].GetTensorMutableData<float>();
-        if (out_data) {
-            volatile float dummy = out_data[0];
-            (void)dummy;
-        }
+            float* out_data = output_tensors[0].GetTensorMutableData<float>();
+            if (out_data) {
+                volatile float dummy = out_data[0];
+                (void)dummy;
+            }
 
-        if (mode == "pare_ta") {
-            pare_ta_allocator->end_frame();
+            if (mode == "pare_ta") {
+                pare_ta_allocator->end_frame();
+            }
         }
+        // Release the output first; the session and model weights remain alive.
+        if (trim_after_frame) malloc_trim(0);
     }
 
     // Capture memory snapshot right after warmup (steady-state baseline)
@@ -194,28 +203,31 @@ int main(int argc, char* argv[]) {
     for (size_t fid = 0; fid < num_frames; ++fid) {
         auto t_start = std::chrono::high_resolution_clock::now();
 
-        if (mode == "pare_ta") {
-            pare_ta_allocator->begin_frame();
-        }
+        {
+            if (mode == "pare_ta") {
+                pare_ta_allocator->begin_frame();
+            }
 
-        auto output_tensors = session.Run(
-            Ort::RunOptions{nullptr},
-            input_names,
-            &input_tensor,
-            1,
-            output_names,
-            1
-        );
+            auto output_tensors = session.Run(
+                Ort::RunOptions{nullptr},
+                input_names,
+                &input_tensor,
+                1,
+                output_names,
+                1
+            );
 
-        float* out_data = output_tensors[0].GetTensorMutableData<float>();
-        if (out_data) {
-            volatile float dummy = out_data[0];
-            (void)dummy;
-        }
+            float* out_data = output_tensors[0].GetTensorMutableData<float>();
+            if (out_data) {
+                volatile float dummy = out_data[0];
+                (void)dummy;
+            }
 
-        if (mode == "pare_ta") {
-            pare_ta_allocator->end_frame();
+            if (mode == "pare_ta") {
+                pare_ta_allocator->end_frame();
+            }
         }
+        if (trim_after_frame) malloc_trim(0);
 
         auto t_end = std::chrono::high_resolution_clock::now();
         double lat_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
@@ -239,6 +251,7 @@ int main(int argc, char* argv[]) {
         std::cout << "{\n"
                   << "  \"allocator\": \"" << allocator_name << "\",\n"
                   << "  \"mode\": \"" << mode << "\",\n"
+                  << "  \"trim_after_frame\": " << (trim_after_frame ? "true" : "false") << ",\n"
                   << "  \"adv_level\": " << adv_level << ",\n"
                   << "  \"multiplier\": " << multiplier << ",\n"
                   << "  \"occupancy\": " << occupancy << ",\n"

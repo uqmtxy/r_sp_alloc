@@ -1,0 +1,22 @@
+{
+  "allocator": "default",
+  "mode": "bfc_arena",
+  "trim_after_frame": true,
+  "adv_level": 0,
+  "multiplier": 0,
+  "occupancy": 0.66,
+  "frames": 5,
+  "achieved_fps": 6.76759,
+  "peak_rss_mb": 113.742,
+  "settled_rss_mb": 113.742,
+  "private_dirty_mb": 99.3516,
+  "minor_faults": 29,
+  "latency": {
+    "mean_ms": 147.763,
+    "p50_ms": 147.848,
+    "p90_ms": 148.487,
+    "p99_ms": 148.487,
+    "p999_ms": 148.487,
+    "max_ms": 148.487
+  }
+}

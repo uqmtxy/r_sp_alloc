@@ -1,0 +1,33 @@
+{
+  "mode": "direct",
+  "frames": 12,
+  "warmup": 3,
+  "adv": 0,
+  "occupancy": 0.66,
+  "memory_pattern": 1,
+  "glibc_trim": false,
+  "outputs_verified": true,
+  "retained_outputs_verified": true,
+  "max_abs_error": 0,
+  "fps_diagnostic": 6.25258,
+  "startup_peak_rss_bytes": 110678016,
+  "active_peak_rss_bytes": 88428544,
+  "active_sampled_max_private_bytes": 84623360,
+  "active_sampled_max_rss_bytes": 88485888,
+  "live_session_idle": {
+    "rss_bytes": 82165760,
+    "private_bytes": 78303232,
+    "pss_bytes": 78795776,
+    "hwm_bytes": 88428544
+  },
+  "warmup_idle": {
+    "rss_bytes": 88416256,
+    "private_bytes": 84619264,
+    "pss_bytes": 85107712,
+    "hwm_bytes": 110678016
+  },
+  "allocator_calls": 358,
+  "peak_live_requests": 267,
+  "peak_requested_bytes": 47144072,
+  "idle_requested_bytes": 9804872
+}

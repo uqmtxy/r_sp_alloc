@@ -1,0 +1,76 @@
+{
+  "recorded_at_utc": "2026-11-05T20:39:26.955712+00:00",
+  "hostname": "node0.allocation.load-mem-alloc-pg0.utah.cloudlab.us",
+  "base_commit": "5be613fbd357bdb158e97db6c9ad2c24351436ab",
+  "uname": {
+    "system": "Linux",
+    "node": "node0.allocation.load-mem-alloc-pg0.utah.cloudlab.us",
+    "release": "6.8.0-147-generic",
+    "version": "#147-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep 24 11:33:16 UTC 2026",
+    "machine": "x86_64",
+    "processor": "x86_64"
+  },
+  "cpu": {
+    "returncode": 0,
+    "stdout": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  16\nOn-line CPU(s) list:                     0-15\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Xeon(R) CPU D-1548 @ 2.00GHz\nCPU family:                              6\nModel:                                   86\nThread(s) per core:                      2\nCore(s) per socket:                      8\nSocket(s):                               1\nStepping:                                3\nCPU(s) scaling MHz:                      60%\nCPU max MHz:                             2600.0000\nCPU min MHz:                             800.0000\nBogoMIPS:                                3990.79\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cdp_l3 pti intel_ppin ssbd ibrs ibpb stibp tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm rdt_a rdseed adx smap intel_pt xsaveopt cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts vnmi md_clear flush_l1d ibpb_exit_to_user\nVirtualization:                          VT-x\nL1d cache:                               256 KiB (8 instances)\nL1i cache:                               256 KiB (8 instances)\nL2 cache:                                2 MiB (8 instances)\nL3 cache:                                12 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-15\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             KVM: Mitigation: VMX disabled\nVulnerability L1tf:                      Mitigation; PTE Inversion; VMX conditional cache flushes, SMT vulnerable\nVulnerability Mds:                       Mitigation; Clear CPU buffers; SMT vulnerable\nVulnerability Meltdown:                  Mitigation; PTI\nVulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulnerable\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP conditional; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Mitigation; Clear CPU buffers; SMT vulnerable\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+    "stderr": ""
+  },
+  "memory": {
+    "returncode": 0,
+    "stdout": "               total        used        free      shared  buff/cache   available\nMem:     67288391680  1979764736 63132221440     4415488  2810073088 65308626944\nSwap:     8589930496           0  8589930496\n",
+    "stderr": ""
+  },
+  "compiler": {
+    "returncode": 0,
+    "stdout": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "stderr": ""
+  },
+  "governors": {
+    "/sys/devices/system/cpu/cpu11/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu9/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu7/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu14/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu12/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu10/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu8/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu6/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu15/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu13/cpufreq/scaling_governor": "performance",
+    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor": "performance"
+  },
+  "thp": "always madvise [never]",
+  "kernel_cmdline": "BOOT_IMAGE=/boot/vmlinuz-6.8.0-147-generic root=UUID=ccb0832d-c80e-430f-b248-d117889f1992 emulabcnet=14:58:d0:58:bf:92 ro console=ttyS0,115200",
+  "paper_sources": {
+    "PLOS": {
+      "url": "https://www.ibr.cs.tu-bs.de/vss/Publications/2026/fistanto_26_lost_bytes.pdf",
+      "sha256": "9458264a3d4a5e43d98bec61219a31f2e95eb4a0fd5eb2ee2f6e927cc161bc32"
+    },
+    "ISMM": {
+      "url": "https://arxiv.org/pdf/2605.17119",
+      "sha256": "9b26159a92d02c5aaae35414dcd9ddc5dbd09e8f1b2b005e791671569eb1a931"
+    }
+  },
+  "resource_test": {
+    "command": "g++ -O1 -g -std=c++17 -Wall -Wextra -fsanitize=address,undefined first_steps/bench/utilization/resource_test.cpp -o /tmp/r_sp_utilization_resource_test && /tmp/r_sp_utilization_resource_test",
+    "exit_code": 0,
+    "checks": [
+      "resident accounting conservation",
+      "live-neighbor data preservation during MADV_DONTNEED",
+      "both-side free-range coalescing",
+      "reuse",
+      "64-byte and page alignment",
+      "capacity exhaustion",
+      "double-free rejection"
+    ]
+  },
+  "completed_at_utc": "2026-11-05T20:51:29.826433+00:00",
+  "accepted_runs": 71,
+  "all_full_outputs_exact": true,
+  "native_trim_smoke_tests_passed": 3,
+  "invalid_input_checks_passed": 3
+}
