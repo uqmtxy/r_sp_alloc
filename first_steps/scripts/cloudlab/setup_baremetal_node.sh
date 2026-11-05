@@ -93,6 +93,25 @@ g++ -O3 -std=c++17 \
     -Wl,-rpath,'$ORIGIN/onnxruntime/lib' \
     -Wl,-rpath,"${ORT_DIR}/lib"
 
+# Compile multi_camera_adversarial_bench
+MULTI_DIR="$(cd "${SCRIPT_DIR}/../../bench/multi_camera_adversarial" && pwd)"
+echo "Compiling native multi_camera_adversarial_bench harness..."
+g++ -O3 -std=c++17 -pthread \
+    "${MULTI_DIR}/multi_camera_adversarial_bench.cpp" \
+    -o "${MULTI_DIR}/multi_camera_adversarial_bench" \
+    -I "${ORT_DIR}/include" \
+    -L "${ORT_DIR}/lib" \
+    -lonnxruntime \
+    -Wl,-rpath,'$ORIGIN/../yolo26n_pipeline/onnxruntime/lib' \
+    -Wl,-rpath,"${ORT_DIR}/lib"
+
+# Compile pare_ta_bench
+PARE_DIR="$(cd "${SCRIPT_DIR}/../../bench/pare_ta_arena" && pwd)"
+echo "Compiling native pare_ta_bench harness..."
+g++ -O3 -std=c++17 -pthread \
+    "${PARE_DIR}/pare_ta_bench.cpp" \
+    -o "${PARE_DIR}/pare_ta_bench"
+
 echo ""
 echo "=================================================================="
 echo " CloudLab Bare-Metal Node Setup Successfully Completed!"

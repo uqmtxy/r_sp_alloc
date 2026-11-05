@@ -51,8 +51,9 @@ run_multi_adv() {
     local name="$1"
     local preload="$2"
     local env_var="$3"
+    local mode="${4:-bfc_arena}"
 
-    echo "--- Testing Allocator: ${name} ---"
+    echo "--- Testing Allocator: ${name} (mode: ${mode}) ---"
     for adv in "${ADV_LEVELS[@]}"; do
         local out_json="${RESULTS_DIR}/${name}_adv${adv}.json"
         echo -n "  -> Adv${adv} ... "
@@ -63,6 +64,7 @@ run_multi_adv() {
                 --frames "${FRAMES}" \
                 --warmup "${WARMUP}" \
                 --adv "${adv}" \
+                --mode "${mode}" \
                 --name "${name}" \
                 --json > "${out_json}"
         else
@@ -72,6 +74,7 @@ run_multi_adv() {
                 --frames "${FRAMES}" \
                 --warmup "${WARMUP}" \
                 --adv "${adv}" \
+                --mode "${mode}" \
                 --name "${name}" \
                 --json > "${out_json}"
         fi
@@ -84,25 +87,28 @@ run_multi_adv() {
 }
 
 # 1. Generic Ubuntu Default (glibc)
-run_multi_adv "glibc" "" ""
+run_multi_adv "glibc" "" "" "bfc_arena"
 
 # 2. Meta jemalloc 5.3 Default
 if [ -n "${JEMALLOC_LIB}" ]; then
-    run_multi_adv "jemalloc" "${JEMALLOC_LIB}" ""
+    run_multi_adv "jemalloc" "${JEMALLOC_LIB}" "" "bfc_arena"
 fi
 
 # 3. Google TCMalloc
 if [ -n "${TCMALLOC_LIB}" ]; then
-    run_multi_adv "tcmalloc" "${TCMALLOC_LIB}" ""
+    run_multi_adv "tcmalloc" "${TCMALLOC_LIB}" "" "bfc_arena"
 fi
 
 # 4. Microsoft mimalloc 2.1
 if [ -n "${MIMALLOC_LIB}" ]; then
-    run_multi_adv "mimalloc" "${MIMALLOC_LIB}" ""
+    run_multi_adv "mimalloc" "${MIMALLOC_LIB}" "" "bfc_arena"
 fi
 
-# 5. Page-Grid DynAlloc (libdynalloc.so)
-run_multi_adv "dynalloc" "${DYNALLOC_LIB}" ""
+# 5. Page-Grid DynAlloc (libdynalloc.so with TLC & Recycling Pool)
+run_multi_adv "dynalloc" "${DYNALLOC_LIB}" "" "bfc_arena"
+
+# 6. Native PARE-TA Custom Arena (Per-camera Double-buffered Arena)
+run_multi_adv "pare_ta" "" "" "pare_ta"
 
 echo ""
 echo "=========================================================="

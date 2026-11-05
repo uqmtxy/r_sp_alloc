@@ -14,11 +14,14 @@
 #include <sched.h>
 
 #include "onnxruntime_cxx_api.h"
+#include "onnxruntime_session_options_config_keys.h"
 #include "../../tools/adversarial/adversarial_heap.hpp"
 #include "../factory_cv_pipeline/memory_telemetry.hpp"
+#include "../pare_ta_arena/include/pare_ta_onnx_adapter.hpp"
 
 using namespace factory_cv;
 using namespace adversarial;
+using namespace pare_ta;
 
 struct ThreadTelemetry {
     std::vector<double> latencies_ms;
@@ -27,21 +30,23 @@ struct ThreadTelemetry {
 
 void camera_worker(int thread_id,
                    const std::string& model_path,
-                   Ort::Env& env,
                    size_t num_frames,
                    size_t warmup_frames,
                    int adv_level,
                    double multiplier,
                    double occupancy,
+                   const std::string& mode,
                    std::atomic<bool>& start_barrier,
                    std::atomic<int>& ready_count,
                    ThreadTelemetry& telemetry) {
     try {
         // Pin to CPU core
+#if defined(__linux__)
         cpu_set_t cpuset;
         CPU_ZERO(&cpuset);
         CPU_SET(thread_id % std::thread::hardware_concurrency(), &cpuset);
         pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
+#endif
 
         // Precondition local heap for this thread
         if (adv_level > 0 && multiplier > 0.0) {
@@ -52,12 +57,50 @@ void camera_worker(int thread_id,
             );
         }
 
+        const auto& api = Ort::GetApi();
+        OrtEnv* c_env = nullptr;
+        std::string env_name = "multi_cam_env_" + std::to_string(thread_id);
+        auto status = api.CreateEnv(ORT_LOGGING_LEVEL_WARNING, env_name.c_str(), &c_env);
+        if (status) {
+            std::cerr << "Worker " << thread_id << " CreateEnv failed: " << api.GetErrorMessage(status) << std::endl;
+            return;
+        }
+
+        std::shared_ptr<PareTaMonotonicResource> pare_ta_resource;
+        std::unique_ptr<PareTaOrtAllocator> pare_ta_allocator;
+
+        if (mode == "pare_ta") {
+            pare_ta_resource = std::make_shared<PareTaMonotonicResource>(64, 256);
+            pare_ta_allocator = std::make_unique<PareTaOrtAllocator>(pare_ta_resource);
+            status = api.RegisterAllocator(c_env, pare_ta_allocator.get());
+            if (status) {
+                std::cerr << "Worker " << thread_id << " RegisterAllocator failed: "
+                          << api.GetErrorMessage(status) << std::endl;
+                api.ReleaseStatus(status);
+                api.ReleaseEnv(c_env);
+                return;
+            }
+        }
+
+        Ort::Env env(c_env);
         Ort::SessionOptions session_options;
         session_options.SetIntraOpNumThreads(1);
         session_options.SetInterOpNumThreads(1);
         session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
 
+        if (mode == "pare_ta") {
+            session_options.AddConfigEntry(kOrtSessionOptionsConfigUseEnvAllocators, "1");
+            session_options.DisableCpuMemArena();
+            pare_ta_allocator->set_mode_persistent();
+        } else if (mode == "direct_tensor" || mode == "no_arena") {
+            session_options.DisableCpuMemArena();
+        }
+
         Ort::Session session(env, model_path.c_str(), session_options);
+
+        if (mode == "pare_ta") {
+            pare_ta_allocator->set_mode_transient();
+        }
 
         Ort::AllocatorWithDefaultOptions allocator;
         auto input_name_ptr = session.GetInputNameAllocated(0, allocator);
@@ -73,7 +116,7 @@ void camera_worker(int thread_id,
             input_tensor_values[i] = static_cast<float>((i + thread_id * 17) % 256) / 255.0f;
         }
 
-        auto memory_info = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
+        auto memory_info = Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeDefault);
         Ort::Value input_tensor = Ort::Value::CreateTensor<float>(
             memory_info,
             input_tensor_values.data(),
@@ -84,8 +127,18 @@ void camera_worker(int thread_id,
 
         // Warmup
         for (size_t w = 0; w < warmup_frames; ++w) {
+            if (mode == "pare_ta") {
+                pare_ta_allocator->begin_frame();
+            }
             auto out = session.Run(Ort::RunOptions{nullptr}, input_names, &input_tensor, 1, output_names, 1);
-            (void)out;
+            float* data = out[0].GetTensorMutableData<float>();
+            if (data) {
+                volatile float touch = data[0];
+                (void)touch;
+            }
+            if (mode == "pare_ta") {
+                pare_ta_allocator->end_frame();
+            }
         }
 
         telemetry.latencies_ms.reserve(num_frames);
@@ -102,12 +155,20 @@ void camera_worker(int thread_id,
         for (size_t f = 0; f < num_frames; ++f) {
             auto t0 = std::chrono::high_resolution_clock::now();
 
+            if (mode == "pare_ta") {
+                pare_ta_allocator->begin_frame();
+            }
+
             auto out = session.Run(Ort::RunOptions{nullptr}, input_names, &input_tensor, 1, output_names, 1);
 
             float* data = out[0].GetTensorMutableData<float>();
             if (data) {
                 volatile float touch = data[0];
                 (void)touch;
+            }
+
+            if (mode == "pare_ta") {
+                pare_ta_allocator->end_frame();
             }
 
             auto t1 = std::chrono::high_resolution_clock::now();
@@ -131,6 +192,7 @@ int main(int argc, char* argv[]) {
     size_t warmup_frames = 5;
     bool output_json = false;
     std::string allocator_name = "default";
+    std::string mode = "bfc_arena"; // "bfc_arena", "direct_tensor", "pare_ta"
 
     int adv_level = 0; // 0=Adv0 (Clean), 1=Adv1, 3=Adv3, 10=Adv10
     double multiplier = -1.0;
@@ -142,6 +204,7 @@ int main(int argc, char* argv[]) {
         {"frames", required_argument, 0, 'f'},
         {"warmup", required_argument, 0, 'w'},
         {"name", required_argument, 0, 'n'},
+        {"mode", required_argument, 0, 'o'},
         {"adv", required_argument, 0, 'a'},
         {"multiplier", required_argument, 0, 'u'},
         {"occupancy", required_argument, 0, 'p'},
@@ -150,13 +213,14 @@ int main(int argc, char* argv[]) {
     };
 
     int opt;
-    while ((opt = getopt_long(argc, argv, "m:t:f:w:n:a:u:p:j", long_options, nullptr)) != -1) {
+    while ((opt = getopt_long(argc, argv, "m:t:f:w:n:o:a:u:p:j", long_options, nullptr)) != -1) {
         switch (opt) {
             case 'm': model_path = optarg; break;
             case 't': num_threads = std::stoul(optarg); break;
             case 'f': frames_per_thread = std::stoul(optarg); break;
             case 'w': warmup_frames = std::stoul(optarg); break;
             case 'n': allocator_name = optarg; break;
+            case 'o': mode = optarg; break;
             case 'a': adv_level = std::stoi(optarg); break;
             case 'u': multiplier = std::stod(optarg); break;
             case 'p': occupancy = std::stod(optarg); break;
@@ -169,8 +233,6 @@ int main(int argc, char* argv[]) {
         multiplier = static_cast<double>(adv_level);
     }
 
-    Ort::Env env(ORT_LOGGING_LEVEL_WARNING, "multi_camera_adversarial");
-
     std::vector<std::thread> workers;
     std::vector<ThreadTelemetry> telemetries(num_threads);
     std::atomic<bool> start_barrier(false);
@@ -180,13 +242,13 @@ int main(int argc, char* argv[]) {
     for (size_t t = 0; t < num_threads; ++t) {
         workers.emplace_back(camera_worker,
                              t,
-                             std::ref(model_path),
-                             std::ref(env),
+                             std::cref(model_path),
                              frames_per_thread,
                              warmup_frames,
                              adv_level,
                              multiplier,
                              occupancy,
+                             std::cref(mode),
                              std::ref(start_barrier),
                              std::ref(ready_count),
                              std::ref(telemetries[t]));
@@ -220,10 +282,8 @@ int main(int argc, char* argv[]) {
 
     // Aggregate statistics
     std::vector<double> all_latencies;
-    double sum_fps = 0.0;
     for (size_t t = 0; t < num_threads; ++t) {
         all_latencies.insert(all_latencies.end(), telemetries[t].latencies_ms.begin(), telemetries[t].latencies_ms.end());
-        sum_fps += telemetries[t].thread_fps;
     }
 
     std::sort(all_latencies.begin(), all_latencies.end());
@@ -243,39 +303,37 @@ int main(int argc, char* argv[]) {
     if (output_json) {
         std::cout << "{\n"
                   << "  \"allocator\": \"" << allocator_name << "\",\n"
+                  << "  \"mode\": \"" << mode << "\",\n"
                   << "  \"adv_level\": " << adv_level << ",\n"
                   << "  \"multiplier\": " << multiplier << ",\n"
                   << "  \"occupancy\": " << occupancy << ",\n"
                   << "  \"threads\": " << num_threads << ",\n"
                   << "  \"frames_per_thread\": " << frames_per_thread << ",\n"
-                  << "  \"total_frames\": " << total_frames << ",\n"
-                  << "  \"peak_rss_mb\": " << std::fixed << std::setprecision(2) << peak_rss_mb << ",\n"
+                  << "  \"aggregate_fps\": " << aggregate_fps << ",\n"
+                  << "  \"peak_rss_mb\": " << peak_rss_mb << ",\n"
                   << "  \"settled_rss_mb\": " << settled_rss_mb << ",\n"
                   << "  \"private_dirty_mb\": " << priv_dirty_mb << ",\n"
                   << "  \"minor_faults\": " << minor_faults << ",\n"
-                  << "  \"latency_mean_ms\": " << std::setprecision(3) << mean_lat << ",\n"
+                  << "  \"latency_mean_ms\": " << mean_lat << ",\n"
                   << "  \"latency_p50_ms\": " << p50_lat << ",\n"
                   << "  \"latency_p95_ms\": " << p95_lat << ",\n"
                   << "  \"latency_p99_ms\": " << p99_lat << ",\n"
-                  << "  \"latency_max_ms\": " << max_lat << ",\n"
-                  << "  \"aggregate_fps\": " << std::setprecision(2) << aggregate_fps << ",\n"
-                  << "  \"sum_thread_fps\": " << sum_fps << "\n"
+                  << "  \"latency_max_ms\": " << max_lat << "\n"
                   << "}\n";
     } else {
-        std::cout << "\n======================================================\n";
-        std::cout << " 4-Camera Adversarial Benchmark: " << allocator_name << " Adv" << adv_level << "\n";
-        std::cout << "======================================================\n";
-        std::cout << " Threads:          " << num_threads << " cameras\n";
-        std::cout << " Total Frames:     " << total_frames << "\n";
-        std::cout << " Aggregate FPS:    " << std::fixed << std::setprecision(2) << aggregate_fps << "\n";
-        std::cout << " Mean Latency:     " << std::setprecision(3) << mean_lat << " ms\n";
-        std::cout << " p50 Latency:      " << p50_lat << " ms\n";
-        std::cout << " p99 Latency:      " << p99_lat << " ms\n";
-        std::cout << " Peak RSS:         " << peak_rss_mb << " MB\n";
-        std::cout << " Settled RSS:      " << settled_rss_mb << " MB\n";
-        std::cout << " Private Dirty:    " << priv_dirty_mb << " MB\n";
-        std::cout << " Minor Faults:     " << minor_faults << "\n";
-        std::cout << "======================================================\n";
+        std::cout << "\n=======================================================\n";
+        std::cout << " Multi-Camera Concurrent Inference Results\n";
+        std::cout << " Allocator: " << allocator_name << " (Mode: " << mode << ")\n";
+        std::cout << " Threads: " << num_threads << " cameras, Frames/thread: " << frames_per_thread << "\n";
+        std::cout << " Adversarial Level: " << adv_level << " (Multiplier: " << multiplier << ")\n";
+        std::cout << " Aggregate FPS: " << std::fixed << std::setprecision(2) << aggregate_fps << "\n";
+        std::cout << " Peak RSS: " << peak_rss_mb << " MB\n";
+        std::cout << " Settled RSS: " << settled_rss_mb << " MB\n";
+        std::cout << " Private Dirty: " << priv_dirty_mb << " MB\n";
+        std::cout << " Latency p50: " << std::setprecision(3) << p50_lat << " ms\n";
+        std::cout << " Latency p95: " << p95_lat << " ms\n";
+        std::cout << " Latency p99: " << p99_lat << " ms\n";
+        std::cout << "=======================================================\n";
     }
 
     return 0;

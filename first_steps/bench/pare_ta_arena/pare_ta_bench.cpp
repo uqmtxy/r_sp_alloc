@@ -23,6 +23,7 @@
 
 #include "include/pare_ta_resource.hpp"
 #include "../../tools/adversarial/adversarial_heap.hpp"
+#include "../../tools/lost_bytes_inspector/page_inspector.hpp"
 
 using namespace pare_ta;
 using namespace adversarial;
@@ -322,12 +323,35 @@ int main(int argc, char* argv[]) {
     std::cout << " Mean Frame Latency          : " << lstats.mean_ms << " ms\n";
     std::cout << " Aggregate Throughput        : " << fps << " FPS\n";
 
+    // Inspect Physical Trapped DRAM via mincore and page classification (PLOS '26)
+    lost_bytes::HoleClassification classification;
+    if (mode == "pare_ta" && pare_ta_resource) {
+        std::vector<lost_bytes::Range> ranges;
+        for (size_t i = 0; i < NUM_DAG_TENSORS; ++i) {
+            if (allocated_ptrs[i]) {
+                uintptr_t start = reinterpret_cast<uintptr_t>(allocated_ptrs[i]);
+                uintptr_t end = start + VISION_DAG_TENSORS[i].size_bytes();
+                ranges.push_back({start, end});
+            }
+        }
+        std::sort(ranges.begin(), ranges.end(), [](const auto& a, const auto& b) {
+            return a.start < b.start;
+        });
+        uintptr_t base = pare_ta_resource->active_frame_base();
+        uintptr_t top = base + pare_ta_resource->get_telemetry().transient_peak_frame_bytes;
+        if (top > base) {
+            classification = lost_bytes::PageInspector::classify_arena(base, top, ranges);
+        }
+    }
+
+    double trapped_kb = static_cast<double>(classification.trapped_bytes()) / 1024.0;
+
     if (mode == "pare_ta") {
         auto telem = pare_ta_resource->get_telemetry();
         std::cout << " PARE-TA Peak Frame Working Set: " << TelemetryCollector::to_mb(telem.transient_peak_frame_bytes / 1024) << " MB\n";
         std::cout << " PARE-TA Total Allocations     : " << telem.total_allocations << "\n";
         std::cout << " PARE-TA No-Op Frees Executed  : " << telem.noop_deallocations << "\n";
-        std::cout << " Trapped DRAM                 : not measured\n";
+        std::cout << " Trapped DRAM (Physical Holes) : " << trapped_kb << " KB\n";
     }
 
     if (output_json) {
@@ -348,7 +372,7 @@ int main(int argc, char* argv[]) {
         jout << "  \"latency_p90_ms\": " << lstats.p90_ms << ",\n";
         jout << "  \"latency_p99_ms\": " << lstats.p99_ms << ",\n";
         jout << "  \"fps\": " << fps << ",\n";
-        jout << "  \"trapped_dram_kb\": null\n";
+        jout << "  \"trapped_dram_kb\": " << trapped_kb << "\n";
         jout << "}\n";
         std::cout << "[JSON] Results exported to " << json_file << std::endl;
     }

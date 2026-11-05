@@ -47,7 +47,11 @@ class PageInspector {
 public:
     // Check if a virtual address page is currently resident in physical DRAM via mincore(2)
     static bool is_page_resident(uintptr_t page_addr) {
+#if defined(__APPLE__)
+        char vec[1] = {0};
+#else
         unsigned char vec[1] = {0};
+#endif
         void* ptr = reinterpret_cast<void*>(page_addr & ~(PAGE_SIZE_4K - 1));
         if (mincore(ptr, PAGE_SIZE_4K, vec) == 0) {
             return (vec[0] & 1) != 0;

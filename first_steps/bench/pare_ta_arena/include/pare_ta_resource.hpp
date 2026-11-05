@@ -130,7 +130,7 @@ public:
 
 private:
     std::pmr::memory_resource* upstream_;
-    Tier current_tier_{Tier::TRANSIENT};
+    Tier current_tier_{Tier::PERSISTENT}; // Initializer / weights tier by default
 
     // Tier 1: Persistent Sub-Arena
     uint8_t* persistent_buf_{nullptr};
@@ -151,8 +151,8 @@ private:
     size_t frames_count_{0};
 
 public:
-    explicit PareTaMonotonicResource(size_t persistent_mb = 32,
-                                     size_t frame_mb = 64,
+    explicit PareTaMonotonicResource(size_t persistent_mb = 64,
+                                     size_t frame_mb = 256,
                                      std::pmr::memory_resource* upstream = get_page_aligned_upstream())
         : upstream_(upstream),
           persistent_capacity_(align_up(persistent_mb * 1024 * 1024, PAGE_SIZE_4K)),
