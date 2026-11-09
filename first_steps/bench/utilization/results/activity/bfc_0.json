@@ -1,0 +1,25 @@
+{
+  "policy": "bfc",
+  "frames": 120,
+  "pause_ms": 0,
+  "burst": 30,
+  "max_abs_error": 0,
+  "fps": 6.45885,
+  "p99_ms": 159.212,
+  "minor_faults": 1,
+  "reclaim_calls": 0,
+  "idle_private_bytes": 0,
+  "estimated_private_byte_seconds": 2312380000.0,
+  "command": [
+    "/users/deni/research/r_sp_alloc/first_steps/bench/utilization/activity_bench",
+    "--policy",
+    "bfc",
+    "--pause-ms",
+    "0",
+    "--frames",
+    "120",
+    "--burst",
+    "30"
+  ],
+  "binary_sha256": "1fc7f8b6c4b9a458554dcd0d04e536c1860015783db98148affead29045741c4"
+}

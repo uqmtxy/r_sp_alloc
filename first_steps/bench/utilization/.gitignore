@@ -4,3 +4,4 @@
 /core*
 
 __pycache__/
+/activity_bench

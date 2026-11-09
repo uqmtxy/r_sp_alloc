@@ -126,3 +126,33 @@ that 99.99% of all process or system RAM holds useful tensors.
 The utilization goal is achieved for this workload. Custom-allocator superiority
 against the strongest tuned conventional baseline remains unproven. Raw records,
 failures, source/model/binary/reference hashes, and commands are preserved.
+
+## Activity-aware reclamation follow-up (2026-11-09)
+
+Status: executing screening. Preserve historical results. Compare BFC, direct
+per-frame trim, direct idle trim, and a retaining pool purged only during pauses.
+The custom pool must preserve caller-retained outputs through reclamation.
+First screen continuous and bursty single-camera operation in randomized order.
+Time inference/output destruction/reclamation separately from verification and
+proc sampling; report pause reclamation cost separately before making a service
+latency claim. Byte-seconds are an explicitly approximate sampled metric.
+Acceptance targets: <=3% throughput loss vs BFC, >=50% idle private RAM reduction,
+and no material p99 regression (service threshold remains unspecified). Correct
+outputs are mandatory. No success claim from a single screening run.
+After screening, retain only promising policies for five fresh-process trials,
+1000-frame endurance, staggered camera workloads and actual pressure experiments.
+Bounded caching requires resident-free-byte accounting before implementation;
+pressure policy must use measured demand, not pretend that scheduled pauses are
+memory pressure. Newer-CPU generalization requires another physical machine.
+
+### Activity phase screening outcome
+
+Eight screening runs plus ten fresh-process burst repetitions passed exact full
+and retained-output checks. Five-run medians: BFC 6.405 FPS / 268.918 ms p99 /
+118.703 MiB idle private; pause-purged pool 6.308 FPS / 298.870 ms p99 /
+34.344 MiB. Throughput loss ~1.5%, idle reduction ~71%, sampled byte-seconds
+reduction ~44%. P99 worsened ~11%; full acceptance is NOT achieved.
+Next gate: bounded retained working set and per-burst resume latency measurement,
+then repeat the same randomized protocol. Do not broaden to pressure or multiple
+cameras until the resume-latency tradeoff is understood. Explicit pause signals
+are a prototype; no automatic idle detector has been implemented.
