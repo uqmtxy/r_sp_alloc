@@ -1,0 +1,30 @@
+{
+  "budget_mib": 0,
+  "resume_median_ms": 274.502,
+  "pause_reclaim_ms_total": 0.003671,
+  "policy": "bfc",
+  "frames": 120,
+  "pause_ms": 1000,
+  "burst": 10,
+  "max_abs_error": 0,
+  "fps": 5.84408,
+  "p99_ms": 284.036,
+  "minor_faults": 2,
+  "reclaim_calls": 0,
+  "idle_private_bytes": 124878848,
+  "estimated_private_byte_seconds": 4062760000.0,
+  "command": [
+    "/users/deni/research/r_sp_alloc/first_steps/bench/utilization/activity_bench",
+    "--policy",
+    "bfc",
+    "--budget-mib",
+    "0",
+    "--pause-ms",
+    "1000",
+    "--burst",
+    "10",
+    "--frames",
+    "120"
+  ],
+  "binary_sha256": "91c92994dc6d6174aa03a4f343709e45f8113b4d23a4fcd272628bd8ce453bc6"
+}

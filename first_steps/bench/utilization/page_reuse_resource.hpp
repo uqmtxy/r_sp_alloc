@@ -114,6 +114,23 @@ public:
 
     void purge() { for (const auto& [offset, length] : free_) discard(offset, length); }
 
+    // Keep at most budget bytes of resident, wholly free pages at pause entry.
+    void purge_to_budget(size_t budget) {
+        std::vector<unsigned char> residency(capacity_ / page_);
+        if (mincore(base_, capacity_, residency.data()) != 0)
+            throw std::runtime_error("mincore failed");
+        size_t remaining = budget / page_;
+        for (const auto& [offset, length] : free_) {
+            size_t begin = round_up(offset, page_) / page_;
+            size_t end = (offset + length) / page_;
+            while (begin < end && remaining) {
+                if (residency[begin] & 1) --remaining;
+                ++begin;
+            }
+            if (begin < end) discard(begin * page_, (end - begin) * page_);
+        }
+    }
+
     PageAccounting sample() const {
         PageAccounting s;
         s.reserved = capacity_;

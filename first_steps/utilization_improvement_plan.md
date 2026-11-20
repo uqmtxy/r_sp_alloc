@@ -156,3 +156,7 @@ Next gate: bounded retained working set and per-burst resume latency measurement
 then repeat the same randomized protocol. Do not broaden to pressure or multiple
 cameras until the resume-latency tradeoff is understood. Explicit pause signals
 are a prototype; no automatic idle detector has been implemented.
+
+### Bounded retention result, November 19
+
+The 24 MiB free-page budget met the median throughput, idle RAM, estimated byte-seconds and burst p99 criteria on this node. The 1000-frame comparison and the original 30-frame schedule also fit the assumed 5% median p99 margin. Individual p99 results varied. The experiment covers explicit pauses in a single stream. See the [paired results and endurance measurements](bench/utilization/results/bounded/REPORT.md).

@@ -33,7 +33,12 @@ int main() {
     bool overflow = false;
     try { arena.allocate(1); } catch (const std::bad_alloc&) { overflow = true; }
     assert(overflow);
+    memset(entire, 3, 65536);
     arena.deallocate(entire);
+    arena.purge_to_budget(8192);
+    assert(arena.sample().resident_body == 8192);
+    arena.purge_to_budget(4095);
+    assert(arena.sample().resident_body == 0);
     bool duplicate = false;
     try { arena.deallocate(entire); } catch (const std::runtime_error&) { duplicate = true; }
     assert(duplicate);
