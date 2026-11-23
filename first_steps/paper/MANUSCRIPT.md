@@ -1,3 +1,7 @@
+> **ARCHIVED / STALE PRE-CLOUDLAB DRAFT (Oct 15, 2026) — DO NOT CITE OR RELY ON THIS FILE.**  
+> Claims below (e.g., `18,842 FPS`, `0.0 KB trapped DRAM`, pre-CloudLab DynAlloc peak RSS wins, and `SOSP '23` citation) were invalidated or superseded by Oct 21 CloudLab measurements (`results/cloudlab_20261021/SUMMARY.md`) and Nov 5–19 physical utilization experiments (`context/EVIDENCE.md`).  
+> Preserved untouched for historical provenance. See [../../assignment/latex/main.tex](../../assignment/latex/main.tex) and [../../context/STATE.md](../../context/STATE.md) for current validated results.
+
 # Eliminating Granularity Mismatches and Thread-Cache Bloat in Edge Computer Vision Runtimes via Page-Grid Interposition
 
 ## Abstract

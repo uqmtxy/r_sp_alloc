@@ -1,3 +1,7 @@
+> **ARCHIVED / HISTORICAL SNAPSHOT (Oct 15, 2026) — DO NOT RELY ON THIS AS CURRENT STATE.**  
+> This walkthrough predates Oct 21 CloudLab bare-metal remediation (`results/cloudlab_20261021/SUMMARY.md`) and the Nov 5–19 utilization/bounded-retention breakthroughs (`context/EVIDENCE.md`). It also contains outdated 2023/2024 paper dates.  
+> Read [../AGENTS.md](../AGENTS.md) and [../context/STATE.md](../context/STATE.md) for current verified results.
+
 # Complete Walkthrough: End-to-End Execution of the Research Plan
 
 ## Executive Overview

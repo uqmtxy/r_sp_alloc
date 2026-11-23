@@ -1,3 +1,6 @@
+> **Status Note (Nov 2026):** This is the original **Sept 13, 2026** phase-1 research proposal preserved for historical context.  
+> For current validated state, architecture, evidence, and active TODOs, read [AGENTS.md](AGENTS.md), [context/STATE.md](context/STATE.md), and [context/HISTORY_AND_DECISIONS.md](context/HISTORY_AND_DECISIONS.md).
+
 # Research Topic: Workload-Specific Memory Allocation for Ded…
 
 > Research Topic: Workload-Specific Memory Allocation for Dedicated Production Systems

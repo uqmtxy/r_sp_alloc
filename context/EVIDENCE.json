@@ -1,0 +1,229 @@
+{
+  "schema_version": "1.0",
+  "project": "r_sp_alloc",
+  "entries": [
+    {
+      "id": "E01_cloudlab_oct21_dynalloc",
+      "title": "Oct 21 CloudLab Baseline: DynAlloc vs. Conventional Allocators",
+      "status": "DESCRIPTIVE_HISTORICAL",
+      "commit": "1496bd2",
+      "report_path": "results/cloudlab_20261021/SUMMARY.md",
+      "raw_files": [
+        "results/cloudlab_20261021/primary_and_l3/dynalloc.json",
+        "results/cloudlab_20261021/primary_and_l3/glibc_default.json",
+        "results/cloudlab_20261021/MEASUREMENT_NOTES.md"
+      ],
+      "scope_limits": "Single descriptive run per config on Xeon D-1548 (1000 frames + 50 warmup). Generic LLC counters failed sanity test; LD_PRELOAD does not capture internal ORT arena allocations; DynAlloc did not beat glibc.",
+      "checks": [
+        {"type": "value", "file": "results/cloudlab_20261021/primary_and_l3/dynalloc.json", "key": "achieved_fps", "expected": 5.6215, "tol": 0.001},
+        {"type": "value", "file": "results/cloudlab_20261021/primary_and_l3/dynalloc.json", "key": "latency.p99_ms", "expected": 221.371, "tol": 0.01},
+        {"type": "value", "file": "results/cloudlab_20261021/primary_and_l3/dynalloc.json", "key": "peak_rss_mb", "expected": 115.25, "tol": 0.01},
+        {"type": "value", "file": "results/cloudlab_20261021/primary_and_l3/glibc_default.json", "key": "achieved_fps", "expected": 6.46142, "tol": 0.001},
+        {"type": "value", "file": "results/cloudlab_20261021/primary_and_l3/glibc_default.json", "key": "peak_rss_mb", "expected": 122.609, "tol": 0.01}
+      ]
+    },
+    {
+      "id": "E02_util_single_stream",
+      "title": "Single-Stream Live Utilization & Allocator-Local mincore() Accounting",
+      "status": "VALIDATED",
+      "commit": "20dc7b8",
+      "report_path": "first_steps/bench/utilization/results/UTILIZATION_REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/validated/single_bfc_r0.json",
+        "first_steps/bench/utilization/results/validated/single_bfc_r1.json",
+        "first_steps/bench/utilization/results/validated/single_bfc_r2.json",
+        "first_steps/bench/utilization/results/validated/single_bfc_r3.json",
+        "first_steps/bench/utilization/results/validated/single_bfc_r4.json",
+        "first_steps/bench/utilization/results/validated/single_direct_trim_r0.json",
+        "first_steps/bench/utilization/results/validated/single_direct_trim_r1.json",
+        "first_steps/bench/utilization/results/validated/single_direct_trim_r2.json",
+        "first_steps/bench/utilization/results/validated/single_direct_trim_r3.json",
+        "first_steps/bench/utilization/results/validated/single_direct_trim_r4.json",
+        "first_steps/bench/utilization/results/validated/single_pool_eager_trim_r0.json",
+        "first_steps/bench/utilization/results/validated/single_pool_eager_trim_r1.json",
+        "first_steps/bench/utilization/results/validated/single_pool_eager_trim_r2.json",
+        "first_steps/bench/utilization/results/validated/single_pool_eager_trim_r3.json",
+        "first_steps/bench/utilization/results/validated/single_pool_eager_trim_r4.json"
+      ],
+      "scope_limits": "Fixed 640x640 FP32 YOLO26n on Xeon D-1548 (5 fresh runs, 60+10 frames, CPU 2). 99.9903% is allocator-local idle payload utilization inside pool-owned mappings, not whole-process RAM; direct_trim slightly beats pool_eager_trim on active peak RSS (73.39 vs 73.74 MiB).",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/validated/single_*.json", "key": "max_abs_error"},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/single_bfc_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 122.86, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/single_direct_trim_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 73.39, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/single_pool_eager_trim_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 73.74, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/single_bfc_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 119.06, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/single_direct_trim_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 34.20, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/single_pool_eager_trim_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 34.43, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/single_pool_eager_trim_r{0..4}.json"], "key": "pages_idle.payload_utilization", "expected": 0.999903, "tol": 0.00001},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/single_pool_eager_trim_r{0..4}.json"], "key": "pages_idle.resident_body_bytes", "expected": 0, "tol": 0}
+      ]
+    },
+    {
+      "id": "E03_util_4cameras",
+      "title": "Four Live Camera Sessions Utilization (CPUs 0-3)",
+      "status": "VALIDATED",
+      "commit": "20dc7b8",
+      "report_path": "first_steps/bench/utilization/results/UTILIZATION_REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/validated/cameras4_bfc_trim_r0.json",
+        "first_steps/bench/utilization/results/validated/cameras4_direct_trim_r0.json",
+        "first_steps/bench/utilization/results/validated/cameras4_pool_eager_trim_r0.json"
+      ],
+      "scope_limits": "5 fresh processes, 30+5 frames per camera pinned to CPUs 0-3, sessions alive at idle sample. Fixed 640x640 YOLO26n on Broadwell-DE.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/validated/cameras4_*.json", "key": "max_abs_error"},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/cameras4_bfc_trim_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 394.66, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/cameras4_direct_trim_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 236.51, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/cameras4_pool_eager_trim_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 234.09, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/cameras4_bfc_trim_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 390.80, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/cameras4_direct_trim_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 90.50, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/validated/cameras4_pool_eager_trim_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 88.05, "tol": 0.02}
+      ]
+    },
+    {
+      "id": "E04_recheck_repeatability",
+      "title": "Randomized Fresh-Process Repeatability Audit (46 Runs)",
+      "status": "VALIDATED",
+      "commit": "c9828c5",
+      "report_path": "first_steps/bench/utilization/results/recheck/RECHECK_REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/recheck/single_bfc_r0.json",
+        "first_steps/bench/utilization/results/recheck/single_pool_eager_trim_r0.json",
+        "first_steps/bench/utilization/results/recheck/cameras4_pool_eager_trim_r0.json"
+      ],
+      "scope_limits": "Repeatability check using the same harness (does not eliminate shared-harness bias). Confirms bit-exact outputs and footprint stability across randomized run order.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/recheck/*.json", "key": "max_abs_error"},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/recheck/single_bfc_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 122.77, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/recheck/single_direct_trim_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 73.27, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/recheck/single_pool_eager_trim_r{0..4}.json"], "key": "active_peak_rss_bytes", "scale": 9.5367431640625e-07, "expected": 73.62, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/recheck/cameras4_bfc_trim_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 390.16, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/recheck/cameras4_direct_trim_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 90.42, "tol": 0.02},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/recheck/cameras4_pool_eager_trim_r{0..4}.json"], "key": "live_session_idle.private_bytes", "scale": 9.5367431640625e-07, "expected": 87.95, "tol": 0.02}
+      ]
+    },
+    {
+      "id": "E05_activity_full_purge",
+      "title": "Unbudgeted Pause-Boundary Purge (pool_idle 0 MiB vs. BFC)",
+      "status": "FAILED_GATE",
+      "commit": "c9828c5",
+      "report_path": "first_steps/bench/utilization/results/activity/ACTIVITY_REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/activity/repeat_0_pool_idle_1000.json",
+        "first_steps/bench/utilization/results/activity/repeat_3_bfc_1000.json"
+      ],
+      "scope_limits": "120 frames, 30-frame bursts, four 1 s explicit pauses (n=5 per policy). Cut idle private RAM by 71.1%, but failed latency acceptance (+11.1% p99 regression due to resume minor faults).",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/activity/*.json", "key": "max_abs_error"},
+        {"type": "median", "files_glob": "first_steps/bench/utilization/results/activity/repeat_*_bfc_1000.json", "key": "fps", "expected": 6.405, "tol": 0.005},
+        {"type": "median", "files_glob": "first_steps/bench/utilization/results/activity/repeat_*_bfc_1000.json", "key": "p99_ms", "expected": 268.918, "tol": 0.01},
+        {"type": "median", "files_glob": "first_steps/bench/utilization/results/activity/repeat_*_bfc_1000.json", "key": "idle_private_bytes", "scale": 9.5367431640625e-07, "expected": 118.703, "tol": 0.01},
+        {"type": "median", "files_glob": "first_steps/bench/utilization/results/activity/repeat_*_pool_idle_1000.json", "key": "fps", "expected": 6.308, "tol": 0.005},
+        {"type": "median", "files_glob": "first_steps/bench/utilization/results/activity/repeat_*_pool_idle_1000.json", "key": "p99_ms", "expected": 298.870, "tol": 0.01},
+        {"type": "median", "files_glob": "first_steps/bench/utilization/results/activity/repeat_*_pool_idle_1000.json", "key": "idle_private_bytes", "scale": 9.5367431640625e-07, "expected": 34.344, "tol": 0.01}
+      ]
+    },
+    {
+      "id": "E06_bounded_screening",
+      "title": "Bounded Retention Budget Screening (0, 8, 16, 24 MiB vs. BFC)",
+      "status": "SCREENING",
+      "commit": "1fd7ede",
+      "report_path": "first_steps/bench/utilization/results/bounded/PROTOCOL.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/bounded/screen_-1.json",
+        "first_steps/bench/utilization/results/bounded/screen_0.json",
+        "first_steps/bench/utilization/results/bounded/screen_8.json",
+        "first_steps/bench/utilization/results/bounded/screen_16.json",
+        "first_steps/bench/utilization/results/bounded/screen_24.json",
+        "first_steps/bench/utilization/results/bounded/selection.txt"
+      ],
+      "scope_limits": "Single shuffled run per budget (120 frames, 10-frame bursts, 1 s explicit pauses) used solely to freeze the 24 MiB candidate before confirmation.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/bounded/screen_*.json", "key": "max_abs_error"},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/screen_0.json", "key": "minor_faults", "expected": 100517, "tol": 0},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/screen_24.json", "key": "minor_faults", "expected": 32918, "tol": 0},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/screen_-1.json", "key": "idle_private_bytes", "scale": 9.5367431640625e-07, "expected": 118.79, "tol": 0.02},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/screen_24.json", "key": "idle_private_bytes", "scale": 9.5367431640625e-07, "expected": 58.34, "tol": 0.02}
+      ]
+    },
+    {
+      "id": "E07_bounded_confirmation",
+      "title": "Confirmed Paired Evaluation of 24 MiB Bounded Retention (n=5 pairs)",
+      "status": "VALIDATED",
+      "commit": "1fd7ede",
+      "report_path": "first_steps/bench/utilization/results/bounded/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/bounded/confirm_0_0_-1.json",
+        "first_steps/bench/utilization/results/bounded/confirm_0_0_24.json",
+        "first_steps/bench/utilization/results/bounded/confirm_1000_0_-1.json",
+        "first_steps/bench/utilization/results/bounded/confirm_1000_0_24.json"
+      ],
+      "scope_limits": "Single-stream CPU 2, explicit 1 s pauses, fixed 640x640 FP32 YOLO26n. Continuous p99 showed individual max ratio 1.2737; 5% p99 gate is an assumed research margin.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/bounded/confirm_*.json", "key": "max_abs_error"},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/confirm_0_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/confirm_0_{0..4}_-1.json"], "key": "fps", "expected": 0.9977, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/confirm_0_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/confirm_0_{0..4}_-1.json"], "key": "p99_ms", "expected": 1.0182, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_-1.json"], "key": "fps", "expected": 0.9947, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_-1.json"], "key": "p99_ms", "expected": 1.0108, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_-1.json"], "key": "idle_private_bytes", "expected": 0.4916, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_-1.json"], "key": "estimated_private_byte_seconds", "expected": 0.5604, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/confirm_1000_{0..4}_-1.json"], "key": "resume_median_ms", "expected": 1.0321, "tol": 0.0005}
+      ]
+    },
+    {
+      "id": "E08_bounded_endurance",
+      "title": "1,000-Frame Endurance Validation (100 Scheduled Pauses)",
+      "status": "VALIDATED",
+      "commit": "1fd7ede",
+      "report_path": "first_steps/bench/utilization/results/bounded/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/bounded/endurance_-1.json",
+        "first_steps/bench/utilization/results/bounded/endurance_24.json"
+      ],
+      "scope_limits": "1 run per policy (1000 frames, 100 pauses of 1 s, burst=10, CPU 2). Byte-seconds are frame-boundary sampled and can undercount transient intra-frame peaks.",
+      "checks": [
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_-1.json", "key": "max_abs_error", "expected": 0, "tol": 0},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_24.json", "key": "max_abs_error", "expected": 0, "tol": 0},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_-1.json", "key": "fps", "expected": 5.79596, "tol": 0.001},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_24.json", "key": "fps", "expected": 5.75121, "tol": 0.001},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_-1.json", "key": "p99_ms", "expected": 277.867, "tol": 0.01},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_24.json", "key": "p99_ms", "expected": 290.872, "tol": 0.01},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_-1.json", "key": "idle_private_bytes", "scale": 9.5367431640625e-07, "expected": 118.79, "tol": 0.02},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_24.json", "key": "idle_private_bytes", "scale": 9.5367431640625e-07, "expected": 58.37, "tol": 0.02},
+        {"type": "value", "file": "first_steps/bench/utilization/results/bounded/endurance_24.json", "key": "minor_faults", "expected": 296226, "tol": 0}
+      ]
+    },
+    {
+      "id": "E09_bounded_30f_sensitivity",
+      "title": "30-Frame Burst Sensitivity Check (5 Shuffled Blocks)",
+      "status": "VALIDATED",
+      "commit": "1fd7ede",
+      "report_path": "first_steps/bench/utilization/results/bounded/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/bounded/original_0_-1.json",
+        "first_steps/bench/utilization/results/bounded/original_0_0.json",
+        "first_steps/bench/utilization/results/bounded/original_0_24.json"
+      ],
+      "scope_limits": "Sensitivity check under original 30-frame burst schedule. Median gates pass, while individual trials had p99 max ratio 1.1541 (24 MiB) and 1.1473 (0 MiB).",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/bounded/original_*.json", "key": "max_abs_error"},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/original_{0..4}_0.json"], "den_files": ["first_steps/bench/utilization/results/bounded/original_{0..4}_-1.json"], "key": "p99_ms", "expected": 1.0500, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/original_{0..4}_0.json"], "den_files": ["first_steps/bench/utilization/results/bounded/original_{0..4}_-1.json"], "key": "idle_private_bytes", "expected": 0.2891, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/original_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/original_{0..4}_-1.json"], "key": "p99_ms", "expected": 1.0474, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/bounded/original_{0..4}_24.json"], "den_files": ["first_steps/bench/utilization/results/bounded/original_{0..4}_-1.json"], "key": "idle_private_bytes", "expected": 0.4912, "tol": 0.0005}
+      ]
+    },
+    {
+      "id": "E10_stale_oct19_manuscript",
+      "title": "Legacy Pre-CloudLab Manuscript & Figures (Oct 15/19)",
+      "status": "STALE_DRAFT",
+      "commit": "955b5f8",
+      "report_path": "first_steps/paper/MANUSCRIPT.md",
+      "raw_files": [
+        "first_steps/paper/latex/main.tex"
+      ],
+      "scope_limits": "SUPERSEDED: Contains pre-CloudLab DynAlloc claims, 18,842 FPS, hardcoded 0.0 KB trapped DRAM, and wrong 2023/2024 citations. Never cite as current evidence; see assignment/latex/main.tex instead.",
+      "checks": []
+    }
+  ]
+}

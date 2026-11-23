@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Workload-Specific Physical Memory Efficiency and Bounded Page Reclamation for Dedicated Edge Computer Vision Inference</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 18mm 20mm 18mm;
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 8.5pt;
+      color: #555;
+    }
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 10.2pt;
+    line-height: 1.48;
+    color: #1a202c;
+    margin: 0;
+    padding: 0;
+  }
+  .header-block {
+    border-bottom: 2px solid #1e3a5f;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+  .course-tag {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1e3a5f;
+    margin-bottom: 5px;
+  }
+  h1.title {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 16.5pt;
+    line-height: 1.22;
+    font-weight: 700;
+    color: #0f2537;
+    margin: 0 0 10px 0;
+  }
+  .meta-grid {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 9pt;
+    background: #f7fafc;
+    border: 1px solid #cbd5e0;
+  }
+  .meta-grid td {
+    padding: 4px 8px;
+    border: 1px solid #e2e8f0;
+  }
+  .meta-label {
+    font-weight: 700;
+    color: #2d3748;
+    width: 17%;
+    background: #edf2f7;
+  }
+  .abstract-box {
+    background: #f8fafc;
+    border-left: 3.5px solid #1e3a5f;
+    padding: 9px 13px;
+    margin: 12px 0 14px 0;
+    font-size: 9.6pt;
+    line-height: 1.44;
+    break-inside: avoid;
+  }
+  .abstract-title {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 9.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1e3a5f;
+    margin-bottom: 4px;
+  }
+  h2 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 12pt;
+    font-weight: 700;
+    color: #0f2537;
+    border-bottom: 1px solid #cbd5e0;
+    padding-bottom: 3px;
+    margin: 15px 0 7px 0;
+    break-after: avoid;
+  }
+  h3 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 10.4pt;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin: 11px 0 5px 0;
+    break-after: avoid;
+  }
+  p {
+    margin: 0 0 8px 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+  ul {
+    margin: 4px 0 8px 18px;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 4px;
+    text-align: justify;
+  }
+  code {
+    font-family: "Menlo", "Consolas", monospace;
+    font-size: 8.8pt;
+    background: #edf2f7;
+    padding: 1px 3.5px;
+    border-radius: 2.5px;
+    color: #1a202c;
+  }
+  figure {
+    margin: 10px 0 12px 0;
+    padding: 6px 8px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    break-inside: avoid;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 8.6pt;
+    line-height: 1.38;
+    color: #2d3748;
+    text-align: left;
+    margin-top: 6px;
+  }
+  .table-wrap {
+    margin: 10px 0 12px 0;
+    break-inside: avoid;
+  }
+  .table-caption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 8.8pt;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin-bottom: 4px;
+  }
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 8.3pt;
+    line-height: 1.32;
+  }
+  table.data-table th {
+    background: #1e3a5f;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 5px 6px;
+    text-align: left;
+    border: 1px solid #1e3a5f;
+  }
+  table.data-table th.num, table.data-table td.num {
+    text-align: right;
+  }
+  table.data-table td {
+    padding: 4px 6px;
+    border: 1px solid #cbd5e0;
+  }
+  table.data-table tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+  table.data-table tr.highlight td {
+    background: #e6f4ea;
+    font-weight: 600;
+  }
+  .table-note {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7.9pt;
+    color: #4a5568;
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+  .refs-section {
+    margin-top: 14px;
+    break-before: auto;
+  }
+  ol.refs {
+    font-size: 9pt;
+    line-height: 1.4;
+    padding-left: 18px;
+    margin: 6px 0 0 0;
+  }
+  ol.refs li {
+    margin-bottom: 5px;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-block">
+  <div class="course-tag">Graduate English Course Assignment &mdash; Research Direction Report</div>
+  <h1 class="title">Workload-Specific Physical Memory Efficiency and Bounded Page Reclamation for Dedicated Edge Computer Vision Inference</h1>
+  <table class="meta-grid">
+    <tr>
+      <td class="meta-label">Author</td>
+      <td>Erdeni Khatunov</td>
+      <td class="meta-label">Student ID</td>
+      <td>[Student ID]</td>
+    </tr>
+    <tr>
+      <td class="meta-label">Group</td>
+      <td>Individual Submission / [Group #]</td>
+      <td class="meta-label">Submission Date</td>
+      <td>November 20, 2026</td>
+    </tr>
+    <tr>
+      <td class="meta-label">Research Repo</td>
+      <td colspan="3"><code>r_sp_alloc</code> &mdash; Workload-Specific Memory Allocation for Dedicated Edge CV Systems</td>
+    </tr>
+  </table>
+</div>
+
+<div class="abstract-box">
+  <div class="abstract-title">Abstract</div>
+  Rising DRAM costs make physical memory a primary bottleneck for dedicated edge computer vision deployments such as multi-camera factory inspection and smart traffic monitoring. Yet general-purpose user-space allocators and inference runtime arenas are engineered with conservative retention policies designed for unpredictable general-purpose software, causing dedicated inference services to hold substantial idle physical memory across quiescent periods. This report introduces my research on workload-specific physical memory efficiency using fixed-shape FP32 YOLO26n inference on ONNX Runtime as an experimental platform. Building on recent analyses of user-kernel page-granularity mismatch (Fistanto et al., PLOS '26) and custom allocator trade-offs (van Kempen &amp; Berger, ISMM '26), we evaluate <code>PageReuseResource</code>, an out-of-band page-reclamation allocator paired with bounded pause-time retention (<code>purge_to_budget</code>). Across recent November 2026 commits, full pause-time purging cut idle private RAM by 71.1% but increased p99 tail latency by 11.1% due to resume page faults; adding a 24&nbsp;MiB free-page retention budget resolved that regression, achieving a 50.8%–50.9% idle private RAM reduction, 44.0%–44.3% estimated private byte-seconds savings, under 1% throughput difference, and a median burst p99 ratio of 1.0108 with zero numerical error.
+</div>
+
+<main id="main-body">
+
+<h2>1. Research Background and Motivation</h2>
+<p>
+Modern edge computing systems increasingly execute continuous deep-learning perception pipelines on compact, cost-constrained hardware nodes. Applications including automated optical defect inspection, warehouse robotics, and multi-stream roadside video analytics rely on dedicated single-purpose servers or embedded appliances where physical random-access memory (RAM) constitutes a substantial share of the hardware bill of materials. Amid persistently high DRAM prices and tightening memory-per-core budgets, maximizing the useful tensor payload held per megabyte of physical RAM directly governs how many concurrent camera pipelines a single edge node can host without resorting to swap space, lower-resolution inputs, or accuracy-degrading quantization.
+</p>
+<p>
+Despite the deterministic and repetitive memory behavior of dedicated inference pipelines, contemporary edge vision software runs atop general-purpose memory management stacks built for interactive, multi-tenant user workloads. System allocators such as GNU <code>glibc malloc</code>, <code>jemalloc</code> [5], <code>TCMalloc</code> [6], and <code>mimalloc</code> [4], together with runtime-specific arenas such as ONNX Runtime's Best-Fit with Coalescing (BFC) CPU allocator, incorporate thread-local caches, geometric chunk growth, deferred coalescing, and protective guardrails to prevent lock contention and reduce kernel system-call frequency under unpredictable allocation streams. While those mechanisms benefit multi-user servers, they create silent physical memory bloat in dedicated production systems: once intermediate tensor buffers are allocated during startup or peak bursts, user-space arenas retain the underlying virtual mappings indefinitely after frames complete, keeping backing 4&nbsp;KiB physical pages pinned in resident memory even when inference pipelines pause between triggered events.
+</p>
+<p>
+Recent systems literature clarifies why conventional user-space freeing fails to lower physical RAM usage. Fistanto, Tempel, and Dietrich [1] categorize the granularity mismatch between user-space allocator blocks and Linux 4&nbsp;KiB operating-system pages into four distinct regions: <em>sub-page</em> holes trapped inside partially occupied pages, unaligned <em>head</em> and <em>tail</em> holes adjacent to live allocations, and contiguous whole-page <em>body</em> holes that span one or more full pages and can be returned to the kernel via <code>madvise(..., MADV_DONTNEED)</code>. Importantly, their analysis highlights that merely merging free chunks in user space is insufficient unless completely empty page bodies are identified and unbacked, while noting that accumulated hole reductions do not automatically translate into equivalent reductions in total process resident set size (RSS) when persistent model weights and shared libraries dominate. Complementing that view, van Kempen and Berger [2] revisit the classic debate on custom versus general-purpose allocation [3], demonstrating in Section 2.2.2 that deferred region deallocation directly inflates live memory consumption and introducing adversarial preconditioning regimes (Adv1, Adv3, and Adv10 at target occupancies of 0.33, 0.66, and 0.80) to stress fragmentation resistance.
+</p>
+
+<h2>2. Key Research Problem and Objectives</h2>
+<p>
+The central problem addressed in this work is an acute latency-versus-residency dilemma in bursty dedicated edge computer vision workloads. In realistic smart-camera deployments, video streams frequently alternate between active inference bursts (triggered by motion or manufacturing triggers) and idle intervals where the ONNX Runtime session, weights, and caller-retained output tensors must remain alive in memory for immediate resumption. Under this operational profile, existing allocation strategies exhibit three unsatisfactory extremes:
+</p>
+<ul>
+  <li><strong>Unbounded Arena Retention (Default BFC):</strong> Retaining every allocated chunk indefinitely virtually eliminates minor page faults (only 2 faults across 120–1,000 frames) and minimizes tail latency jitter, but traps roughly 119&nbsp;MiB of private physical RAM per single-camera session and over 390&nbsp;MiB across four live camera sessions, leaving allocator-local payload utilization as low as 20.8%.</li>
+  <li><strong>Per-Frame Aggressive Trimming (<code>direct_trim</code> / <code>direct_every</code>):</strong> Bypassing the CPU arena and invoking <code>malloc_trim(0)</code> after every frame drastically lowers idle private RAM (to ~34.2&nbsp;MiB), but forces the kernel to zero-fill and re-fault pages continuously, producing over 1.09&nbsp;million minor page faults per 120 frames and cutting throughput from 6.33–6.46&nbsp;FPS down to 5.63–5.83&nbsp;FPS.</li>
+  <li><strong>Full Pause-Boundary Purging (<code>pool_idle</code>, 0&nbsp;MiB budget):</strong> Retaining buffers within active bursts and discarding all free page bodies upon entering an idle pause narrows throughput loss to roughly 1.5%, yet leaves zero warm working-set pages for the first frame after sleep, triggering burst-resume fault spikes that degrade p99 tail latency by 11.1%.</li>
+</ul>
+<p>
+To resolve this trade-off rigorously without sacrificing prediction fidelity, our research defines four strict acceptance criteria documented prior to experimentation in the repository protocol: (1) <strong>exact numerical correctness</strong>, requiring zero absolute error (<code>max_abs_error == 0</code>) across all complete FP32 output tensors as well as caller-retained outputs kept alive across subsequent frames; (2) <strong>live-session physical RAM measurement</strong> via Linux <code>mincore()</code> and <code>/proc/self/smaps_rollup</code> rather than virtual reservations or teardown-only snapshots; (3) <strong>at least 50% idle private RAM reduction</strong> relative to default BFC alongside lower time-integrated private byte-seconds; and (4) <strong>bounded performance impact</strong>, preserving at least 97% of continuous BFC throughput (&le;3% loss) and keeping median burst p99 latency within an assumed 5% research materiality threshold (ratio &le;1.05).
+</p>
+
+<h2>3. Research Methodology and System Architecture</h2>
+<h3>3.1 Experimental Workload and Bare-Metal Environment</h3>
+<p>
+All recent experiments evaluate a fixed-shape <code>640&times;640</code> FP32 <strong>YOLO26n</strong> object-detection model [7] executed on ONNX Runtime's CPU Execution Provider with full graph optimizations enabled, memory pattern planning preserved, and single-thread intra/inter-op settings per session. Experiments run on a bare-metal CloudLab testbed (<code>Intel Xeon D-1548 @ 2.00&nbsp;GHz</code>, Broadwell-DE, 8 cores / 16 hardware threads, 12&nbsp;MiB L3 cache, 64&nbsp;GiB DRAM) running Ubuntu Linux (kernel <code>6.8.0-147-generic</code>, <code>g++ 13.3.0</code>) with 4&nbsp;KiB base pages, Transparent Huge Pages disabled (<code>[never]</code>), and CPU frequency scaling locked to the <code>performance</code> governor. Single-stream runs are pinned to CPU core 2 via <code>sched_setaffinity</code>, whereas four-camera runs pin workers across cores 0–3. Every accepted benchmark binary verifies complete FP32 outputs against saved BFC reference tensors for eight distinct deterministic inputs.
+</p>
+
+<h3>3.2 PageReuseResource and Bounded Pause Retention</h3>
+<p>
+To inspect and control the boundary between user-space reuse and kernel page residency, we implemented <code>PageReuseResource</code> (<code>page_reuse_resource.hpp</code>) and registered it as a custom <code>OrtAllocator</code>. Each pool reserves 256&nbsp;MiB of anonymous virtual address space via <code>mmap</code> (reported separately and never conflated with physical consumption) and serves requests aligned to 64&nbsp;bytes, matching ONNX Runtime's tensor alignment requirement rather than over-aligning every small allocation to 4&nbsp;KiB. Crucially, all allocator tracking structures—a <code>live_</code> map recording requested and rounded sizes and a <code>free_</code> map storing contiguous hole offsets—are stored <em>outside</em> the purgeable mapping so metadata pages are never evicted.
+</p>
+<p>
+Upon tensor deallocation, <code>PageReuseResource</code> inserts the freed interval and performs eager two-sided coalescing with neighboring free ranges before servicing subsequent allocations via best-fit search. At reclamation boundaries, the pool intersects free intervals with 4&nbsp;KiB page boundaries (Figure&nbsp;1A). Partial pages containing live tensors or caller-retained outputs (<code>sub-page</code>, <code>head</code>, and <code>tail</code> regions) are never passed to <code>madvise</code>. To verify physical accounting conservation, the built-in <code>sample()</code> routine invokes <code>mincore()</code> across the entire mapping and asserts the exact invariant <code>resident == resident_payload + resident_body + resident_head + resident_tail + resident_sub</code>.
+</p>
+
+<figure>
+  <img src="figures/fig1_architecture_holes.png" alt="Architecture of PageReuseResource and evolution of pause-boundary reclamation policies">
+  <figcaption>
+    <strong>Figure 1.</strong> (A) Mapping between user-space allocations, caller-retained outputs, and 4&nbsp;KiB OS pages inside <code>PageReuseResource</code>, illustrating Fistanto et al.'s [1] hole taxonomy and out-of-band metadata isolation. (B) Progression across commits <code>c9828c5</code> and <code>1fd7ede</code> from unbounded BFC retention to full pause purging (<code>0&nbsp;MiB</code>) and bounded retention (<code>24&nbsp;MiB</code>).
+  </figcaption>
+</figure>
+
+<p>
+Across the last two repository commits, this architecture evolved through two disciplined methodological iterations (Figure&nbsp;1B):
+</p>
+<ol style="margin: 4px 0 8px 18px; padding: 0;">
+  <li style="margin-bottom: 4px;"><strong>Repeatability Audit &amp; Activity-Aware Pause Purging (Commit <code>c9828c5</code>, Nov 9, 2026):</strong> First, a 46-run randomized rerun (<code>recheck_validation.py</code>) verified earlier baseline utilization results. Second, a dedicated harness (<code>activity_bench.cpp</code>) modeled bursty camera operation (10 warmup frames followed by 120 measured frames interrupted by scheduled 1-second pauses) and separated active inference/deallocation timing from reference verification, <code>/proc</code> snapshots, and pause reclamation overhead. At each scheduled pause, <code>pool_idle</code> purged all free page bodies (0&nbsp;MiB budget).</li>
+  <li style="margin-bottom: 4px;"><strong>Bounded Free-Page Retention &amp; Pre-Registered Protocol (Commit <code>1fd7ede</code>, Nov 19, 2026):</strong> To eliminate cold-start minor page faults when inference bursts resume, we added <code>purge_to_budget(size_t budget)</code>. At pause entry, the allocator calls <code>mincore()</code> across the pool, leaves up to <code>budget</code> bytes of already-resident completely free 4&nbsp;KiB pages intact to warm the next active burst, and invokes <code>MADV_DONTNEED</code> only on excess resident free pages. Under a frozen experimental protocol (<code>PROTOCOL.md</code>), candidate budgets of 0, 8, 16, and 24&nbsp;MiB were screened once against BFC; the best candidate meeting the &le;50% idle RAM cutoff (24&nbsp;MiB) was frozen prior to running five balanced fresh-process pairs in both continuous and 10-frame burst regimes, a 1,000-frame endurance run (100 pauses), and a five-block shuffled 30-frame burst sensitivity check.</li>
+</ol>
+
+<h2>4. Experimental Evaluation and Recent Progress</h2>
+
+<h3>4.1 Baseline Physical Utilization and Multi-Camera Repeatability</h3>
+<p>
+To ground the recent commits against conventional allocators, Table&nbsp;1 summarizes the live-session physical memory measurements across single-stream (60 measured frames after 10 warmup frames) and four-camera concurrent runs (30 measured + 5 warmup frames per worker) from the initial utilization campaign and its 46-run randomized confirmatory rerun in commit <code>c9828c5</code>. Disabling ONNX Runtime's CPU arena and trimming glibc pages (<code>direct_trim</code>) reduced single-stream median active peak RSS from 122.86&nbsp;MiB (default BFC) to 73.39&nbsp;MiB (&minus;40.27%) and lowered live-session idle private memory from 119.06&nbsp;MiB to 34.20&nbsp;MiB. Importantly, the custom <code>pool_eager_trim</code> policy matched this footprint closely (73.74&nbsp;MiB active peak, +0.48% relative to <code>direct_trim</code>; 34.43&nbsp;MiB idle private RAM) without claiming single-stream peak superiority over tuned glibc trimming, while offering lower startup peak RSS (73.50 vs. 78.99&nbsp;MiB) and a modest edge in four-camera live idle private memory (88.05 vs. 90.50&nbsp;MiB, compared with 390.80&nbsp;MiB for trimmed BFC).
+</p>
+<p>
+Inside the custom pool mapping itself, eager coalescing and whole-page purging raised allocator-local idle payload utilization from 20.7955% (<code>pool_retain_trim</code>, which trapped 35.61&nbsp;MiB in 37.34&nbsp;MiB of resident free-body waste) to 99.9903% (0&nbsp;B free bodies, 952&nbsp;B total resident waste across 9.35&nbsp;MiB of outstanding ORT requests). As recorded in the validation reports, this 99.99% metric strictly characterizes allocator-owned virtual mappings rather than whole-process RAM. Additionally, single-run synthetic preconditioning tests adapted from ISMM '26 (Adv1/3/10 at 0.33/0.66/0.80 occupancy) showed four-camera idle private RAM remaining at 88.76–106.89&nbsp;MiB under <code>pool_eager_trim</code> versus 390.68–409.09&nbsp;MiB under <code>bfc_trim</code>.
+</p>
+
+<div class="table-wrap">
+  <div class="table-caption">Table 1. Live-session physical memory footprint across allocators (median [min, max] in MiB, 5 fresh processes per configuration).</div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Regime &amp; Policy</th>
+        <th class="num">Startup Peak RSS</th>
+        <th class="num">Active Peak RSS</th>
+        <th class="num">Live Idle Private</th>
+        <th class="num">Recheck Active Peak</th>
+        <th class="num">Recheck Idle Private</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Single: <code>bfc</code> (default)</td>
+        <td class="num">122.86 [122.66, 123.16]</td>
+        <td class="num">122.86 [122.66, 123.16]</td>
+        <td class="num">119.06 [118.97, 119.36]</td>
+        <td class="num">122.77 [122.67, 123.16]</td>
+        <td class="num">118.96</td>
+      </tr>
+      <tr>
+        <td>Single: <code>bfc_trim</code></td>
+        <td class="num">113.83 [113.44, 114.05]</td>
+        <td class="num">113.83 [113.44, 114.05]</td>
+        <td class="num">110.03 [109.64, 110.35]</td>
+        <td class="num">113.45 [113.42, 113.84]</td>
+        <td class="num">109.65</td>
+      </tr>
+      <tr>
+        <td>Single: <code>direct_jemalloc</code></td>
+        <td class="num">96.14 [95.15, 99.59]</td>
+        <td class="num">95.20 [88.60, 99.41]</td>
+        <td class="num">35.84 [35.79, 35.86]</td>
+        <td class="num">&mdash;</td>
+        <td class="num">&mdash;</td>
+      </tr>
+      <tr>
+        <td>Single: <code>direct_mimalloc</code></td>
+        <td class="num">91.07 [86.52, 107.09]</td>
+        <td class="num">78.14 [77.93, 78.50]</td>
+        <td class="num">38.87 [38.86, 39.24]</td>
+        <td class="num">&mdash;</td>
+        <td class="num">&mdash;</td>
+      </tr>
+      <tr>
+        <td>Single: <code>direct_trim</code></td>
+        <td class="num">78.99 [78.86, 79.04]</td>
+        <td class="num">73.39 [73.13, 73.40]</td>
+        <td class="num">34.20 [34.18, 34.21]</td>
+        <td class="num">73.27 [73.12, 73.39]</td>
+        <td class="num">34.20</td>
+      </tr>
+      <tr class="highlight">
+        <td>Single: <code>pool_eager_trim</code></td>
+        <td class="num">73.50 [73.38, 73.69]</td>
+        <td class="num">73.74 [73.49, 73.80]</td>
+        <td class="num">34.43 [34.41, 34.43]</td>
+        <td class="num">73.62 [73.61, 73.74]</td>
+        <td class="num">34.42</td>
+      </tr>
+      <tr>
+        <td>4-Cam: <code>bfc_trim</code></td>
+        <td class="num">&mdash;</td>
+        <td class="num">394.66 [393.50, 395.18]</td>
+        <td class="num">390.80 [389.65, 391.31]</td>
+        <td class="num">394.04 [393.67, 394.89]</td>
+        <td class="num">390.16</td>
+      </tr>
+      <tr>
+        <td>4-Cam: <code>direct_trim</code></td>
+        <td class="num">&mdash;</td>
+        <td class="num">236.51 [236.45, 236.62]</td>
+        <td class="num">90.50 [90.39, 90.54]</td>
+        <td class="num">236.27 [228.76, 236.59]</td>
+        <td class="num">90.42</td>
+      </tr>
+      <tr class="highlight">
+        <td>4-Cam: <code>pool_eager_trim</code></td>
+        <td class="num">&mdash;</td>
+        <td class="num">234.09 [233.81, 234.15]</td>
+        <td class="num">88.05 [88.02, 88.07]</td>
+        <td class="num">233.85 [222.69, 234.04]</td>
+        <td class="num">87.95</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-note">Sources: <code>UTILIZATION_REPORT.md</code> (commit <code>20dc7b8</code>) and <code>RECHECK_REPORT.md</code> (commit <code>c9828c5</code>). All outputs matched BFC FP32 references bit-exactly (<code>max_abs_error = 0</code>).</div>
+</div>
+
+<h3>4.2 Intermediate Outcome: Full Pause-Boundary Purging (Commit <code>c9828c5</code>)</h3>
+<p>
+In commit <code>c9828c5</code>, five fresh-process burst repetitions (120 frames, 30-frame bursts, four 1-second pauses) directly compared <code>bfc</code> against <code>pool_idle</code> (full pause purge). Whereas <code>pool_idle</code> reduced median idle private RAM by 71.1% (from 118.703 to 34.344&nbsp;MiB) and cut estimated private byte-seconds by 43.6% (from 2.830&times;10<sup>9</sup> to 1.597&times;10<sup>9</sup>&nbsp;B&middot;s) with only a 1.5% active throughput reduction (6.308 vs. 6.405&nbsp;FPS), purging every free page caused ~27,368 minor faults across four pauses and pushed median p99 latency from 268.918&nbsp;ms to 298.870&nbsp;ms (+11.1%). Because this violated the &le;5% p99 latency gate, full purging was explicitly recorded as failing latency acceptance, motivating bounded retention.
+</p>
+
+<h3>4.3 Bounded Page Retention Screening, Confirmation, and Endurance (Commit <code>1fd7ede</code>)</h3>
+<p>
+Commit <code>1fd7ede</code> introduced <code>purge_to_budget()</code> and executed the pre-registered screening sweep over 0, 8, 16, and 24&nbsp;MiB free-page retention budgets under 10-frame bursts and 1-second pauses (Figure&nbsp;2). Raising the retention budget linearly decreased minor page faults by 67.3%&mdash;from 100,517 faults at 0&nbsp;MiB down to 77,965 at 8&nbsp;MiB, 55,427 at 16&nbsp;MiB, and 32,918 at 24&nbsp;MiB&mdash;while lowering pause reclamation overhead from 27.87&nbsp;ms to 11.75&nbsp;ms total across 12 pauses and reducing p99 latency from 311.81&nbsp;ms to 306.88&nbsp;ms. Because 24&nbsp;MiB achieved the lowest p99 latency among candidates keeping idle private memory under 50% of BFC (58.34&nbsp;MiB vs. 118.79&nbsp;MiB, ratio 0.4911), 24&nbsp;MiB was frozen for paired confirmation.
+</p>
+
+<figure>
+  <img src="figures/fig2_bounded_screening.png" alt="Screening sweep of 0, 8, 16, and 24 MiB bounded retention budgets versus BFC">
+  <figcaption>
+    <strong>Figure 2.</strong> Screening comparison across BFC and <code>pool_idle</code> budgets of 0, 8, 16, and 24&nbsp;MiB (120 frames, 10-frame bursts, twelve 1&nbsp;s pauses). Raising the budget to 24&nbsp;MiB cuts minor page faults by 67% relative to full purging while keeping idle private RAM below the 50% BFC cutoff (59.40&nbsp;MiB).
+  </figcaption>
+</figure>
+
+<p>
+Table&nbsp;2 and Figure&nbsp;3 present the confirmed paired ratios across five fresh processes per regime alongside the 1,000-frame endurance evaluation (100 scheduled 1-second pauses). In the confirmed 10-frame burst suite, the 24&nbsp;MiB bounded pool cut idle private RAM to a median ratio of 0.4916 (&minus;50.8%) and estimated private byte-seconds to 0.5604 (&minus;44.0%), while holding active FPS at 0.9947, resume median latency at 1.0321, and burst p99 latency at 1.0108 (well inside the 1.05 gate). Under continuous operation without pauses, FPS held at a 0.9977 ratio; every prespecified median acceptance gate passed. Over 1,000 endurance frames, 24&nbsp;MiB retention maintained 58.37&nbsp;MiB idle private RAM versus 118.79&nbsp;MiB for BFC (&minus;50.9%), reduced cumulative private byte-seconds from 33.95 to 18.91&nbsp;GB&middot;s (&minus;44.3%), and sustained 5.751 versus 5.796 active FPS (&minus;0.8%) with 290.87 versus 277.87&nbsp;ms p99 (+4.7%) and only 95.47&nbsp;ms total pause reclamation overhead across 100 pauses (&lt;1&nbsp;ms per pause).
+</p>
+
+<div class="table-wrap">
+  <div class="table-caption">Table 2. Confirmed paired ratios (24 MiB Bounded / BFC, n=5 pairs per regime) and 1,000-frame endurance metrics (commit <code>1fd7ede</code>).</div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Experiment / Regime</th>
+        <th>Metric</th>
+        <th class="num">Median Ratio (or 24 MiB)</th>
+        <th class="num">Min (or BFC)</th>
+        <th class="num">Max (or &Delta;)</th>
+        <th>Gate Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Continuous (no pause)</td>
+        <td>Active FPS ratio</td>
+        <td class="num">0.9977</td>
+        <td class="num">0.9794</td>
+        <td class="num">1.0107</td>
+        <td>PASS (&ge; 0.97)</td>
+      </tr>
+      <tr>
+        <td>Continuous (no pause)</td>
+        <td>p99 latency ratio</td>
+        <td class="num">1.0182</td>
+        <td class="num">0.9895</td>
+        <td class="num">1.2737</td>
+        <td>Diagnostic (high max dispersion)</td>
+      </tr>
+      <tr>
+        <td>Burst (10f, 1&nbsp;s pause)</td>
+        <td>Active FPS ratio</td>
+        <td class="num">0.9947</td>
+        <td class="num">0.9892</td>
+        <td class="num">1.0068</td>
+        <td>Diagnostic</td>
+      </tr>
+      <tr class="highlight">
+        <td>Burst (10f, 1&nbsp;s pause)</td>
+        <td>p99 latency ratio</td>
+        <td class="num">1.0108</td>
+        <td class="num">0.9359</td>
+        <td class="num">1.0362</td>
+        <td>PASS (&le; 1.05)</td>
+      </tr>
+      <tr class="highlight">
+        <td>Burst (10f, 1&nbsp;s pause)</td>
+        <td>Idle private RAM ratio</td>
+        <td class="num">0.4916</td>
+        <td class="num">0.4896</td>
+        <td class="num">0.4918</td>
+        <td>PASS (&le; 0.50)</td>
+      </tr>
+      <tr class="highlight">
+        <td>Burst (10f, 1&nbsp;s pause)</td>
+        <td>Est. private byte-seconds ratio</td>
+        <td class="num">0.5604</td>
+        <td class="num">0.5537</td>
+        <td class="num">0.5626</td>
+        <td>PASS (&lt; 1.00)</td>
+      </tr>
+      <tr>
+        <td>Burst (10f, 1&nbsp;s pause)</td>
+        <td>Resume median latency ratio</td>
+        <td class="num">1.0321</td>
+        <td class="num">1.0167</td>
+        <td class="num">1.0334</td>
+        <td>Diagnostic (+3.2%)</td>
+      </tr>
+      <tr>
+        <td>Sensitivity (30f burst)</td>
+        <td>0 MiB: p99 / Idle private ratio</td>
+        <td class="num">1.0500 / 0.2891</td>
+        <td class="num">0.9945 / 0.2884</td>
+        <td class="num">1.1473 / 0.2897</td>
+        <td>Borderline p99 median</td>
+      </tr>
+      <tr>
+        <td>Sensitivity (30f burst)</td>
+        <td>24 MiB: p99 / Idle private ratio</td>
+        <td class="num">1.0474 / 0.4912</td>
+        <td class="num">0.9184 / 0.4899</td>
+        <td class="num">1.1541 / 0.4918</td>
+        <td>Median PASS (dispersion noted)</td>
+      </tr>
+      <tr class="highlight">
+        <td>Endurance (1,000f, 100 pauses)</td>
+        <td>Idle Private (MiB) / p99 (ms) / FPS</td>
+        <td class="num">58.37 / 290.87 / 5.751</td>
+        <td class="num">118.79 / 277.87 / 5.796</td>
+        <td class="num">&minus;50.9% / +4.7% / &minus;0.8%</td>
+        <td>0 error; 296,226 vs 2 faults</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-note">Source: <code>first_steps/bench/utilization/results/bounded/REPORT.md</code> and raw JSON logs. Endurance reclamation took 95.47&nbsp;ms total across 100 pauses (24&nbsp;MiB) vs. 0.03&nbsp;ms (BFC).</div>
+</div>
+
+<figure>
+  <img src="figures/fig3_confirmation_endurance.png" alt="Confirmed paired ratios and 1000-frame endurance comparison">
+  <figcaption>
+    <strong>Figure 3.</strong> (A) Paired 24&nbsp;MiB / BFC ratios across five fresh processes per regime showing individual trials, min-max ranges, medians, and prespecified acceptance gates. (B) 1,000-frame endurance comparison across 100 scheduled pauses, confirming sustained ~51% idle private RAM savings with 99.2% active FPS retention.
+  </figcaption>
+</figure>
+
+<h2>5. Research Significance, Limitations, and Future Work</h2>
+<p>
+From a practical engineering standpoint, these findings show that dedicated edge vision systems do not need to sacrifice numerical accuracy or continuous throughput to overcome expensive DRAM limits. Simply replacing default unbounded inference arenas with tuned conventional trimming recovers ~40% of single-stream active peak RSS, while pairing a coalescing page-aware pool with bounded pause retention halves idle physical RAM residency across quiescent intervals without triggering the severe tail-latency regressions seen under naive zero-retention purging. In multi-camera edge deployments&mdash;where our four-session baseline demonstrated an idle private memory reduction from 390.80&nbsp;MiB down to 88.05&nbsp;MiB&mdash;reclaiming excess free page bodies allows denser workload co-location and extends the operational headroom of existing 4&nbsp;GiB or 8&nbsp;GiB edge nodes.
+</p>
+<p>
+Equally important is the methodological contribution established in the repository. By measuring physical page residency directly via <code>mincore()</code>, checking complete and caller-retained FP32 tensors on every frame, isolating telemetry costs from active inference timings, and preserving negative intermediate results (such as the 11.1% p99 regression under full pause purging in commit <code>c9828c5</code>), this workflow prevents the false positives common when allocator studies rely solely on teardown metrics or virtual address space accounting.
+</p>
+<p>
+At the same time, several scope limitations bound the current claims and define concrete directions for subsequent research:
+</p>
+<ul>
+  <li><strong>Explicit Pause Signals vs. Automatic Idle Detection:</strong> The current bounded-retention prototype relies on explicit scheduled pause callbacks inside the harness rather than an autonomous runtime activity detector or OS memory-pressure feedback loop.</li>
+  <li><strong>Single-Stream, Single-Model Scope:</strong> Bounded retention (<code>24&nbsp;MiB</code>) is validated here on a single fixed-shape <code>640&times;640</code> FP32 YOLO26n pipeline pinned to one Broadwell-DE Xeon D-1548 node with 4&nbsp;KiB pages. Staggered multi-camera burst scheduling, dynamic input resolutions, real OS memory pressure, and newer ARM or x86 microarchitectures remain to be evaluated.</li>
+  <li><strong>Measurement Assumptions and Trial Dispersion:</strong> The <code>estimated_private_byte_seconds</code> metric integrates private residency sampled at frame boundaries and can undercount sub-frame transient peaks, while the 5% p99 threshold represents an assumed research margin. Individual trials still exhibited tail variance (reaching 1.2737 continuously and 1.1541 in 30-frame bursts), warranting deeper investigation into OS fault-path jitter and selective pre-faulting upon burst resumption.</li>
+</ul>
+
+</main>
+
+<div class="refs-section">
+  <h2>References</h2>
+  <ol class="refs">
+    <li>Fistanto, P., Tempel, S., &amp; Dietrich, C. (2026). Lost Bytes At The Crossroads Between User-And Kernel-Level Memory Management. <em>Proceedings of the 14th Workshop on Programming Languages and Operating Systems (PLOS '26)</em>, ACM. https://doi.org/10.1145/3831586.3838144</li>
+    <li>van Kempen, N., &amp; Berger, E. D. (2026). Reconsidering &ldquo;Reconsidering Custom Memory Allocation&rdquo;. <em>Proceedings of the 2026 ACM SIGPLAN International Symposium on Memory Management (ISMM '26)</em>, pp. 14&ndash;24, ACM. https://doi.org/10.1145/3814942.3816132</li>
+    <li>Berger, E. D., Zorn, B. G., &amp; McKinley, K. S. (2002). Reconsidering Custom Memory Allocation. <em>Proceedings of the 17th ACM SIGPLAN Conference on Object-Oriented Programming, Systems, Languages, and Applications (OOPSLA '02)</em>, pp. 1&ndash;12, ACM. https://doi.org/10.1145/582419.582421</li>
+    <li>Leijen, D., Zorn, B., &amp; de Moura, L. (2019). Mimalloc: Free List Sharding in Action. <em>Asian Symposium on Programming Languages and Systems (APLAS '19)</em>, pp. 244&ndash;265, Springer.</li>
+    <li>Evans, J. (2006). A Scalable Concurrent Malloc(3) Implementation for FreeBSD. <em>BSDCan Conference</em>.</li>
+    <li>Ghemawat, S., &amp; Menage, P. (2005). TCMalloc: Thread-Caching Malloc. <em>Google Open Source Documentation</em>.</li>
+    <li>Jocher, G., Chaurasia, A., &amp; Ultralytics Team (2026). YOLO26: High-Performance Real-Time Object Detection with NMS-Free End-to-End Latency. <em>arXiv preprint arXiv:2606.03748</em>.</li>
+  </ol>
+</div>
+
+</body>
+</html>
