@@ -35,9 +35,8 @@ For literature details or historical failures, read [context/PAPERS.md](context/
 
 ## 3. Platform Split & Build Reality
 
-- **Local host (macOS arm64):** Used for code edits, static inspection, Python analysis/plotting, and `scripts/research/*.py` checks.
-- **Experiment host (CloudLab `m510` Linux `x86_64`):** Intel Xeon D-1548 (8c/16t, 64 GiB DRAM), Ubuntu Linux `6.8.0-147-generic`, 4 KiB pages, THP `[never]`, ONNX Runtime `1.20.1` x86_64.
-- **Do NOT waste time running local `clangd` / Linux C++ builds on macOS:** Active benchmarks use Linux-only headers (`<malloc.h>`, `<sched.h>`, `mincore`, `cpu_set_t`). Run C++ builds, ASan/UBSan (`resource_test.cpp`), and benchmarks only on CloudLab Linux.
+- **Local host (MacBook Pro Apple M2 Pro, macOS arm64, `16 KiB` pages, Homebrew `onnxruntime 1.32.0`):** Supports native ASan/UBSan allocator tests (`resource_test.cpp`, `auto_idle_test.cpp`) and single-stream `auto_idle_bench.cpp` experiments (`PageReuseResource` uses `mmap(MAP_FIXED)` on `__APPLE__` because XNU `MADV_DONTNEED` is a no-op on `phys_footprint`). Note: `core_pinned=false` on macOS.
+- **Linux reference host (CloudLab `m510` Linux `x86_64`, `4 KiB` pages):** Intel Xeon D-1548 (8c/16t, 64 GiB DRAM), Ubuntu Linux `6.8.0-147-generic`, THP `[never]`, ONNX Runtime `1.20.1` x86_64. Required for `utilization_bench.cpp` / `activity_bench.cpp` (`sched_setaffinity`, `/proc/self/smaps_rollup`, `MADV_DONTNEED`) and final Linux replication. Keep macOS and CloudLab results in separate `EVIDENCE.json` entries.
 
 ---
 

@@ -38,11 +38,29 @@ class PageReuseResource {
         const size_t begin = round_up(start, page_);
         const size_t end = (start + length) / page_ * page_;
         if (begin < end) {
+#ifdef __APPLE__
+            // XNU MADV_DONTNEED does not drop phys_footprint or mincore residency;
+            // MAP_FIXED anonymous remap unbacks pages immediately while preserving neighbors.
+            void* p = mmap(base_ + begin, end - begin, PROT_READ | PROT_WRITE,
+                           MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
+            if (p == MAP_FAILED) throw std::runtime_error("mmap MAP_FIXED discard failed");
+#else
             if (madvise(base_ + begin, end - begin, MADV_DONTNEED) != 0)
                 throw std::runtime_error("madvise failed");
+#endif
             advised_bytes += end - begin;
             ++advice_calls;
         }
+    }
+
+    void query_residency(std::vector<unsigned char>& residency) const {
+        residency.assign(capacity_ / page_, 0);
+#ifdef __APPLE__
+        int rc = mincore(base_, capacity_, reinterpret_cast<char*>(residency.data()));
+#else
+        int rc = mincore(base_, capacity_, residency.data());
+#endif
+        if (rc != 0) throw std::runtime_error("mincore failed");
     }
 
 public:
@@ -53,8 +71,8 @@ public:
                                size_t capacity = 256ull * 1024 * 1024)
         : capacity_(capacity), page_(static_cast<size_t>(sysconf(_SC_PAGESIZE))),
           alignment_(alignment), eager_(eager) {
-        if (page_ != 4096 || (alignment_ != 64 && alignment_ != page_))
-            throw std::runtime_error("This experiment requires 4 KiB pages and 64/4096-byte alignment");
+        if ((page_ != 4096 && page_ != 16384) || (alignment_ != 64 && alignment_ != page_))
+            throw std::runtime_error("This experiment requires 4/16 KiB pages and 64/page-byte alignment");
         capacity_ = round_up(capacity_, page_);
         void* p = mmap(nullptr, capacity_, PROT_READ | PROT_WRITE,
                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
@@ -112,13 +130,14 @@ public:
         if (eager_) discard(offset, length);
     }
 
+    size_t page_size() const { return page_; }
+
     void purge() { for (const auto& [offset, length] : free_) discard(offset, length); }
 
     // Keep at most budget bytes of resident, wholly free pages at pause entry.
     void purge_to_budget(size_t budget) {
-        std::vector<unsigned char> residency(capacity_ / page_);
-        if (mincore(base_, capacity_, residency.data()) != 0)
-            throw std::runtime_error("mincore failed");
+        std::vector<unsigned char> residency;
+        query_residency(residency);
         size_t remaining = budget / page_;
         for (const auto& [offset, length] : free_) {
             size_t begin = round_up(offset, page_) / page_;
@@ -135,8 +154,8 @@ public:
         PageAccounting s;
         s.reserved = capacity_;
         s.live_requested = live_bytes;
-        std::vector<unsigned char> residency(capacity_ / page_);
-        if (mincore(base_, capacity_, residency.data()) != 0) throw std::runtime_error("mincore failed");
+        std::vector<unsigned char> residency;
+        query_residency(residency);
         for (auto v : residency) if (v & 1) s.resident += page_;
         auto resident_intersection = [&](size_t start, size_t end) {
             size_t bytes = 0;

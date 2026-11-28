@@ -29,12 +29,13 @@ For exact per-claim evidence links and scope limits, see [context/EVIDENCE.md](c
 
 ## Repository Layout
 
-- **Active Research Frontier:** [first_steps/bench/utilization/](first_steps/bench/utilization/) (`page_reuse_resource.hpp`, `utilization_bench.cpp`, `activity_bench.cpp`, `run_bounded.py`)
-- **Research Intelligence & Context:** [context/](context/) (`STATE.md`, `EVIDENCE.md`, `EVIDENCE.json`, `CODE_INDEX.md`, `PAPERS.md`, `HISTORY_AND_DECISIONS.md`)
-- **Verification & Experiment Scripts:** [scripts/research/](scripts/research/)
+- **Active Research Frontier:** [first_steps/bench/utilization/](first_steps/bench/utilization/) (`page_reuse_resource.hpp`, `idle_reclaimer.hpp`, `auto_idle_bench.cpp`, `multicam_staggered_bench.cpp`, `stochastic_ski_bench.cpp`, `activity_bench.cpp`, `run_bounded.py`)
+- **Research Intelligence & Context:** [context/](context/) (`STATE.md`, `EVIDENCE.md`, `EVIDENCE.json`, `THEORY_VERIFICATION.json`, `CODE_INDEX.md`, `PAPERS.md`, `HISTORY_AND_DECISIONS.md`)
+- **Verification & Experiment Scripts:** [scripts/research/](scripts/research/) (`check_state.py`, `verify_theory.py`, `validate_run.py`, `reindex.py`)
 - **Agent Workflows & Guard Hook:** [.agents/](.agents/)
+- **Synced Paper (Nov 28):** [first_steps/paper/latex/main.tex](first_steps/paper/latex/main.tex), [first_steps/paper/latex/main.pdf](first_steps/paper/latex/main.pdf), [first_steps/paper/overleaf_paper_bundle.zip](first_steps/paper/overleaf_paper_bundle.zip), and [first_steps/paper/MANUSCRIPT.md](first_steps/paper/MANUSCRIPT.md)
 - **Synced Assignment Report (Nov 19):** [assignment/latex/main.tex](assignment/latex/main.tex) and [assignment/GE6001-03300-M03_Erdeni_Khatunov.pdf](assignment/GE6001-03300-M03_Erdeni_Khatunov.pdf)
-- **Archived / Stale:** [first_steps/paper/MANUSCRIPT.md](first_steps/paper/MANUSCRIPT.md) (stale Oct 15/19 draft), [results/cloudlab_20261021/](results/cloudlab_20261021/) (Oct 21 CloudLab baseline), `first_steps/bench/approach_01..06/`
+- **Archived / Historical:** [results/cloudlab_20261021/](results/cloudlab_20261021/) (Oct 21 CloudLab baseline), `first_steps/bench/approach_01..06/`
 
 ## Building Active Benchmarks (Linux CloudLab Only)
 

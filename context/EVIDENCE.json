@@ -214,16 +214,140 @@
       ]
     },
     {
-      "id": "E10_stale_oct19_manuscript",
-      "title": "Legacy Pre-CloudLab Manuscript & Figures (Oct 15/19)",
-      "status": "STALE_DRAFT",
-      "commit": "955b5f8",
+      "id": "E10_paper_manuscript_nov28",
+      "title": "Camera-Ready ACM Sigconf Paper, Overleaf Bundle & Theorems 1-5 Verification",
+      "status": "SYNCED_NOV28_FINAL",
+      "commit": "UNCOMMITTED_LOCAL",
       "report_path": "first_steps/paper/MANUSCRIPT.md",
       "raw_files": [
-        "first_steps/paper/latex/main.tex"
+        "first_steps/paper/latex/main.tex",
+        "first_steps/paper/latex/main.pdf",
+        "first_steps/paper/overleaf_paper_bundle.zip",
+        "context/THEORY_VERIFICATION.json"
       ],
-      "scope_limits": "SUPERSEDED: Contains pre-CloudLab DynAlloc claims, 18,842 FPS, hardcoded 0.0 KB trapped DRAM, and wrong 2023/2024 citations. Never cite as current evidence; see assignment/latex/main.tex instead.",
-      "checks": []
+      "scope_limits": "Synced Nov 28 final paper covering Theorems 1-5, CloudLab m510 (4 KiB), and Apple M2 Pro (16 KiB, 181 validated runs). CloudLab replication of auto_idle_bench, multicam_staggered_bench, and stochastic_ski_bench remains pending.",
+      "checks": [
+        {"type": "value", "file": "context/THEORY_VERIFICATION.json", "key": "all_passed", "expected": true, "tol": 0}
+      ]
+    },
+    {
+      "id": "E11_macbook_m2pro_auto_idle_screening",
+      "title": "Apple M2 Pro (16 KiB Pages) Autonomous Idle-Detector Screening",
+      "status": "SCREENING",
+      "commit": "UNCOMMITTED_LOCAL",
+      "report_path": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_-1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_0.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_8.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_16.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_24.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_32.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/selection.txt"
+      ],
+      "scope_limits": "Apple M2 Pro / macOS Darwin 25.6.0 / 16 KiB pages / ORT 1.32.0 / core_pinned=false. Single shuffled run per budget (120 frames, 10-frame bursts, 1 s pauses) freezing 0 MiB budget.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_*.json", "key": "max_abs_error"},
+        {"type": "value", "file": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_-1.json", "key": "idle_private_bytes", "scale": 9.5367431640625e-07, "expected": 106.02, "tol": 0.02},
+        {"type": "value", "file": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_0.json", "key": "idle_private_bytes", "scale": 9.5367431640625e-07, "expected": 42.31, "tol": 0.02},
+        {"type": "value", "file": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_0.json", "key": "false_reclaims", "expected": 0, "tol": 0}
+      ]
+    },
+    {
+      "id": "E12_macbook_m2pro_auto_idle_confirm",
+      "title": "Apple M2 Pro Autonomous Idle-Detector Confirmation (Continuous, Burst, Mixed)",
+      "status": "VALIDATED",
+      "commit": "UNCOMMITTED_LOCAL",
+      "report_path": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/ENVIRONMENT.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_burst_0_bfc.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_burst_0_pool_auto.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_mixed_0_pool_auto.json"
+      ],
+      "scope_limits": "Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / core_pinned=false (QOS_CLASS_USER_INITIATED) / mmap(MAP_FIXED) discard. Single-stream YOLO26n; continuous p99 max ratio reached 1.3250. Requires separate CloudLab Linux replication.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_*.json", "key": "max_abs_error"},
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_*_pool_auto.json", "key": "false_reclaims"},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_continuous_{0..4}_pool_auto.json"], "den_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_continuous_{0..4}_bfc.json"], "key": "fps", "expected": 0.9989, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_burst_{0..4}_pool_auto.json"], "den_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_burst_{0..4}_bfc.json"], "key": "p99_ms", "expected": 1.0131, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_burst_{0..4}_pool_auto.json"], "den_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_burst_{0..4}_bfc.json"], "key": "idle_private_bytes", "expected": 0.3993, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_mixed_{0..4}_pool_auto.json"], "den_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_mixed_{0..4}_bfc.json"], "key": "p99_ms", "expected": 1.0130, "tol": 0.0005},
+        {"type": "paired_ratio_median", "num_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_mixed_{0..4}_pool_auto.json"], "den_files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_mixed_{0..4}_bfc.json"], "key": "idle_private_bytes", "expected": 0.4003, "tol": 0.0005},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_mixed_{0..4}_pool_auto.json"], "key": "reclaim_calls", "expected": 6, "tol": 0},
+        {"type": "median", "files": ["first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/confirm_mixed_{0..4}_pool_explicit.json"], "key": "reclaim_calls", "expected": 12, "tol": 0}
+      ]
+    },
+    {
+      "id": "E13_macbook_m2pro_multicam_4",
+      "title": "Apple M2 Pro Staggered Multi-Camera YOLO26n (N=4, K=1, 25% Duty Cycle)",
+      "status": "VALIDATED",
+      "commit": "UNCOMMITTED_LOCAL",
+      "report_path": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n4_k1_bfc_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n4_k1_pool_retain_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n4_k1_pool_auto_0_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n4_k1_pool_coop_t1.json"
+      ],
+      "scope_limits": "Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 25% duty cycle (burst_gap_ms=350 > idle_ms=200). 5 shuffled trials per policy; pool_coop lower p99 includes P-core wakeup before frame 0 while wall_sec/p50 match retain.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n4_k1_*.json", "key": "max_abs_error"},
+        {"type": "value", "file": "context/THEORY_VERIFICATION.json", "key": "theorem_3.passed", "expected": true, "tol": 0}
+      ]
+    },
+    {
+      "id": "E14_macbook_m2pro_multicam_8",
+      "title": "Apple M2 Pro Staggered Multi-Camera YOLO26n (N=8, K=2, 25% Duty Cycle)",
+      "status": "VALIDATED",
+      "commit": "UNCOMMITTED_LOCAL",
+      "report_path": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n8_k2_bfc_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n8_k2_pool_retain_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n8_k2_pool_auto_0_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n8_k2_pool_coop_t1.json"
+      ],
+      "scope_limits": "Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 25% duty cycle (burst_gap_ms=350 > idle_ms=200). 5 shuffled trials per policy; CloudLab 4 KiB replication pending.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/n8_k2_*.json", "key": "max_abs_error"},
+        {"type": "value", "file": "context/THEORY_VERIFICATION.json", "key": "theorem_4.passed", "expected": true, "tol": 0}
+      ]
+    },
+    {
+      "id": "E15_macbook_m2pro_multicam_handoff",
+      "title": "Apple M2 Pro N=8 K=2 Back-to-Back Handoff & Multi-Allocator Baselines",
+      "status": "VALIDATED",
+      "commit": "UNCOMMITTED_LOCAL",
+      "report_path": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/n8_k2_gap0_pool_hybrid_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/n8_k2_gap0_direct_jemalloc_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/n8_k2_gap0_pool_auto_0_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/n8_k2_gap350_pool_hybrid_t1.json"
+      ],
+      "scope_limits": "Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / --shed-warmup / 50 trials (35 gap=0 across 7 policies, 15 gap=350 across 3 policies). CloudLab 4 KiB replication pending.",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/n8_k2_*.json", "key": "max_abs_error"},
+        {"type": "value", "file": "context/THEORY_VERIFICATION.json", "key": "theorem_5.passed", "expected": true, "tol": 0}
+      ]
+    },
+    {
+      "id": "E16_macbook_m2pro_stochastic_ski",
+      "title": "Apple M2 Pro Stochastic Ski-Rental Oracle Validation (30-1500 ms Gaps)",
+      "status": "VALIDATED",
+      "commit": "UNCOMMITTED_LOCAL",
+      "report_path": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/REPORT.md",
+      "raw_files": [
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/pool_auto_250_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/pool_explicit_t1.json",
+        "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/pool_retain_t1.json"
+      ],
+      "scope_limits": "Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 40 trials (8 policies x 5). Break-even tau*=250 ms achieves 1.5875x <= 2.00x bound vs 2.7211x retain; tau=50/150 ms also beat pool_explicit (1.5218x).",
+      "checks": [
+        {"type": "all_zero", "files_glob": "first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/*_t*.json", "key": "max_abs_error"},
+        {"type": "value", "file": "context/THEORY_VERIFICATION.json", "key": "theorem_2.passed", "expected": true, "tol": 0}
+      ]
     }
   ]
 }

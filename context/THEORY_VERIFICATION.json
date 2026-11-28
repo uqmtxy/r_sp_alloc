@@ -1,0 +1,221 @@
+{
+  "theorem_1": {
+    "name": "Theorem 1: Exact Page-Residency Conservation & Boundary-Limited Retention Waste",
+    "passed": true,
+    "resource_test_stdout": "page residency (16384 B), conservation, coalescing, reuse, alignment, bounds, live-neighbor preservation: PASS",
+    "m2pro_retain_idle_mib": 106.01615142822266,
+    "m2pro_budget0_idle_mib": 42.31298065185547,
+    "reclaimed_body_mib": 63.70317077636719
+  },
+  "theorem_2": {
+    "name": "Theorem 2: 2-Competitive Online Idle-Threshold Reclamation",
+    "passed": true,
+    "continuous_false_reclaims": 0,
+    "continuous_reclaims": 0,
+    "burst_false_reclaims": 0,
+    "mixed_false_reclaims": 0,
+    "burst_reclaim_calls": [
+      12,
+      12,
+      12,
+      12,
+      12
+    ],
+    "burst_p99_ratio_vs_bfc": 1.012660234962789,
+    "stochastic_ski": {
+      "bfc": {
+        "competitive_ratio": 2.716478404814031,
+        "mean_phys_mib": 105.9864,
+        "minor_faults": 7.4
+      },
+      "pool_auto_1000": {
+        "competitive_ratio": 2.593077532180118,
+        "mean_phys_mib": 71.5621,
+        "minor_faults": 6066.2
+      },
+      "pool_auto_150": {
+        "competitive_ratio": 1.3739145682923632,
+        "mean_phys_mib": 61.95834,
+        "minor_faults": 16160.2
+      },
+      "pool_auto_250": {
+        "competitive_ratio": 1.5875206606272723,
+        "mean_phys_mib": 63.35408,
+        "minor_faults": 14141
+      },
+      "pool_auto_500": {
+        "competitive_ratio": 2.042139780954783,
+        "mean_phys_mib": 67.07361999999999,
+        "minor_faults": 10104.6
+      },
+      "pool_auto_50": {
+        "competitive_ratio": 1.1286794141544065,
+        "mean_phys_mib": 58.83604,
+        "minor_faults": 24638.4
+      },
+      "pool_explicit": {
+        "competitive_ratio": 1.52177524807888,
+        "mean_phys_mib": 56.57324,
+        "minor_faults": 30291.4
+      },
+      "pool_retain": {
+        "competitive_ratio": 2.7211008859366013,
+        "mean_phys_mib": 74.09126,
+        "minor_faults": 5.8
+      }
+    }
+  },
+  "theorem_3": {
+    "name": "Theorem 3: Multi-Stream Staggered Duty-Cycle Footprint Scaling & Zero-Lag Cooperative Bound",
+    "passed": true,
+    "total_runs": 45,
+    "max_abs_error": 0.0,
+    "configs": {
+      "N4_K1": {
+        "bfc_mean_mib": 332.1684,
+        "retain_mean_mib": 221.3888,
+        "auto0_mean_mib": 122.7794,
+        "coop_mean_mib": 126.0974,
+        "r_base_mib": 95.19116,
+        "m_arena_mib": 31.547,
+        "r_pred_mib": 126.73816,
+        "pred_rel_error": 0.0050557779914115865,
+        "coop_vs_retain": 0.5695744319495837,
+        "coop_vs_bfc": 0.37961889210412547,
+        "auto0_vs_bfc": 0.36962998286411347,
+        "coop_p99_vs_retain": 0.8578691167493622
+      },
+      "N8_K2": {
+        "bfc_mean_mib": 635.7676,
+        "retain_mean_mib": 418.2368,
+        "auto0_mean_mib": 216.4968,
+        "coop_mean_mib": 224.7466,
+        "r_base_mib": 162.4724,
+        "m_arena_mib": 31.546875,
+        "r_pred_mib": 225.56615,
+        "pred_rel_error": 0.003633302248586468,
+        "coop_vs_retain": 0.5373668696776562,
+        "coop_vs_bfc": 0.35350433082780564,
+        "auto0_vs_bfc": 0.3405282055895897,
+        "coop_p99_vs_retain": 0.7970659538758004
+      }
+    }
+  },
+  "theorem_4": {
+    "name": "Theorem 4: Linear Fault-Budget Tradeoff Law across 4 KiB and 16 KiB Pages",
+    "passed": true,
+    "cloudlab_4kib": {
+      "budgets_mib": [
+        0.0,
+        8.0,
+        16.0,
+        24.0
+      ],
+      "minor_faults": [
+        100517.0,
+        77965.0,
+        55427.0,
+        32918.0
+      ],
+      "regression": {
+        "n": 4,
+        "slope_faults_per_mib": -2816.6875,
+        "intercept_faults": 100507.0,
+        "r_squared": 0.9999998134940931
+      }
+    },
+    "m2pro_16kib": {
+      "budgets_mib": [
+        0.0,
+        8.0,
+        16.0,
+        24.0,
+        32.0
+      ],
+      "minor_faults": [
+        24230.0,
+        18086.0,
+        11942.0,
+        5805.0,
+        1.0
+      ],
+      "regression": {
+        "n": 5,
+        "slope_faults_per_mib": -759.2375,
+        "intercept_faults": 24160.6,
+        "r_squared": 0.9998746379324598
+      }
+    }
+  },
+  "theorem_5": {
+    "name": "Theorem 5: Hybrid Cooperative + Online Idle Dominance Bound",
+    "passed": true,
+    "total_runs": 50,
+    "max_abs_error": 0.0,
+    "gap0": {
+      "bfc": {
+        "mean_phys_mib": 631.2428,
+        "peak_phys_mib": 670.7072000000001,
+        "minor_faults": 13036.6,
+        "p99_ms": 89.1589
+      },
+      "direct_malloc": {
+        "mean_phys_mib": 267.5158,
+        "peak_phys_mib": 268.1008,
+        "minor_faults": 4145.8,
+        "p99_ms": 87.18732
+      },
+      "direct_jemalloc": {
+        "mean_phys_mib": 213.1824,
+        "peak_phys_mib": 237.1788,
+        "minor_faults": 258802.2,
+        "p99_ms": 89.75736
+      },
+      "pool_retain": {
+        "mean_phys_mib": 414.9792,
+        "peak_phys_mib": 415.104,
+        "minor_faults": 140.2,
+        "p99_ms": 87.02991999999999
+      },
+      "pool_auto_0": {
+        "mean_phys_mib": 240.4202,
+        "peak_phys_mib": 289.035,
+        "minor_faults": 32414.8,
+        "p99_ms": 87.94318
+      },
+      "pool_coop": {
+        "mean_phys_mib": 226.3092,
+        "peak_phys_mib": 229.1632,
+        "minor_faults": 32410,
+        "p99_ms": 88.40948
+      },
+      "pool_hybrid": {
+        "mean_phys_mib": 222.9832,
+        "peak_phys_mib": 225.8382,
+        "minor_faults": 32412.2,
+        "p99_ms": 87.37218
+      }
+    },
+    "gap350": {
+      "pool_auto_0": {
+        "mean_phys_mib": 214.5088,
+        "peak_phys_mib": 225.829,
+        "final_phys_mib": 162.5226,
+        "minor_faults": 32416
+      },
+      "pool_coop": {
+        "mean_phys_mib": 223.2936,
+        "peak_phys_mib": 225.71620000000001,
+        "final_phys_mib": 225.4854,
+        "minor_faults": 32414.8
+      },
+      "pool_hybrid": {
+        "mean_phys_mib": 216.78040000000001,
+        "peak_phys_mib": 227.829,
+        "final_phys_mib": 164.513,
+        "minor_faults": 32414.8
+      }
+    }
+  },
+  "all_passed": true
+}

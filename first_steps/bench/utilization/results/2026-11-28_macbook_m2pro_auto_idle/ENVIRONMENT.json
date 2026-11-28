@@ -1,0 +1,20 @@
+{
+  "recorded_at_utc": "2026-11-28T10:04:03.056298+00:00",
+  "uname": "Darwin kenzas-MacBook-Pro-2.local 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:18:48 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T6020 arm64",
+  "hw_model": "Mac14,10",
+  "cpu_brand": "Apple M2 Pro",
+  "ncpu": 12,
+  "memsize_bytes": 34359738368,
+  "os_page_size": 16384,
+  "compiler": "Homebrew clang version 23.1.2",
+  "onnxruntime_brew": "onnxruntime 1.32.0",
+  "model_sha256": "2e947b787d9e787b93a16772a5f55b1d4d8c4d86f53146149c5d6a642442d6f7",
+  "reference_sha256": "281a4bff0064eea30ec7b36e96666f89d507a57e02bc93d60a350cb735288d39",
+  "binary_sha256": "8be98f2eceaf61f793f2b94045956d1f7c3868247b02f1b1cf7ec53d0f37e55b",
+  "source_sha256": {
+    "first_steps/bench/utilization/auto_idle_bench.cpp": "bf4f7f397e8b83f7dadf942f759f1bf2c6873cba3cf00c385f32c5b2ff312f22",
+    "first_steps/bench/utilization/idle_reclaimer.hpp": "86748348b88171efcd1051c42f6e8249b79710889c2f16a76c6d0ed5ffb7bd9b",
+    "first_steps/bench/utilization/page_reuse_resource.hpp": "abcab1aa97ac51a974be439086adebd065b737c078f71b4b12dde61f368d960c",
+    "first_steps/bench/utilization/platform_memory.hpp": "71b843d437e6628fff7199ff6e3356364b2f21d27b8450e1abd5fa97342927c7"
+  }
+}

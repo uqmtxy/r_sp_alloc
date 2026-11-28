@@ -1,0 +1,14 @@
+{
+  "experiment_id": "2026-11-28_macbook_m2pro_auto_idle",
+  "status": "PREREGISTERED",
+  "created_utc": "2026-11-28T10:01:53.683523+00:00",
+  "git_commit_sha": "91300b3231928a29423aaaeb4348b1ec19baa898",
+  "git_dirty_worktree": true,
+  "research_question": "Can an autonomous inter-burst idle detector match explicit pause-boundary bounded retention without pause callbacks on Apple M2 Pro (16 KiB pages), while avoiding false triggers during continuous streams and short 80 ms jitter?",
+  "hypothesis": "IdleReclamationController (idle_threshold_ms=250) with a screened resident free-page budget will fire 0 times during continuous runs and 80 ms jitter, reduce idle physical footprint by >=45% vs BFC during >=1 s idle pauses, keep continuous FPS >=0.97x BFC, and keep burst/mixed median p99 <=1.05x BFC with max_abs_error == 0.",
+  "acceptance_gates": "max_abs_error == 0; idle_private_bytes <= 0.50 * BFC; continuous_fps >= 0.97 * BFC; burst_p99 <= 1.05 * BFC",
+  "planned_trials": 5,
+  "hardware_host": "TBD (record on CloudLab before promoting)",
+  "model_sha256": "TBD",
+  "binary_sha256": "TBD"
+}

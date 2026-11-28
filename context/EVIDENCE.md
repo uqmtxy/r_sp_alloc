@@ -17,7 +17,13 @@ Every quantitative claim below is programmatically checked against raw JSON arti
 | `E07_bounded_confirmation` | **VALIDATED** | `1fd7ede` | [first_steps/bench/utilization/results/bounded/REPORT.md](../first_steps/bench/utilization/results/bounded/REPORT.md) | Single-stream CPU 2, explicit 1 s pauses, fixed 640x640 FP32 YOLO26n. Continuous p99 showed individual max ratio 1.2737; 5% p99 gate is an assumed research margin. |
 | `E08_bounded_endurance` | **VALIDATED** | `1fd7ede` | [first_steps/bench/utilization/results/bounded/REPORT.md](../first_steps/bench/utilization/results/bounded/REPORT.md) | 1 run per policy (1000 frames, 100 pauses of 1 s, burst=10, CPU 2). Byte-seconds are frame-boundary sampled and can undercount transient intra-frame peaks. |
 | `E09_bounded_30f_sensitivity` | **VALIDATED** | `1fd7ede` | [first_steps/bench/utilization/results/bounded/REPORT.md](../first_steps/bench/utilization/results/bounded/REPORT.md) | Sensitivity check under original 30-frame burst schedule. Median gates pass, while individual trials had p99 max ratio 1.1541 (24 MiB) and 1.1473 (0 MiB). |
-| `E10_stale_oct19_manuscript` | **STALE_DRAFT** | `955b5f8` | [first_steps/paper/MANUSCRIPT.md](../first_steps/paper/MANUSCRIPT.md) | SUPERSEDED: Contains pre-CloudLab DynAlloc claims, 18,842 FPS, hardcoded 0.0 KB trapped DRAM, and wrong 2023/2024 citations. Never cite as current evidence; see assignment/latex/main.tex instead. |
+| `E10_paper_manuscript_nov28` | **SYNCED_NOV28_FINAL** | `UNCOMMITTED_LOCAL` | [first_steps/paper/MANUSCRIPT.md](../first_steps/paper/MANUSCRIPT.md) | Synced Nov 28 final paper covering Theorems 1-5, CloudLab m510 (4 KiB), and Apple M2 Pro (16 KiB, 181 validated runs). CloudLab replication of auto_idle_bench, multicam_staggered_bench, and stochastic_ski_bench remains pending. |
+| `E11_macbook_m2pro_auto_idle_screening` | **SCREENING** | `UNCOMMITTED_LOCAL` | [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md) | Apple M2 Pro / macOS Darwin 25.6.0 / 16 KiB pages / ORT 1.32.0 / core_pinned=false. Single shuffled run per budget (120 frames, 10-frame bursts, 1 s pauses) freezing 0 MiB budget. |
+| `E12_macbook_m2pro_auto_idle_confirm` | **VALIDATED** | `UNCOMMITTED_LOCAL` | [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md) | Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / core_pinned=false (QOS_CLASS_USER_INITIATED) / mmap(MAP_FIXED) discard. Single-stream YOLO26n; continuous p99 max ratio reached 1.3250. Requires separate CloudLab Linux replication. |
+| `E13_macbook_m2pro_multicam_4` | **VALIDATED** | `UNCOMMITTED_LOCAL` | [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md) | Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 25% duty cycle (burst_gap_ms=350 > idle_ms=200). 5 shuffled trials per policy; pool_coop lower p99 includes P-core wakeup before frame 0 while wall_sec/p50 match retain. |
+| `E14_macbook_m2pro_multicam_8` | **VALIDATED** | `UNCOMMITTED_LOCAL` | [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md) | Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 25% duty cycle (burst_gap_ms=350 > idle_ms=200). 5 shuffled trials per policy; CloudLab 4 KiB replication pending. |
+| `E15_macbook_m2pro_multicam_handoff` | **VALIDATED** | `UNCOMMITTED_LOCAL` | [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/REPORT.md) | Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / --shed-warmup / 50 trials (35 gap=0 across 7 policies, 15 gap=350 across 3 policies). CloudLab 4 KiB replication pending. |
+| `E16_macbook_m2pro_stochastic_ski` | **VALIDATED** | `UNCOMMITTED_LOCAL` | [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/REPORT.md) | Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 40 trials (8 policies x 5). Break-even tau*=250 ms achieves 1.5875x <= 2.00x bound vs 2.7211x retain; tau=50/150 ms also beat pool_explicit (1.5218x). |
 
 ## Machine-Verified Assertions
 
@@ -119,7 +125,52 @@ Every quantitative claim below is programmatically checked against raw JSON arti
   - `PASS`: `paired_ratio_median(5):p99_ms=1.0474 (exp 1.0474±0.0005)`
   - `PASS`: `paired_ratio_median(5):idle_private_bytes=0.4912 (exp 0.4912±0.0005)`
 
-### `E10_stale_oct19_manuscript` — Legacy Pre-CloudLab Manuscript & Figures (Oct 15/19) (`STALE_DRAFT`)
-- **Commit:** `955b5f8` | **Report:** [first_steps/paper/MANUSCRIPT.md](../first_steps/paper/MANUSCRIPT.md)
-- **Scope / Caveats:** SUPERSEDED: Contains pre-CloudLab DynAlloc claims, 18,842 FPS, hardcoded 0.0 KB trapped DRAM, and wrong 2023/2024 citations. Never cite as current evidence; see assignment/latex/main.tex instead.
-  - *(No numeric assertions promoted — explicitly flagged non-citable)*
+### `E10_paper_manuscript_nov28` — Camera-Ready ACM Sigconf Paper, Overleaf Bundle & Theorems 1-5 Verification (`SYNCED_NOV28_FINAL`)
+- **Commit:** `UNCOMMITTED_LOCAL` | **Report:** [first_steps/paper/MANUSCRIPT.md](../first_steps/paper/MANUSCRIPT.md)
+- **Scope / Caveats:** Synced Nov 28 final paper covering Theorems 1-5, CloudLab m510 (4 KiB), and Apple M2 Pro (16 KiB, 181 validated runs). CloudLab replication of auto_idle_bench, multicam_staggered_bench, and stochastic_ski_bench remains pending.
+  - `PASS`: `context/THEORY_VERIFICATION.json:all_passed=True (exp True)`
+
+### `E11_macbook_m2pro_auto_idle_screening` — Apple M2 Pro (16 KiB Pages) Autonomous Idle-Detector Screening (`SCREENING`)
+- **Commit:** `UNCOMMITTED_LOCAL` | **Report:** [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md)
+- **Scope / Caveats:** Apple M2 Pro / macOS Darwin 25.6.0 / 16 KiB pages / ORT 1.32.0 / core_pinned=false. Single shuffled run per budget (120 frames, 10-frame bursts, 1 s pauses) freezing 0 MiB budget.
+  - `PASS`: `all_zero max_abs_error across 6 files`
+  - `PASS`: `first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_-1.json:idle_private_bytes=106.016 (exp 106.02±0.02)`
+  - `PASS`: `first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_0.json:idle_private_bytes=42.313 (exp 42.31±0.02)`
+  - `PASS`: `first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/screen_0.json:false_reclaims=0 (exp 0±0.0)`
+
+### `E12_macbook_m2pro_auto_idle_confirm` — Apple M2 Pro Autonomous Idle-Detector Confirmation (Continuous, Burst, Mixed) (`VALIDATED`)
+- **Commit:** `UNCOMMITTED_LOCAL` | **Report:** [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_auto_idle/REPORT.md)
+- **Scope / Caveats:** Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / core_pinned=false (QOS_CLASS_USER_INITIATED) / mmap(MAP_FIXED) discard. Single-stream YOLO26n; continuous p99 max ratio reached 1.3250. Requires separate CloudLab Linux replication.
+  - `PASS`: `all_zero max_abs_error across 40 files`
+  - `PASS`: `all_zero false_reclaims across 15 files`
+  - `PASS`: `paired_ratio_median(5):fps=0.9989 (exp 0.9989±0.0005)`
+  - `PASS`: `paired_ratio_median(5):p99_ms=1.0131 (exp 1.0131±0.0005)`
+  - `PASS`: `paired_ratio_median(5):idle_private_bytes=0.3993 (exp 0.3993±0.0005)`
+  - `PASS`: `paired_ratio_median(5):p99_ms=1.0130 (exp 1.013±0.0005)`
+  - `PASS`: `paired_ratio_median(5):idle_private_bytes=0.4003 (exp 0.4003±0.0005)`
+  - `PASS`: `median(5):reclaim_calls=6 (exp 6±0.0)`
+  - `PASS`: `median(5):reclaim_calls=12 (exp 12±0.0)`
+
+### `E13_macbook_m2pro_multicam_4` — Apple M2 Pro Staggered Multi-Camera YOLO26n (N=4, K=1, 25% Duty Cycle) (`VALIDATED`)
+- **Commit:** `UNCOMMITTED_LOCAL` | **Report:** [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md)
+- **Scope / Caveats:** Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 25% duty cycle (burst_gap_ms=350 > idle_ms=200). 5 shuffled trials per policy; pool_coop lower p99 includes P-core wakeup before frame 0 while wall_sec/p50 match retain.
+  - `PASS`: `all_zero max_abs_error across 25 files`
+  - `PASS`: `context/THEORY_VERIFICATION.json:theorem_3.passed=True (exp True)`
+
+### `E14_macbook_m2pro_multicam_8` — Apple M2 Pro Staggered Multi-Camera YOLO26n (N=8, K=2, 25% Duty Cycle) (`VALIDATED`)
+- **Commit:** `UNCOMMITTED_LOCAL` | **Report:** [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam/REPORT.md)
+- **Scope / Caveats:** Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 25% duty cycle (burst_gap_ms=350 > idle_ms=200). 5 shuffled trials per policy; CloudLab 4 KiB replication pending.
+  - `PASS`: `all_zero max_abs_error across 20 files`
+  - `PASS`: `context/THEORY_VERIFICATION.json:theorem_4.passed=True (exp True)`
+
+### `E15_macbook_m2pro_multicam_handoff` — Apple M2 Pro N=8 K=2 Back-to-Back Handoff & Multi-Allocator Baselines (`VALIDATED`)
+- **Commit:** `UNCOMMITTED_LOCAL` | **Report:** [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_multicam_handoff/REPORT.md)
+- **Scope / Caveats:** Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / --shed-warmup / 50 trials (35 gap=0 across 7 policies, 15 gap=350 across 3 policies). CloudLab 4 KiB replication pending.
+  - `PASS`: `all_zero max_abs_error across 50 files`
+  - `PASS`: `context/THEORY_VERIFICATION.json:theorem_5.passed=True (exp True)`
+
+### `E16_macbook_m2pro_stochastic_ski` — Apple M2 Pro Stochastic Ski-Rental Oracle Validation (30-1500 ms Gaps) (`VALIDATED`)
+- **Commit:** `UNCOMMITTED_LOCAL` | **Report:** [first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/REPORT.md](../first_steps/bench/utilization/results/2026-11-28_macbook_m2pro_stochastic_ski/REPORT.md)
+- **Scope / Caveats:** Apple M2 Pro / macOS / 16 KiB pages / ORT 1.32.0 / 40 trials (8 policies x 5). Break-even tau*=250 ms achieves 1.5875x <= 2.00x bound vs 2.7211x retain; tau=50/150 ms also beat pool_explicit (1.5218x).
+  - `PASS`: `all_zero max_abs_error across 40 files`
+  - `PASS`: `context/THEORY_VERIFICATION.json:theorem_2.passed=True (exp True)`
